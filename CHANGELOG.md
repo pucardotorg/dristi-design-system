@@ -2,6 +2,14 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 — Toggle edge matches the outline Button
+
+`Toggle` `default` and `outline` drew their edge in `border`, a step lighter than the
+outline `Button`'s `input`. Side by side (Dristi's Cases bookmark beside "Edit columns",
+the scrutiny Fields/Bundle switch beside "Documents") the toggle read fainter than the
+buttons around it. Both now use `input`. `pill` keeps `border`, as the product's filter
+pills do.
+
 ## 2026-10-30 — Side panel: `push` speaks the designer's words
 
 `SidePanelRegion push` names what makes room, so a request maps straight to code:
