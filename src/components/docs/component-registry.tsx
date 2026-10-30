@@ -304,7 +304,8 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     ],
     tokens: ["popover", "hairline", "shadow-modal"],
     usageNotes: [
-      "Wrap the page in SidePanelRegion open={…} and give SIDE_PANEL_PUSH to what should step aside. Always the header and toolbar. A list whose row actions sit on the right steps aside too, or the panel covers the next row's control (Raise application). A wide table whose trigger is on the left stays put and the panel slides over its right edge: re-flowing it on every frame was choppy (Cases, owner Sept 11).",
+      "Wrap the page in SidePanelRegion open={…} push=…. The push value is the designer's words: \"push the content\" → push=\"content\" (everything steps aside); \"the panel goes over the content\" → push=\"none\" (nothing moves); \"push the header, the panel goes over the table\" → push=\"marked\" with SIDE_PANEL_PUSH on the parts that move.",
+      "When nothing was said: push the content if any row's control sits on the right (the panel would cover it, as in Raise application); keep a wide table still with push=\"marked\" if its trigger is on the left (re-flowing it every frame was choppy: Cases, owner Sept 11).",
       "Slides in from the right over 300ms with no fade and plays the same motion out before unmounting, so nothing snaps back. Reduced motion shows it in place.",
       "27rem wide from sm; full width below. On a phone it becomes a bottom drawer.",
       "Escape closes it, focus moves into the panel on open and back to the opener on close. It has no focus trap: the page behind stays usable by design.",

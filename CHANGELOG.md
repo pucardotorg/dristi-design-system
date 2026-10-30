@@ -2,6 +2,14 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 — Side panel: `push` speaks the designer's words
+
+`SidePanelRegion push` names what makes room, so a request maps straight to code:
+"push the content" → `push="content"` (every child steps aside); "the panel goes over the
+content" → `push="none"`; "push the header, the panel goes over the table" →
+`push="marked"` with `SIDE_PANEL_PUSH` on what moves. AGENTS.md rule 12 carries the
+mapping and when to use Sheet instead. The docs demo switches between all three.
+
 ## 2026-10-30 — Phone confirms rise from the bottom; Side panel guidance
 
 - **`AlertDialog` on a phone is a bottom sheet** (lead designer, 2026-09-21; the product's

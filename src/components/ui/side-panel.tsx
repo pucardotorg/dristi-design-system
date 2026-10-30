@@ -14,8 +14,9 @@ import { cn } from "@/lib/utils"
  * page stays usable, and on wide screens the page makes room for it instead of sitting
  * under it.
  *
- * - `SidePanelRegion` wraps the page and publishes the panel's width while it is open.
- *   Elements that should step aside take `SIDE_PANEL_PUSH`. Only light chrome should:
+ * - `SidePanelRegion` wraps the page. Its `push` says what makes room: "content" (the
+ *   content is pushed), "none" (the panel goes over the content), or "marked" (only
+ *   elements given `SIDE_PANEL_PUSH` step aside). Only light chrome should:
  *   a wide table re-measures every cell on every frame of a margin animation, so it
  *   keeps its width and the panel slides over its right edge.
  * - `SidePanel` slides in from the right over 300ms with no fade, and plays the same
@@ -60,19 +61,37 @@ function usePresence(open: boolean) {
 
 function SidePanelRegion({
   open,
+  push = "marked",
   className,
   style,
   ...props
 }: React.ComponentProps<"div"> & {
   /** Whether the panel is open; the page makes room for it from `sm` up. */
   open: boolean
+  /**
+   * What makes room for the panel, in the words a designer uses:
+   * - `"content"`: the content is pushed. Everything in the region steps aside.
+   * - `"none"`: the panel goes over the content. Nothing moves.
+   * - `"marked"` (default): only the parts given `SIDE_PANEL_PUSH` step aside; the rest
+   *   stays and the panel goes over its right edge (the Cases page: header moves, table
+   *   stays).
+   */
+  push?: "content" | "none" | "marked"
 }) {
+  const room = open && push !== "none" ? PANEL_WIDTH : "0px"
   return (
     <div
       data-slot="side-panel-region"
       data-panel-open={open || undefined}
-      className={className}
-      style={{ "--side-panel-mr": open ? PANEL_WIDTH : "0px", ...style } as React.CSSProperties}
+      data-push={push}
+      className={cn(
+        // Each child steps aside, not the region: a full-width region would keep its
+        // width and the margin would change nothing.
+        push === "content" &&
+          "[&>*]:transition-[margin] [&>*]:duration-300 [&>*]:ease-out motion-reduce:[&>*]:transition-none sm:[&>*]:mr-[var(--side-panel-mr,0px)]",
+        className
+      )}
+      style={{ "--side-panel-mr": room, ...style } as React.CSSProperties}
       {...props}
     />
   )

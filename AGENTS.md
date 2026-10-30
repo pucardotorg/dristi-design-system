@@ -163,6 +163,14 @@ budgeted by size, one animated mark per screen, shake only for refused input; er
 toasts stay until closed. Full rules: `/foundations/status` and `/foundations/motion`;
 the decision tree for agents is `.agents/skills/feedback-states/SKILL.md`.
 
+**12. Panels: say it, pick it.** A modal task that dims the page (filters, a form, mobile
+navigation) is `Sheet`. Looking at one record while the page stays usable (a peek) is
+`SidePanel` inside `SidePanelRegion`, and the designer's words pick `push`: "push the
+content" → `push="content"`; "the panel goes over the content" → `push="none"`; "push the
+header, the panel goes over the table" → `push="marked"` with `SIDE_PANEL_PUSH` on what
+moves. Unsaid: push the content when a row's control sits on the right; keep a wide table
+still (`marked`) when its trigger is on the left.
+
 To document a rule violation deliberately — an anti-example in the docs, say — put
 `ds-tokens-ignore` in a comment on that line or the one above it.
 
