@@ -19,16 +19,17 @@ const CASES = [
   { id: "ST 431/2026", parties: "Kiran Mathew v. Harbour Line", stage: "Cognizance" },
 ]
 
-/** The cases list in miniature: the header steps aside, the list keeps its width. */
+/** A list whose row actions sit on the right: the panel would cover them, so the list
+    steps aside with the header (the product's Raise application chooser). */
 export function SidePanelDemo() {
   const [open, setOpen] = React.useState<(typeof CASES)[number] | null>(null)
   return (
     <SidePanelRegion open={Boolean(open)} className="flex w-full flex-col gap-4">
       <div className={cn("flex items-center justify-between gap-4", SIDE_PANEL_PUSH)}>
         <p className="text-body font-semibold">Cases</p>
-        <p className="text-caption text-muted-foreground">This row steps aside; the list does not.</p>
+        <p className="text-caption text-muted-foreground">The header and the list step aside together.</p>
       </div>
-      <div className="flex flex-col divide-y divide-hairline rounded-xl border border-hairline">
+      <div className={cn("flex flex-col divide-y divide-hairline rounded-xl border border-hairline", SIDE_PANEL_PUSH)}>
         {CASES.map((c) => (
           <div key={c.id} className="flex items-center justify-between gap-4 px-4 py-3">
             <div className="flex min-w-0 flex-col">

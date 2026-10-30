@@ -304,7 +304,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     ],
     tokens: ["popover", "hairline", "shadow-modal"],
     usageNotes: [
-      "Wrap the page in SidePanelRegion open={…}. Give SIDE_PANEL_PUSH to the light chrome that should step aside (header, toolbar); leave wide tables alone so they do not re-flow on every frame, and the panel slides over their right edge.",
+      "Wrap the page in SidePanelRegion open={…} and give SIDE_PANEL_PUSH to what should step aside. Always the header and toolbar. A list whose row actions sit on the right steps aside too, or the panel covers the next row's control (Raise application). A wide table whose trigger is on the left stays put and the panel slides over its right edge: re-flowing it on every frame was choppy (Cases, owner Sept 11).",
       "Slides in from the right over 300ms with no fade and plays the same motion out before unmounting, so nothing snaps back. Reduced motion shows it in place.",
       "27rem wide from sm; full width below. On a phone it becomes a bottom drawer.",
       "Escape closes it, focus moves into the panel on open and back to the opener on close. It has no focus trap: the page behind stays usable by design.",
@@ -312,7 +312,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     doItems: ["Open it from a row's own control, and let the panel replace its content when another row is peeked."],
     dontItems: [
       "Use it for something the person must finish before carrying on. That is Sheet or Dialog.",
-      "Put SIDE_PANEL_PUSH on a wide table.",
+      "Leave a row's own control under the panel: if it sits on the right, push the list.",
     ],
     preview: <SidePanelDemo />,
   },

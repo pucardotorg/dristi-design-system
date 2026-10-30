@@ -2,6 +2,18 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 — Phone confirms rise from the bottom; Side panel guidance
+
+- **`AlertDialog` on a phone is a bottom sheet** (lead designer, 2026-09-21; the product's
+  `useBottomSheet`): full width on the bottom edge, square at the bottom with the safe area
+  kept, content centred, buttons full width with the act on top, up 300ms / down 200ms on
+  the drawer curve, no fade or scale. From `sm` it stays centred; reduced motion keeps the
+  fade. On upgrade the product's hook becomes redundant for confirms.
+- **Side panel:** what steps aside is a choice, now documented. Header and toolbar always;
+  a list whose row actions sit on the right too (the panel would cover them: Raise
+  application); a wide table whose trigger is on the left stays put (Cases, owner Sept 11).
+  The docs demo moves its list, because its row actions are on the right.
+
 ## 2026-10-30 — Side panel, from the product's case peek
 
 **New: `side-panel`** (`SidePanel`, `SidePanelRegion`, `SIDE_PANEL_PUSH`). A docked,
