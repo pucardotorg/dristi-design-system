@@ -1729,9 +1729,9 @@ export const componentRegistry: Record<string, ComponentDoc> = {
 
   sonner: {
     slug: "sonner",
-    title: "Toast",
+    title: "Toast (primitive)",
     description:
-      "Non-blocking confirmation of background or completed actions. Auto-dismisses — never use for validation errors or anything requiring action.",
+      "The Sonner primitive that Notify draws into. Product code never calls it directly: raise toasts with Notify and mount Feedback toaster. The preview below shows the primitive's own variant colours, which the product no longer uses.",
     importPath: "@/components/ui/sonner",
     whenToUse: [
       "Product toasts go through Notify and Feedback toaster, which carry the 2.75s life, click-away and persistent errors. This page documents the primitive underneath.",
@@ -1936,6 +1936,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     usageNotes: [
       "StepperItem props: status (complete | current | upcoming), step (number shown until complete), title.",
       "The connector between items is teal only once the step it follows is complete — it never anticipates progress.",
+      "Connectors join the circles edge to edge and each label is centred under its circle (owner, 2026-09-01: no gap at either end of a line). Don't override the connector or label alignment.",
       "Stepper is a visual indicator only; it doesn't manage navigation state — drive status from your own step index.",
     ],
     doItems: [

@@ -47,7 +47,7 @@ export const docsNav: DocsNavSection[] = [
       { title: "Confirm mark", href: "/components/confirm-mark" },
       { title: "Notify", href: "/components/notify" },
       { title: "Feedback toaster", href: "/components/feedback-toaster" },
-      { title: "Toast", href: "/components/sonner" },
+      { title: "Toast (primitive)", href: "/components/sonner" },
       { title: "Tooltip", href: "/components/tooltip" },
     ],
   },

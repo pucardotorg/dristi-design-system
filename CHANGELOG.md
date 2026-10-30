@@ -2,6 +2,20 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 — Owner review of the docs: four fixes
+
+- **`AlertDialog` with an icon:** the header set no column widths, so the icon's column
+  grew to 65px for a 40px icon and the title sat 41px away. It is now `auto 1fr`, a 16px
+  gap. Every confirm with an icon in the product had the same gap; it closes on upgrade.
+- **`Stepper` connectors join the circles and labels centre under them** by default (owner,
+  2026-09-01). The product built this as an override (`FlowStepper`); two product screens
+  still on the old gapped default (registration flow, vakalatnama wizard) come right on
+  upgrade.
+- **Toast page** is now "Toast (primitive)": the Sonner layer Notify draws into, never
+  called directly. Its preview shows the primitive's old pale variants for reference only.
+- **Status line docs:** the badge row shows one badge animating ("just changed") beside the
+  still ones, so Replay demonstrates the rule instead of appearing broken.
+
 ## 2026-10-30 — Card: the background decides
 
 **`Card` gets `variant`: `outline` (default) and `raised`.** Outline is the existing look, a

@@ -380,13 +380,13 @@ export const outcomeVariants = [
 export const statusLineVariants = [
       { label: "Field error (press twice)", content: <RefusalDemo /> },
       {
-        label: "Badges with a mark",
+        label: "Badges with a mark · only the one that just changed animates",
         content: (
           <Replay>
             <div className="flex flex-wrap items-center gap-3">
               <Badge variant="success">
-                <StatusMark size={14} still />
-                Signed
+                <StatusMark size={14} />
+                Signed · just changed
               </Badge>
               <Badge variant="destructive">
                 <StatusMark size={14} tone="error" still />
