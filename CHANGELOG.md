@@ -2,6 +2,50 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 — Status & feedback: one mark, three weights
+
+Success, failure and warning were expressed 71 ways across Dristi, in 11 patterns, with
+no shared component. 23 of those moments were a toast or nothing. The Dristi rollout
+(pucardotorg/dristi-fe-design#174, merged 2026-10-30) moved every flow onto one set of
+pieces, tested on phone, iPad and desktop, light and dark, with reduced motion. This
+brings those pieces into the system unchanged, so screens compose them instead of
+copying them.
+
+**New components** (Status & feedback): `status-mark`, `outcome`, `status-line`,
+`confirm-mark`, `notify` and `feedback-toaster`. Each has a docs page with live previews.
+
+**New foundations:** Motion (the budget by size, every duration and curve, reduced
+motion) and Status & feedback (tones, which piece, the rules, retired patterns).
+
+**Motion lives in `src/app/feedback.css`**, imported by `globals.css`. Only the status
+components use its classes.
+
+**Decided with the product owner during the rollout,** now component defaults:
+- The title sits under the mark; every outcome closes on a `surface-sunken` footer band.
+- Hero marks wait 160ms and hold until painted. Success rings once; loops and three
+  pulses were tried and dropped.
+- Small success ticks draw themselves; other small glyphs scale in.
+- Toasts last 2.75s and leave on any page press. Error toasts stay until closed, carry
+  a close button, and a repeated error re-enters from the bottom instead of stacking.
+- Partial results are neutral with a checklist icon, with a tally underneath.
+- Removals use the soft red `destructive` button, never `destructive-solid`.
+
+**`sonner` 2.0.7 → 2.0.8.** In 2.0.7, `toast.dismiss` does not remove a custom toast, so a
+repeated error stacked a second card. 2.0.8 (the version Dristi already runs) fixes it.
+
+**One exception to rule 6, for review.** The outcome band, the page glow and the tally
+stripes blend two opaque tokens with `color-mix`. None uses alpha, but the system did not
+define these blends before. Documented on /foundations/status.
+
+**Open for this review:**
+- `DialogFooter` defaults to `bg-muted`; outcomes use `bg-surface-sunken`. Which is the
+  outcome band?
+- `Badge` has no leading-mark slot; `BADGE_WITH_MARK` sets the inset for now.
+- The pinned dialog layout (header and footer pinned, middle scrolls) is a recipe in the
+  docs, not a primitive variant.
+- Deprecated patterns are listed, not enforced. A check script belongs with the app's
+  DS upgrade, where the old patterns live.
+
 ## 2026-08-25 — Docs site catches up with the warm ramp
 
 The warm-neutral PR changed the tokens and the AGENTS contract but never touched

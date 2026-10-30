@@ -44,6 +44,16 @@ import {
   ButtonMasterMatrix,
   ButtonWithIconsMatrix,
 } from "@/components/docs/button-docs";
+import {
+  confirmMarkPreview,
+  feedbackToasterPreview,
+  notifyPreview,
+  outcomePreview,
+  outcomeVariants,
+  statusLinePreview,
+  statusLineVariants,
+  statusMarkPreview,
+} from "@/components/docs/feedback-docs";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Banner } from "@/components/ui/banner";
@@ -279,6 +289,174 @@ function SessionTimeoutDemo() {
 }
 
 export const componentRegistry: Record<string, ComponentDoc> = {
+  "status-mark": {
+    slug: "status-mark",
+    title: "Status mark",
+    description:
+      "The one mark every outcome uses: a solid disc with a glyph, in six tones and nine sizes. Its motion is budgeted by size.",
+    importPath: "@/components/ui/status-mark",
+    whenToUse: [
+      "Inside the feedback pieces (outcome header, status line, toast, tally). Screens rarely place it directly.",
+      "Directly only for a mark in a badge (with BADGE_WITH_MARK) or a mark beside a tally line.",
+      "Tones: success it happened · error it did not · warning it happened with a catch · info sent, not decided · neutral not news · danger the question before a removal.",
+    ],
+    tokens: ["success", "destructive", "warning", "info", "surface-sunken", "input", "destructive-muted", "destructive-ink"],
+    usageNotes: [
+      "44px and up plays the full sequence, about 600ms: the disc pops, then the tick draws, the cross springs stroke by stroke, or the ! drops and settles. It waits HERO_START (160ms) and holds until painted, so the motion is not lost while the window settles.",
+      "Smaller marks pop in 250ms. A tick draws itself inside the disc (280ms, from 120ms); any other glyph scales in after it.",
+      "Success rings once at hero size; warning sways with a soft ring. Never loop: a pulse that never stops reads as still going.",
+      "still: no motion and no announcement. Pass it to every mark after the first on a screen, and to anything already true when the screen opens.",
+      "reject: one small shake after a hero error mark lands, only when the person's own input was refused.",
+      "delay moves the whole mark, glyph included, so marks that belong together play in order.",
+      "Neutral and danger marks always show an icon: pass the act's own (lock, trash, user-x).",
+    ],
+    doItems: [
+      "Keep one animated mark per screen; everything else is still.",
+      "Give every neutral mark the act's icon.",
+    ],
+    dontItems: [
+      "Draw your own disc, tick or tinted circle for an outcome.",
+      "Shake on a system failure. A shake reads as you did it wrong.",
+    ],
+    preview: statusMarkPreview,
+  },
+
+  outcome: {
+    slug: "outcome",
+    title: "Outcome",
+    description:
+      "The takeover: an act that reaches the court, moves money or adds a signature ends with the mark, the title under it, and the facts below, in the same dialog.",
+    importPath: "@/components/ui/outcome",
+    whenToUse: [
+      "OutcomeHeader at the top of the dialog the act happened in, when it finished or failed.",
+      "OutcomeSummary for the facts under it; OutcomeAmount to label any amount (Amount paid).",
+      "OutcomeTally when some went through and some did not: one marked line per outcome, the failed share striped.",
+      "PageOutcome when the whole page is the outcome or a dead end (account ready, page could not load, link expired).",
+    ],
+    tokens: ["success-muted", "destructive-muted", "warning-muted", "info-muted", "surface-sunken", "hairline", "card"],
+    usageNotes: [
+      "titleFrom: dialog in a Dialog whose header the outcome replaces, alert-dialog in an AlertDialog that turns into its result, plain elsewhere.",
+      "The title always sits under the mark, never in a header above it.",
+      "Every outcome closes on the footer band: border-t border-hairline bg-surface-sunken, with the buttons on it.",
+      "Pin the dialog's header and footer; only the middle scrolls.",
+      "compact on phones: a 60px mark and a title-s title, full size from sm up.",
+      "Partial result: tone neutral with a checklist icon, never the big tick (reads as all well) or the ! (reads as alarm).",
+      "Payment outcomes lead with the amount. Waiting on the person (sign later, pay later) is neutral with a clock; waiting on someone else is info.",
+      "focusTitle when it replaces a stage in an already-open dialog. Two outcome stages in one dialog each need their own key.",
+      "The band fades from a status muted fill into the surface, and page outcomes sit on a soft radial glow of it: a blend of two opaque tokens, the one exception to rule 6 (see Status & feedback).",
+    ],
+    doItems: [
+      "Keep the product's own words; label an unlabelled amount.",
+      "Say what did not happen and what to do: Nothing was paid; try again.",
+    ],
+    dontItems: [
+      "Add a button the flow did not have.",
+      "Use it for a quick act where the page stays put. That is a toast.",
+      "Retired for outcomes: the tinted disc header, the thin status strip on a card, solid green slabs, the receipt disc, and Banner, Alert or toast.success used as a confirmation.",
+    ],
+    preview: outcomePreview,
+    variantSections: outcomeVariants,
+  },
+
+  "status-line": {
+    slug: "status-line",
+    title: "Status line",
+    description:
+      "Feedback inside a page or an open dialog: one white line with a straight rail in its tone. Also the field error, the badge mark and the landing highlight.",
+    importPath: "@/components/ui/status-line",
+    whenToUse: [
+      "StatusLine for a note inside a page or dialog: a result that stays, a load error with Try again, a standing warning. It stays as long as what it says is true; it has no close and no timer.",
+      "StatusFieldControl + StatusFieldError + useRefusal when the person's own input was refused. Missing input is never a toast.",
+      "BADGE_WITH_MARK with a 14px StatusMark for a standing state on a row (Signed, Overdue).",
+      "LANDING on the row a dialog changed, once, when the dialog closes onto the list.",
+    ],
+    tokens: ["card", "hairline", "success", "destructive", "warning", "info", "input", "destructive-ink"],
+    usageNotes: [
+      "The rail is straight, full height and flush left, clipped by the corner radius. It never bends with it.",
+      "An animated line is a live region (status, or alert for errors). A still line is not, so a line already true when the screen opened is not announced.",
+      "Field refusal: focus moves into the field and its red ring grows in; the error line opens its own room and drops in under the field. A repeat press shakes the field once and replays the line. Call reset once the input is valid.",
+      "A mark in a pill is concentric: BADGE_WITH_MARK sets equal inset at the top, bottom and end for a 14px mark.",
+    ],
+    doItems: [
+      "Use it inside a dialog for a failure; a toast behind a dialog cannot be closed.",
+      "Pass still when a toast on the same screen already said it.",
+    ],
+    dontItems: [
+      "Add a close button or click-away: a line leaves when what it says stops being true.",
+      "Use Banner or Alert as a success or failure confirmation.",
+    ],
+    preview: statusLinePreview,
+    variantSections: statusLineVariants,
+  },
+
+  "confirm-mark": {
+    slug: "confirm-mark",
+    title: "Confirm mark",
+    description:
+      "The mark and the lock line for an AlertDialog that asks before a risky act: a removal, a discard, or a normal act that cannot be taken back.",
+    importPath: "@/components/ui/confirm-mark",
+    whenToUse: [
+      "danger with the act's icon for removals and discards. The confirm button is variant destructive (soft red), never destructive-solid.",
+      "Neutral with the act's icon for normal acts that cannot be taken back (sign, pay, file). Not a warning: signing is the job. The button stays primary.",
+      "IrreversibleNote for This cannot be undone / reversed, as its own line with a lock.",
+    ],
+    tokens: ["destructive-muted", "destructive-ink", "surface-sunken", "input", "muted-foreground"],
+    usageNotes: [
+      "The mark fades and scales in (380ms), with no rotation.",
+      "The lock line sits 12px under the description and follows its alignment: centred on a phone, left from sm.",
+    ],
+    doItems: ["Name the consequence in the description; the lock line only says it cannot be taken back."],
+    dontItems: ["Use a warning tone for an act that is simply irreversible."],
+    preview: confirmMarkPreview,
+  },
+
+  notify: {
+    slug: "notify",
+    title: "Notify",
+    description:
+      "The product's toasts for quick acts where the page stays put. White card, solid mark, a straight rail, raised in dark. Raise them through notify, never toast() directly.",
+    importPath: "@/components/ui/notify",
+    whenToUse: [
+      "notify.success for a quick act that worked (access given, reminder sent).",
+      "notify.error for an act raised from a page that did not happen.",
+      "notify.warning only where the product already treats the thing as a warning.",
+      "notify.neutral for news that is not news (a draft saved, a step not open yet), with the act's icon.",
+    ],
+    tokens: ["card", "surface-raised", "border", "success", "destructive", "warning", "input"],
+    usageNotes: [
+      "Success, warning and neutral last 2.75s, show a thin timer bar, pause while the pointer is over them, and leave on any press on the page outside the toasts.",
+      "Error toasts stay until closed, carry a close button and ignore page presses. Before this system they left after 4s with no close, so an error could vanish unread.",
+      "The same error again never stacks a copy: the old card leaves and the error comes up from the bottom afresh about 120ms later, so a retry that failed again reads as new news. Different errors still stack.",
+      "notify.error while a dialog is open waits for the dialog to close; a toast behind a dialog cannot be closed. Say the failure inside the dialog instead.",
+      "Mount FeedbackToaster once per area; it carries the placement, fills and click-away.",
+    ],
+    doItems: ["Keep a toast to one short title, with one line of detail at most."],
+    dontItems: [
+      "Use a toast for missing input. Point at the field.",
+      "Call toast.success, toast.error or toast() from sonner directly.",
+    ],
+    preview: notifyPreview,
+  },
+
+  "feedback-toaster": {
+    slug: "feedback-toaster",
+    title: "Feedback toaster",
+    description:
+      "The toaster notify draws into: bottom centre, 380px wide, 56px up (64px and full width on a phone), click-away for every toast but errors, and a raised surface in dark.",
+    importPath: "@/components/ui/feedback-toaster",
+    whenToUse: [
+      "Mount once per product area, instead of the Toaster primitive.",
+      "Pair with notify; the two share the click-away list.",
+    ],
+    tokens: ["card", "surface-raised", "border"],
+    usageNotes: [
+      "Toaster in sonner.tsx stays the upgradeable registry primitive; the feedback system's decisions are composed here.",
+      "In dark the toast lifts to surface-raised with a full border; on popover alone it disappears into the page.",
+    ],
+    dontItems: ["Mount it twice in one area: the toasts would draw twice."],
+    preview: feedbackToasterPreview,
+  },
+
   button: {
     slug: "button",
     title: "Button",
@@ -1541,6 +1719,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "Non-blocking confirmation of background or completed actions. Auto-dismisses — never use for validation errors or anything requiring action.",
     importPath: "@/components/ui/sonner",
     whenToUse: [
+      "Product toasts go through Notify and Feedback toaster, which carry the 2.75s life, click-away and persistent errors. This page documents the primitive underneath.",
       "Confirm a completed action (Draft saved).",
       "Never for validation errors — use FieldError / Alert.",
       "Never for standing page conditions — use Banner.",
@@ -1633,6 +1812,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     whenToUse: [
       "Page-load conditions that remain while true (court holiday, read-only mode).",
       "Prefer Alert for contextual form/page feedback; Toast for auto-dismiss confirmations.",
+      "Never as a success or failure confirmation: use Outcome, Status line or Notify.",
     ],
     tokens: [
       "info-muted",
