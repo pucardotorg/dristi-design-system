@@ -58,7 +58,7 @@ Ask, in order:
    - A dead end or outcome page with nothing else on it: centre it on the page, both ways.
    - A secondary act under an outcome's facts (open a link, download): centred on a phone,
      left-aligned with the facts from tablet up.
-   - The lock line (`note`) follows the text above it: centred on a phone, left from tablet.
+   - The lock line (`IrreversibleNote`) follows the text above it: centred on a phone, left from tablet.
    - Every outcome stage closes on the footer band (`DialogFooter`, `surface-sunken`), buttons
      on it, never loose in the white body. Use `DialogContent pinned` with `DialogBody`, so the
      header and footer stay put and only the middle scrolls.
@@ -76,7 +76,9 @@ Ask, in order:
    and stays flat. A page whose only content is the outcome (account ready) takes
    `scale="hero"`.
 7. **Is it a standing state on a row** (Signed, Overdue, Errored)? Use a `Badge` with
-   `<StatusMark size={14} … />` inside (or a plain badge). `Badge` sets the inset itself.
+   `<StatusMark size={14} still … />` inside (or a plain badge). `Badge` sets the inset
+   itself. A badge already true on load is `still`; drop `still` only on the one badge that
+   just changed in view.
 8. **Did a dialog close back onto a list?** Add `LANDING` to the row it changed, once.
 
 ## 2. Pick the tone, carefully
@@ -151,7 +153,7 @@ yet:
 - the tinted 56px disc header (`size-14 rounded-full bg-success-muted`)
 - the thin success or failure strip on a card
 - solid green slabs, panels and bands (`bg-success p-6`)
-- `Banner`, `Alert` or `SectionNotice` with `variant="success"` or `"destructive"` as a
+- `Banner` or `Alert` with `variant="success"` or `"destructive"` as a
   confirmation
 - `toast.success` / `toast.error` / `toast()` from sonner
 - the receipt's solid 48px disc above an unlabelled amount

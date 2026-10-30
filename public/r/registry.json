@@ -198,6 +198,11 @@
         {
           "path": "src/components/ui/confirm-mark.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
         }
       ]
     },
@@ -297,6 +302,11 @@
         {
           "path": "src/components/ui/feedback-toaster.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
         }
       ]
     },
@@ -407,6 +417,11 @@
         {
           "path": "src/components/ui/notify.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
         }
       ]
     },
@@ -418,6 +433,11 @@
         {
           "path": "src/components/ui/outcome.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
         }
       ]
     },
@@ -594,6 +614,11 @@
         {
           "path": "src/components/ui/status-line.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
         }
       ]
     },
@@ -605,6 +630,11 @@
         {
           "path": "src/components/ui/status-mark.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
         }
       ]
     },

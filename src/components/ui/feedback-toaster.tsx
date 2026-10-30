@@ -6,59 +6,23 @@ import { dismissOnPageClick } from "@/components/ui/notify";
 import { Toaster } from "@/components/ui/sonner";
 
 /**
- * The product's toaster: one placement, one set of fills, mounted once per area.
+ * The toaster `notify` draws into: one placement and one set of fills, mounted once per
+ * product area instead of the `Toaster` primitive (which stays upgradeable).
  *
- * ## Why this file exists
+ * - **Placement:** bottom centre of the viewport, 56px up (sonner's default bottom-right
+ *   corner sits under a dock or taskbar); 64px on a phone, clear of the browser bar.
+ * - **Width:** 380px, enough for a full-sentence title on two lines at most.
+ * - **Click-away:** any press on the page outside the toasts dismisses every toast except
+ *   errors (lead designer, 2026-10-29). Presses on the toasts themselves are left alone.
+ * - **Elevation:** the overlay shadow, not sonner's own.
  *
- * `sonner.tsx` stays the upgradeable registry primitive. The feedback system's own
- * decisions (placement, fills, the 2.75s life, click-away) are composed on here, and a
- * product mounts this once per area instead of the primitive. Toasts are raised through
- * `notify`, never `toast` directly.
+ * `notify` cards draw their own surface, rail and mark. The variables below only matter
+ * for a direct `toast.success` / `toast.error` call, which the system retires: each status
+ * sits on its `-muted` fill with the ink already paired to it, edged with its step-7 ramp
+ * colour so the toast reads as an object rather than a 1.1:1 tint.
  *
- * ## Placement (owner, 2026-09-16)
- *
- * Bottom centre, 56px up, and centred on the *page column* rather than the window.
- *
- * Sonner's default is 24px into the bottom-*right* corner, which is where a macOS dock, a
- * Windows taskbar and any floating window sit — the toast was landing underneath the
- * furniture, at the furthest point on a wide screen from wherever the eye just was. 40px
- * cleared a standard taskbar and still read low, so it stands at 56.
- *
- * Centring is the part sonner cannot do: its bottom-centre is the viewport's centre, and
- * the viewport starts up to 16rem left of where the work does, so under a wide rail the
- * toast leaned. The horizontal shift is one rule in `globals.css` reading
- * `--chrome-page-inset` off the column this is mounted in — which is why this component
- * belongs inside the shell rather than beside it. On a phone the rail is off-canvas and
- * the window is the page, so neither the shift nor the raise applies; `mobileOffset`
- * keeps the safe area clear instead.
- *
- * ## Fills and edges (owner, 2026-09-16, revised 2026-09-17)
- *
- * The primitive sets `--success-border` to the *same* token as `--success-bg`, so a
- * success or error toast had no edge at all and the neutral one was white on white, held
- * up by nothing but a shadow. That is the real defect, and the edge is what makes the
- * toast an object: a step-3 tint on white is a 1.1:1 surface, which the eye cannot find.
- *
- * The fill was bumped one ramp step first, and that is now reverted. It buys about 0.1 of
- * surface contrast and costs real text contrast — against a step-4 fill the inks fall to
- * 4.24:1 (success), 4.07:1 (error) and 4.37:1 (info), all under the 4.5:1 that this 13px
- * text owes, and the DS's own `check-contrast` would have refused it. So the statuses sit
- * on `--*-muted` with the ink already paired to them, which measures 4.54-4.88:1.
- *
- * The neutral variant sits on `--surface-sunken` rather than `--popover`. On `--popover`
- * it was the page's own white in light mode and its own near-black in dark — a 1.00:1
- * surface both times. It is the variant that carries an acknowledgement, which is what
- * copying an identifier raises, so it is the one most calls land on.
- *
- * **The borders are the one thing still stated as ramp steps here.** The DS names them
- * `--{status}-muted-edge`, but that family arrived after the pin this app builds against,
- * so until `ds:bump` carries it these read `var(--success-7)` and so on. When the pin
- * moves, they become the token name and this file gets shorter.
- *
- * `style` and `toastOptions` are *replacements*, not merges — the primitive spreads
- * `{...props}` after its own, so whatever arrives here wins outright. That is why the
- * whole variable set is restated below rather than only the six values that changed:
- * passing a partial object would drop the rest of the DS's mapping on the floor.
+ * `style` and `toastOptions` replace the primitive's own rather than merge, so the whole
+ * variable set is restated here.
  */
 export function FeedbackToaster() {
   /* Feedback toasts (`notify`) leave as soon as the person presses anywhere on the page

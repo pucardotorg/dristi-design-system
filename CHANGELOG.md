@@ -33,6 +33,19 @@ components use its classes.
 **`sonner` 2.0.7 → 2.0.8.** In 2.0.7, `toast.dismiss` does not remove a custom toast, so a
 repeated error stacked a second card. 2.0.8 (the version Dristi already runs) fixes it.
 
+**Fixed after an independent review (2026-10-30):**
+- `notify.error` waited for any `role="dialog"`, so an open popover or date picker held an
+  error back indefinitely. It now waits only for a modal (dialog, alert dialog, sheet,
+  drawer), and for 30s at most.
+- A fast double repeat of the same error could still stack two cards; a repeat during the
+  120ms gap now replaces the pending one.
+- Badge marks: guidance and previews pass `still`, so a list of badges does not animate on load.
+- Button, Toast, Alert, Banner and ACCESSIBILITY.md text now points at Notify, Outcome and
+  soft destructive instead of contradicting them.
+- Stale docblocks (toaster, status line, outcome), the skill's lock-line name, and the Motion
+  page's durations corrected; every motion class is now listed. Dead `fb-chip` removed.
+- The public registry ships `feedback.css` with each status component.
+
 **Decided on review (owner and lead designer, 2026-10-30):**
 - **Code leads for these components until the team decides on Figma.** Precedence puts the
   Figma master first; these components have no master yet. The ruling is scoped to Status &

@@ -302,7 +302,8 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     ],
     tokens: ["success", "destructive", "warning", "info", "surface-sunken", "input", "destructive-muted", "destructive-ink"],
     usageNotes: [
-      "44px and up plays the full sequence, about 600ms: the disc pops, then the tick draws, the cross springs stroke by stroke, or the ! drops and settles. It waits HERO_START (160ms) and holds until painted, so the motion is not lost while the window settles.",
+      "44px and up plays the full sequence, 620 to 750ms: the disc pops, then the tick draws, the cross springs stroke by stroke, or the ! drops and sways. It waits HERO_START (160ms) and holds until painted, so the motion is not lost while the window settles.",
+      "Every status component needs src/app/feedback.css imported once in the product's global stylesheet; the registry install carries it.",
       "Smaller marks pop in 250ms. A tick draws itself inside the disc (280ms, from 120ms); any other glyph scales in after it.",
       "Success rings once at hero size; warning sways with a soft ring. Never loop: a pulse that never stops reads as still going.",
       "still: no motion and no announcement. Pass it to every mark after the first on a screen, and to anything already true when the screen opens.",
@@ -367,7 +368,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     whenToUse: [
       "StatusLine for a note inside a page or dialog: a result that stays, a load error with Try again, a standing warning. It stays as long as what it says is true; it has no close and no timer.",
       "StatusFieldControl + StatusFieldError + useRefusal when the person's own input was refused. Missing input is never a toast.",
-      "A 14px StatusMark inside a Badge for a standing state on a row (Signed, Overdue). Badge sets the inset itself.",
+      "A 14px StatusMark inside a Badge for a standing state on a row (Signed, Overdue). Badge sets the inset itself. Pass still to every badge already true on load.",
       "LANDING on the row a dialog changed, once, when the dialog closes onto the list.",
     ],
     tokens: ["card", "hairline", "success", "destructive", "warning", "info", "input", "destructive-ink"],
@@ -466,7 +467,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     whenToUse: [
       "Trigger an action (submit, open a dialog, apply a filter) — not for page navigation.",
       "Use exactly one default (teal) button per view to preserve hierarchy.",
-      "Pair destructive-solid with confirmation (Alert Dialog) for irreversible work; keep destructive soft at rest.",
+      "Removals and discards use soft destructive, confirmed in an Alert Dialog with a Confirm mark. Keep destructive-solid out of confirm dialogs.",
     ],
     tokens: [
       "primary",
@@ -586,7 +587,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     whenToUse: [
       "Surface form or page-level messages the user should not miss.",
       "Explain system state without blocking the rest of the UI.",
-      "Use Banner for conditions that load with the page; Toast for auto-dismiss confirmations.",
+      "Use Banner for conditions that load with the page; Notify for quick confirmations; Status line or Outcome for results.",
     ],
     tokens: [
       "card",
@@ -607,7 +608,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     ],
     dontItems: [
       "Stack more than one or two alerts on the same view.",
-      "Use Alert for a transient confirmation — that's Toast.",
+      "Use Alert for a confirmation — that's Notify, Status line or Outcome.",
     ],
     preview: (
       <div className="flex w-full max-w-lg flex-col gap-3">
@@ -1720,7 +1721,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     importPath: "@/components/ui/sonner",
     whenToUse: [
       "Product toasts go through Notify and Feedback toaster, which carry the 2.75s life, click-away and persistent errors. This page documents the primitive underneath.",
-      "Confirm a completed action (Draft saved).",
+      "Product code never calls toast() directly: Notify raises every toast (a draft saved is notify.neutral).",
       "Never for validation errors — use FieldError / Alert.",
       "Never for standing page conditions — use Banner.",
       "Never for messages that require a decision — use Alert Dialog.",
@@ -1734,7 +1735,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     ],
     usageNotes: [
       "Variants: success, info, warning, error, loading — all use opaque muted token CSS variables on Toaster, never alpha.",
-      "Mount <Toaster /> once near the app root; call toast.success() / toast.error() / etc. from anywhere.",
+      "Products mount Feedback toaster, not this primitive, and raise toasts through Notify.",
     ],
     doItems: [
       "Use a toast to confirm an action the user just took (Draft saved, Link copied).",
@@ -1811,7 +1812,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     importPath: "@/components/ui/banner",
     whenToUse: [
       "Page-load conditions that remain while true (court holiday, read-only mode).",
-      "Prefer Alert for contextual form/page feedback; Toast for auto-dismiss confirmations.",
+      "Prefer Alert for contextual form/page feedback; Notify for quick confirmations.",
       "Never as a success or failure confirmation: use Outcome, Status line or Notify.",
     ],
     tokens: [
@@ -1832,7 +1833,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "Keep to one banner per page — stacking several dilutes all of them.",
     ],
     dontItems: [
-      "Use Banner for a one-time confirmation — that's Toast.",
+      "Use Banner for a one-time confirmation — that's Notify.",
       "Put more than one action in the action slot.",
     ],
     preview: (

@@ -110,7 +110,7 @@ Even on the shortest product checklists, these never drop:
 | Labeled fields | `Field` + `FieldLabel` + `Input` / `Textarea` — `FieldError` binds via `aria-describedby` automatically |
 | Session expiry warning | `SessionTimeout` |
 | Standing page notice | `Banner` (not Toast) |
-| Transient confirmation | Toast / Sonner (not for errors that require action) |
+| Transient confirmation | `notify` + `FeedbackToaster` (errors stay until closed; inside a dialog use `StatusLine`) |
 | Modal focus trap | `Dialog` / `AlertDialog` / `Sheet` |
 | Status without colour-alone | `Badge` + text, or icon + label |
 | 40px touch primary action | `Button` default (`h-10`) or larger |

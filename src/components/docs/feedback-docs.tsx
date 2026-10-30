@@ -385,15 +385,15 @@ export const statusLineVariants = [
           <Replay>
             <div className="flex flex-wrap items-center gap-3">
               <Badge variant="success">
-                <StatusMark size={14} />
+                <StatusMark size={14} still />
                 Signed
               </Badge>
               <Badge variant="destructive">
-                <StatusMark size={14} tone="error" />
+                <StatusMark size={14} tone="error" still />
                 Overdue
               </Badge>
               <Badge variant="warning">
-                <StatusMark size={14} tone="warning" />
+                <StatusMark size={14} tone="warning" still />
                 Due today
               </Badge>
             </div>

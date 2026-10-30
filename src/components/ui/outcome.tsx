@@ -42,7 +42,7 @@ const BAND: Record<HeaderTone, string> = {
 const SURFACE = {
   popover: "var(--popover)",
   card: "var(--card)",
-  /* StagedOverlay's stage: muted in light, the page colour in dark (feedback.css). */
+  /* A staged overlay's tinted stage: muted in light, the page colour in dark (feedback.css). */
   canvas: "var(--fb-canvas)",
 } as const;
 
@@ -52,8 +52,10 @@ const SURFACE = {
  *   whose header is replaced by the outcome.
  * - `"alert-dialog"`: the same, inside an `AlertDialog` (a confirm that turns into its
  *   result). Its title primitive is scoped, so the plain one would throw there.
- * - `"plain"` (default): a heading and a paragraph. Use it inside `StagedOverlay`, which
- *   already renders the dialog's title, and anywhere outside a dialog.
+ * - `"plain"` (default): a heading and a paragraph, for anywhere outside a dialog.
+ *
+ * In a staged overlay (a dialog that walks through steps), the settled stage drops its own
+ * header and renders this with `"dialog"`: the title always sits under the mark.
  */
 type TitleSource = "dialog" | "alert-dialog" | "plain";
 
@@ -74,8 +76,8 @@ export function OutcomeHeader({
   tone?: HeaderTone;
   /** Neutral only: the act's own icon. */
   icon?: React.ComponentProps<typeof StatusMark>["icon"];
-  /** Omit when the dialog's own header already says the outcome (StagedOverlay keeps its
-      header on every stage, owner 2026-09): the band then carries the mark and the line. */
+  /** Omit only when something above already says the outcome; the band then carries the
+      mark and the line. Prefer a title: it always sits under the mark. */
   title?: React.ReactNode;
   body?: React.ReactNode;
   /** Dialogs narrower than about 480px, and phone sheets. */

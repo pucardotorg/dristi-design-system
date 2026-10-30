@@ -14,12 +14,13 @@ import { StatusMark, type MarkTone } from "@/components/ui/status-mark";
  * - `StatusLine`: one shape for every inline note (success, error, warning, info,
  *   neutral). A white line with a straight rail in its tone, flush left and clipped by the
  *   corner radius, never bending with it. It replaces the success and failure uses of
- *   `Banner`, `Alert` and `SectionNotice`.
+ *   `Banner` and `Alert`.
  * - `StatusField*`: the field error. The field's red ring grows in, the line opens its own
  *   room, and the cross and the words drop in together from under the field. A repeat press
  *   shakes the field once and plays the line again (`useRefusal`).
- * - `StatusBadge*`: a mark inside a pill, concentric with the pill's rounded end.
- * - `landingClass`: the row a dialog acted on glows once when the dialog closes onto it.
+ * - `LANDING`: the row a dialog acted on glows once when the dialog closes onto it.
+ *
+ * A mark inside a `Badge` needs nothing from here: `Badge` sets its inset itself.
  */
 
 const RAIL: Record<MarkTone, string> = {
