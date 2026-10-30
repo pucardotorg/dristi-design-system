@@ -26,6 +26,7 @@ product's per-screen patches can go on upgrade.
 - **Menubar:** hairline edge, triggers concentric with the bar.
 - **Card:** on `raised`, the footer drops its fill and keeps the hairline divider; a muted
   band merged with the tinted page.
+- **Card footer buttons sit on the right** (owner, 2026-10-30), with an 8px gap.
 - **Alert Dialog page:** the preview is the real pattern: Confirm mark, the act named on
   the button, soft destructive.
 
