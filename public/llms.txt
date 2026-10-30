@@ -15,12 +15,12 @@ Repository authority: AGENTS.md (then code). Design contract: Abhiram's live Fig
 
 1. Never hardcode colour, spacing, or radius — use token utilities (`bg-primary`, `rounded-lg`, `gap-4`).
 2. Install shadcn components with the CLI; do not hand-write primitives.
-3. Reuse before creating — 67 components already live under `src/components/ui/`.
+3. Reuse before creating — check `src/components/ui/` first.
 4. Every colour token exists in both `:root` and `.dark`.
 5. No raw grey ladder (`text-neutral-11`) — use semantic tokens (`text-muted-foreground`).
 6. Status has exactly three treatments: solid, muted, ink — never alpha fakes.
 7. Accessibility floor: WCAG 2.1 AA + WAI-ARIA 1.2. Touch targets ≥ 40×40px. Form errors must bind via `aria-describedby` (use `Field` + `FieldError`).
-8. Interaction states: hover = `accent`, pressed/selected = `accent-strong`, recessed wells = `track`. Never use `muted` as a hover fill.
+8. Interaction states: hover = `accent`, pressed/selected = `accent-strong`, recessed wells = `surface-sunken` (`track` is for tiny marks only: progress, slider, skeleton). Never use `muted` as a hover fill.
 
 ## Install a component
 
@@ -48,7 +48,7 @@ npx shadcn@latest add <slug>
 
 ## Optional
 
-- [AGENTS.md](https://github.com/): full agent contract and token inventory
-- [ACCESSIBILITY.md](https://github.com/): WCAG checklist
-- [RESPONSIVE.md](https://github.com/): product layout rules
-- [CHANGELOG.md](https://github.com/): Figma reconciliation history
+- [AGENTS.md](https://github.com/pucardotorg/dristi-design-system/blob/main/AGENTS.md): full agent contract and token inventory
+- [ACCESSIBILITY.md](https://github.com/pucardotorg/dristi-design-system/blob/main/ACCESSIBILITY.md): WCAG checklist
+- [RESPONSIVE.md](https://github.com/pucardotorg/dristi-design-system/blob/main/RESPONSIVE.md): product layout rules
+- [CHANGELOG.md](https://github.com/pucardotorg/dristi-design-system/blob/main/CHANGELOG.md): Figma reconciliation history

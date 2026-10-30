@@ -36,6 +36,7 @@ export default function LawsPage() {
             "bg-success-muted, bg-warning-muted, bg-info-muted, bg-brand-muted",
           ]}
           dont={[
+            // ds-tokens-ignore — anti-example in docs prose
             "bg-destructive/10, bg-success/5, bg-primary/10 for fills",
             "Inventing translucent status washes per screen",
           ]}
@@ -78,6 +79,7 @@ export default function LawsPage() {
             "rounded-lg on controls; rounded-xl on containers",
           ]}
           dont={[
+            // ds-tokens-ignore — anti-example in docs prose
             "Arbitrary heights like h-[42px]",
             "radius-md as the default control corner",
           ]}
@@ -94,6 +96,7 @@ export default function LawsPage() {
             "p-2 / p-2.5 inside controls when the chrome needs it",
           ]}
           dont={[
+            // ds-tokens-ignore — anti-example in docs prose
             "Off-ladder padding or gap: p-5, p-7, gap-5, gap-10",
             // ds-tokens-ignore — anti-example in docs prose
             "Arbitrary lengths: p-[13px], gap-[18px]",
@@ -102,13 +105,13 @@ export default function LawsPage() {
       </DocsSection>
 
       <DocsSection
-        title="Prefilled is amber fill only"
-        description="Machine-read values use bg-prefilled. The border stays input — never signal prefilled with border color alone."
+        title="Prefilled is amber fill with a dashed edge"
+        description="Machine-read values use bg-prefilled with a dashed warning-ink border and a hidden “machine filled, not yet verified” label, so prefilled never relies on colour alone. Input and Textarea do this with the prefilled prop."
       >
         <DoDont
-          do={['<Input prefilled />', "Keep border-input"]}
+          do={['<Input prefilled /> or <Textarea prefilled />', "Let the prop set the fill, the dashed edge and the label"]}
           dont={[
-            "Amber borders for prefilled",
+            "Hand-built amber fills or borders for prefilled",
             "Using warning as a stand-in for prefilled",
           ]}
         />

@@ -53,7 +53,7 @@ color/spacing tokens per breakpoint.
    `overflow-x-auto` (or a ScrollArea). Never let a Table blow out the page.
 6. **Choose the right overlay for the viewport.**
    - **Dialog / Alert Dialog** — focused tasks; already fluid (`max-w-[calc(100%-2rem)]`,
-     `sm:max-w-sm`, stacked footers on small screens).
+     `sm:max-w-90`, stacked footers on small screens).
    - **Sheet** — side panels / filters; width is constrained on larger screens
      (`sm:max-w-sm`).
    - **Drawer** — prefer for mobile-first bottom sheets and short flows on small viewports.

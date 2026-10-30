@@ -43,8 +43,9 @@ npm run build          # production build; catches type and prerender errors
 npm run sync:tokens    # regenerate the token inventory below from globals.css
 ```
 
-`npm run lint` also runs `check:tokens` (rules 1, 4 and 5 — including named palette colours
-and raw-unit arbitrary spacing/radius), `check:contrast` (rule 9, plus rule 1 applied to
+`npm run lint` also runs `check:tokens` (rules 1, 4, 5 and 7a, plus translucent status fills
+from rule 6 and raw-pixel heights — including named palette colours and raw-unit arbitrary
+spacing/radius), `check:contrast` (rule 9, plus rule 1 applied to
 `globals.css` itself) and `check:ds` (every component reachable from the docs and backed by
 a real file). GitHub Actions runs the same gate on every pull request. Run it before claiming
 any work is finished.
@@ -84,8 +85,8 @@ nothing about whether a hover is perceptible or a component matches its master.
 **2. Never hand-write a shadcn component.** Install it for real so it stays upstream-correct
 and upgradeable: `npx shadcn@latest add <component>`.
 
-**3. Reuse before creating.** Check `src/components/ui/` first — there are 67 components
-already installed. Compose them before adding a primitive.
+**3. Reuse before creating.** Check `src/components/ui/` first and compose what is already
+installed before adding a primitive.
 
 **4. Every color works in both modes.** Add the token to `:root` *and* `.dark` in
 `globals.css`. A token defined in only one mode fails `npm run lint`.
@@ -131,8 +132,8 @@ separate knob (`--radius: 0.625rem` → controls `rounded-lg`, containers
 (floor: WCAG 2.1 AA + WAI-ARIA 1.2). The docs site itself need not be responsive; the
 components must be.
 
-**9. Every colour pair is measured, never asserted.** `check:contrast` computes 54 pairs in
-both modes — text at 4.5:1, chart series and field borders at 3:1. Adding a token that
+**9. Every colour pair is measured, never asserted.** `check:contrast` measures every
+listed pair in both modes — text at 4.5:1, chart series and field borders at 3:1. Adding a token that
 carries text or meaning means adding its pair to `scripts/check-contrast.mjs`.
 
 Structural neutrals are deliberately *not* held to 3:1. Radix builds ramp steps 2–8 below

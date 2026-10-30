@@ -73,6 +73,7 @@ export default function SpacingPage() {
         the source of truth stays Tailwind. Arbitrary values like{" "}
         {/* ds-tokens-ignore — anti-example in docs prose */}
         <code>gap-[13px]</code> and off-ladder steps like{" "}
+        {/* ds-tokens-ignore — anti-example in docs prose */}
         <code>p-5</code> / <code>p-7</code> / <code>gap-10</code> are banned.
       </Callout>
 
@@ -203,6 +204,7 @@ export default function SpacingPage() {
             "Default Card padding p-6; related stacks gap-4; section breaks gap-8+",
           ]}
           dont={[
+            // ds-tokens-ignore — anti-example in docs prose
             "Off-ladder steps: p-5, p-7, gap-5, gap-10, mb-10…",
             // ds-tokens-ignore — anti-example in docs prose
             "Arbitrary lengths: p-[13px], gap-[18px]",

@@ -2,6 +2,27 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 — Agent guidance: wrong facts fixed, three rules enforced
+
+From an audit of what agents read on every build, each mismatch checked against the design
+system's code and the product app's `main`.
+
+**Eight facts corrected:** the component count (AGENTS, llms.txt) and contrast-pair count
+(AGENTS) are no longer stated as numbers that drift; the Laws page now describes prefilled
+as it ships (amber fill, dashed `warning-ink` edge, hidden label); RESPONSIVE gives Dialog's
+real `sm:max-w-90`; llms.txt sends wells to `surface-sunken`, not `track`, and links to the
+real files; README lists the Motion and Status foundations and says which checks lint runs.
+
+**Three prose rules are now checks** in `check:tokens`: spacing off the ladder (rule 7a),
+a translucent status fill such as `bg-destructive/10` (rule 6; focus rings on invalid
+controls stay translucent on purpose), and a raw-pixel height such as `h-[42px]`. Spacing
+that predates the check (upstream primitives left as installed, and docs chrome) is listed
+in `SPACING_BACKLOG`; new code cannot add to it.
+
+**Not changed, open for decision:** whether `Card` lifts with `shadow-raised` (the Aug 25
+ruling says panels do; in the product 11 of 102 cards and 35 hand-built panels do), and
+whether side `Sheet`s go full width on phones (the product's advocate side already does).
+
 ## 2026-10-30 — Status & feedback: one mark, three weights
 
 Success, failure and warning were expressed 71 ways across Dristi, in 11 patterns, with
