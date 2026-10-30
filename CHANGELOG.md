@@ -2,6 +2,28 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 · Side panel: room for the case peek's header, focus stays put
+
+The product's case peek could not move onto `SidePanel` without a visible change. Four
+additions close the gap (owner, Oct 30):
+
+- **`drawerWhen`**: the media query where the panel rises as a bottom drawer. Defaults to
+  below `sm`, as before. The case peek passes its card-list query (below 768, or a touch
+  screen held upright), so an iPad in portrait gets the drawer (owner, Sept 21). Give
+  `SidePanelRegion` `open={false}` there, so nothing steps aside behind a drawer.
+- **`subtitle`**: lines under the title, in the title's column beside the close button
+  (case numbers, court).
+- **`header`**: pinned under the title row; only the body below scrolls. It runs edge to
+  edge, so a tab row draws its own divider across the panel; `SIDE_PANEL_INSET` keeps its
+  content in line with the title. Line tabs still draw no divider of their own: dividers
+  stay per screen.
+- **Focus stays on the opener when the panel opens** (desktop). The list stays usable and
+  the next row is one keypress away. On close, focus goes back to the opener only if it
+  was inside the panel. Was: focus moved into the panel on open.
+- **Fix:** the phone drawer returns focus to the opener on close. It has no
+  `DrawerTrigger`, so focus used to drop to the page. Focus moves into the drawer on open.
+- `id` passes through, for `aria-controls` on the controls that open the panel.
+
 ## 2026-10-30 — Toggle edge matches the outline Button
 
 `Toggle` `default` and `outline` drew their edge in `border`, a step lighter than the
