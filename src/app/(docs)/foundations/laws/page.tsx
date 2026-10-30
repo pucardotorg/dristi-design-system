@@ -23,7 +23,10 @@ export default function LawsPage() {
         <Link href="/principles" className="underline underline-offset-3">
           Principles
         </Link>
-        .
+        . <code>npm run lint</code> catches alpha status fills, off-ladder
+        spacing and raw-pixel heights. Sentence case, one teal action per view,
+        control heights on the ladder, prefilled and grouped panels are yours
+        to get right: nothing checks them.
       </Callout>
 
       <DocsSection
@@ -36,6 +39,7 @@ export default function LawsPage() {
             "bg-success-muted, bg-warning-muted, bg-info-muted, bg-brand-muted",
           ]}
           dont={[
+            // ds-tokens-ignore — anti-example in docs prose
             "bg-destructive/10, bg-success/5, bg-primary/10 for fills",
             "Inventing translucent status washes per screen",
           ]}
@@ -78,6 +82,7 @@ export default function LawsPage() {
             "rounded-lg on controls; rounded-xl on containers",
           ]}
           dont={[
+            // ds-tokens-ignore — anti-example in docs prose
             "Arbitrary heights like h-[42px]",
             "radius-md as the default control corner",
           ]}
@@ -94,6 +99,7 @@ export default function LawsPage() {
             "p-2 / p-2.5 inside controls when the chrome needs it",
           ]}
           dont={[
+            // ds-tokens-ignore — anti-example in docs prose
             "Off-ladder padding or gap: p-5, p-7, gap-5, gap-10",
             // ds-tokens-ignore — anti-example in docs prose
             "Arbitrary lengths: p-[13px], gap-[18px]",
@@ -102,13 +108,13 @@ export default function LawsPage() {
       </DocsSection>
 
       <DocsSection
-        title="Prefilled is amber fill only"
-        description="Machine-read values use bg-prefilled. The border stays input — never signal prefilled with border color alone."
+        title="Prefilled is amber fill with a dashed edge"
+        description="Machine-read values use bg-prefilled with a dashed warning-ink border and a hidden “machine filled, not yet verified” label, so prefilled never relies on colour alone. Input and Textarea do this with the prefilled prop."
       >
         <DoDont
-          do={['<Input prefilled />', "Keep border-input"]}
+          do={['<Input prefilled /> or <Textarea prefilled />', "Let the prop set the fill, the dashed edge and the label"]}
           dont={[
-            "Amber borders for prefilled",
+            "Hand-built amber fills or borders for prefilled",
             "Using warning as a stand-in for prefilled",
           ]}
         />
@@ -116,17 +122,19 @@ export default function LawsPage() {
 
       <DocsSection
         title="Grouped content gets a border"
-        description="Self-contained panels need a visible edge. The page is white and card shares that white on purpose — a panel reads by its hairline edge and raised shadow, not by a fill difference. Dark is flat the same way (card = page). Keep the Card edge. bg-muted / surface-raised sit on neutral-2 — not a panel edge alone. Nested soft fill inside a card: surface-sunken, with a hairline when the well holds interactive content. Muted alone without an edge is still a defect."
+        description="Self-contained panels need a visible edge, and the background decides which. On white, Card variant outline: a defined border. On a warm or tinted surface (the muted page, a dialog stage, a well), Card variant raised: a hairline edge and a faint raised shadow. Media frames stay outline anywhere. Dark is flat the same way (card = page); the edge still defines the panel. bg-muted / surface-raised sit on neutral-2 — not a panel edge alone. Nested soft fill inside a card: surface-sunken, with a hairline when the well holds interactive content. Muted alone without an edge is still a defect."
       >
         <DoDont
           do={[
             "Card for FAQ blocks, form sections, and sidebar widgets",
+            "variant=\"raised\" on the warm page or in a dialog stage; the default outline on white",
             "Description list inside Card for a single record's key-value fields",
             "surface-sunken for nested media wells inside a Card (video placeholder, document preview)",
             "surface-sunken + a hairline for control-sized wells — the tabs list, a segmented control",
           ]}
           dont={[
             "rounded-xl bg-muted as a stand-in for Card — no edge, wrong role",
+            "A raised card on white, or a raised video or image frame",
             "Hand-rolled dl grids when Description list exists",
             "surface-raised or muted fill expecting it to read as a container without border",
             "Reach for bg-track on a control-sized well — track is for tiny countable marks only",

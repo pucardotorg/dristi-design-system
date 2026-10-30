@@ -43,8 +43,9 @@ npm run build          # production build; catches type and prerender errors
 npm run sync:tokens    # regenerate the token inventory below from globals.css
 ```
 
-`npm run lint` also runs `check:tokens` (rules 1, 4 and 5 — including named palette colours
-and raw-unit arbitrary spacing/radius), `check:contrast` (rule 9, plus rule 1 applied to
+`npm run lint` also runs `check:tokens` (rules 1, 4, 5 and 7a, plus translucent status fills
+from rule 6 and raw-pixel heights — including named palette colours and raw-unit arbitrary
+spacing/radius), `check:contrast` (rule 9, plus rule 1 applied to
 `globals.css` itself) and `check:ds` (every component reachable from the docs and backed by
 a real file). GitHub Actions runs the same gate on every pull request. Run it before claiming
 any work is finished.
@@ -84,8 +85,8 @@ nothing about whether a hover is perceptible or a component matches its master.
 **2. Never hand-write a shadcn component.** Install it for real so it stays upstream-correct
 and upgradeable: `npx shadcn@latest add <component>`.
 
-**3. Reuse before creating.** Check `src/components/ui/` first — there are 67 components
-already installed. Compose them before adding a primitive.
+**3. Reuse before creating.** Check `src/components/ui/` first and compose what is already
+installed before adding a primitive.
 
 **4. Every color works in both modes.** Add the token to `:root` *and* `.dark` in
 `globals.css`. A token defined in only one mode fails `npm run lint`.
@@ -131,8 +132,8 @@ separate knob (`--radius: 0.625rem` → controls `rounded-lg`, containers
 (floor: WCAG 2.1 AA + WAI-ARIA 1.2). The docs site itself need not be responsive; the
 components must be.
 
-**9. Every colour pair is measured, never asserted.** `check:contrast` computes 54 pairs in
-both modes — text at 4.5:1, chart series and field borders at 3:1. Adding a token that
+**9. Every colour pair is measured, never asserted.** `check:contrast` measures every
+listed pair in both modes — text at 4.5:1, chart series and field borders at 3:1. Adding a token that
 carries text or meaning means adding its pair to `scripts/check-contrast.mjs`.
 
 Structural neutrals are deliberately *not* held to 3:1. Radix builds ramp steps 2–8 below
@@ -146,14 +147,13 @@ surface and never an interaction state. Reaching one step lighter than the named
 how the entire system ended up with invisible hovers.
 
 **Grouped content:** when a panel must read as its own unit (FAQ, form section, case
-facts), compose `Card`. The page is white and `card` shares that white on purpose:
-a panel reads by its hairline edge and raised shadow, not by a fill difference —
-separation is a whisper stroke, never a block of colour (owner ruling 2026-08-25).
-Dark stays flat (`card` = `background` = neutral-1); the border still defines the
-panel there. `muted` / `surface-raised` sit on neutral-2 — do not use them alone as
-a panel without an edge. Nested wells inside a card use `surface-sunken`, with a
-hairline when the well holds interactive content. Never an unbordered muted box.
-Key-value rows use `DescriptionList` inside `Card`. Form chrome uses `bg-card`.
+facts), compose `Card`. **The background decides its look** (owner ruling 2026-10-30, which
+narrows 2026-08-25): on white, `variant="outline"` (the default, a defined `border`); on a
+warm or tinted surface (the `muted` page, a dialog stage, a well), `variant="raised"` (a
+`hairline` edge and `shadow-raised`). Media frames stay outline anywhere. Dark stays flat
+(`card` = `background` = neutral-1); the edge still defines the panel. Nested wells inside
+a card use `surface-sunken`, with a hairline when the well holds interactive content.
+Never an unbordered muted box. Key-value rows use `DescriptionList` inside `Card`. Form chrome uses `bg-card`.
 
 **11. Outcomes use the status components, never a hand-built state.** Success, failure,
 partial results, notices, confirms before risky acts and dead ends compose `status-mark`,
@@ -162,6 +162,14 @@ strip, a solid slab, or use `Banner`, `Alert` or `toast()` as a confirmation. Mo
 budgeted by size, one animated mark per screen, shake only for refused input; error
 toasts stay until closed. Full rules: `/foundations/status` and `/foundations/motion`;
 the decision tree for agents is `.agents/skills/feedback-states/SKILL.md`.
+
+**12. Panels: say it, pick it.** A modal task that dims the page (filters, a form, mobile
+navigation) is `Sheet`. Looking at one record while the page stays usable (a peek) is
+`SidePanel` inside `SidePanelRegion`, and the designer's words pick `push`: "push the
+content" → `push="content"`; "the panel goes over the content" → `push="none"`; "push the
+header, the panel goes over the table" → `push="marked"` with `SIDE_PANEL_PUSH` on what
+moves. Unsaid: push the content when a row's control sits on the right; keep a wide table
+still (`marked`) when its trigger is on the left.
 
 To document a rule violation deliberately — an anti-example in the docs, say — put
 `ds-tokens-ignore` in a comment on that line or the one above it.

@@ -24,7 +24,7 @@ The goal is consistency at speed. When the brand, density, and interaction patte
 
 | Area | Purpose |
 | --- | --- |
-| **Foundations** | Color, typography, radius, spacing, elevation, icons, accessibility, laws |
+| **Foundations** | Color, typography, spacing, radius, elevation, motion, status & feedback, icons, accessibility, laws |
 | **Components** | Documented UI primitives with previews, usage notes, and token coupling |
 | **Principles** | Non-negotiable rules that keep the system coherent as it grows |
 | **Getting started** | How to run the docs and how to consume the system in product work |
@@ -66,7 +66,7 @@ correct if it meets them.
 | [`AGENTS.md`](./AGENTS.md) | Token rules, the Laws, and how to add or change a component |
 | [`CHANGELOG.md`](./CHANGELOG.md) | Reconciliation history against the Figma contract |
 
-Both standards are also documented on the site, at `/foundations/accessibility` and
+Accessibility and the Laws are also on the docs site, at `/foundations/accessibility` and
 `/foundations/laws`.
 
 ---
@@ -118,8 +118,9 @@ npm run sync:tokens  # regenerate the token inventory in AGENTS.md from globals.
 ```
 
 `npm run lint` is the gate. Beyond eslint it fails on a hardcoded color, a token missing
-from either theme, a component that is undocumented or unreachable from the docs nav, and a
-stale token inventory.
+from either theme, spacing off the ladder, a translucent status fill, a raw-pixel height, a
+new component that is undocumented or unreachable from the docs nav (ten older gaps are
+listed as exempt in `scripts/check-ds.mjs`), and a stale token inventory.
 
 ---
 

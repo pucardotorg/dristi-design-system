@@ -7,6 +7,7 @@ import {
   InfoIcon,
   SearchIcon,
   MoreHorizontalIcon,
+  Trash2Icon,
 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
@@ -17,6 +18,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ConfirmMark, IrreversibleNote } from "@/components/ui/confirm-mark";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -54,6 +56,7 @@ import {
   statusLineVariants,
   statusMarkPreview,
 } from "@/components/docs/feedback-docs";
+import { SidePanelDemo } from "@/components/docs/side-panel-docs";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Banner } from "@/components/ui/banner";
@@ -289,6 +292,33 @@ function SessionTimeoutDemo() {
 }
 
 export const componentRegistry: Record<string, ComponentDoc> = {
+  "side-panel": {
+    slug: "side-panel",
+    title: "Side panel",
+    description:
+      "A docked panel beside the page for looking at one record without leaving the list. Not modal: no scrim, the page stays usable, and from sm up the page makes room for it.",
+    importPath: "@/components/ui/side-panel",
+    whenToUse: [
+      "Peeking at one row of a list while keeping the list in view (the product's case peek).",
+      "Use Sheet instead for a task that needs the person's full attention (filters, a form, mobile navigation): Sheet is modal, floats over the page and dims it.",
+    ],
+    tokens: ["popover", "hairline", "shadow-modal"],
+    usageNotes: [
+      "Content steps aside only as far as the panel covers it, leaving a 2rem gap; content that already ends clear of the panel does not move. On a list that runs to the window's edge that is the full panel width.",
+      "Wrap the page in SidePanelRegion open={…} push=…. The push value is the designer's words: \"push the content\" → push=\"content\" (everything steps aside); \"the panel goes over the content\" → push=\"none\" (nothing moves); \"push the header, the panel goes over the table\" → push=\"marked\" with SIDE_PANEL_PUSH on the parts that move.",
+      "When nothing was said: push the content if any row's control sits on the right (the panel would cover it, as in Raise application); keep a wide table still with push=\"marked\" if its trigger is on the left (re-flowing it every frame was choppy: Cases, owner Sept 11).",
+      "Slides in from the right over 300ms with no fade and plays the same motion out before unmounting, so nothing snaps back. Reduced motion shows it in place.",
+      "27rem wide from sm; full width below. On a phone it becomes a bottom drawer.",
+      "Escape closes it, focus moves into the panel on open and back to the opener on close. It has no focus trap: the page behind stays usable by design.",
+    ],
+    doItems: ["Open it from a row's own control, and let the panel replace its content when another row is peeked."],
+    dontItems: [
+      "Use it for something the person must finish before carrying on. That is Sheet or Dialog.",
+      "Leave a row's own control under the panel: if it sits on the right, push the list.",
+    ],
+    preview: <SidePanelDemo />,
+  },
+
   "status-mark": {
     slug: "status-mark",
     title: "Status mark",
@@ -847,7 +877,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "table",
     title: "Table",
     description:
-      "Structured display for comparing the same fields across many records. Header uses muted surface; hover uses accent and selected uses accent-strong.",
+      "Structured display for comparing the same fields across many records. Hairline rows, a warm header strip with rounded ends, and a rounded warm-well hover; selected uses accent-strong. Promoted from the product's table treatment.",
     importPath: "@/components/ui/table",
     whenToUse: [
       "Rows of structured records that share the same columns — cases, invoices, filings.",
@@ -866,7 +896,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     ],
     dontItems: ["Encode meaning in row background color beyond the built-in hover/selected states."],
     preview: (
-      <div className="w-full overflow-hidden rounded-lg border border-border">
+      <div className="w-full overflow-hidden rounded-xl border border-hairline bg-card p-4">
         <Table>
           <TableHeader>
             <TableRow>
@@ -940,42 +970,56 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "card",
     title: "Card",
     description:
-      "Grouped content surface with a defined border and edge. Reach for it when the group is a distinct, self-contained unit — not as a default page wrapper.",
+      "Grouped content surface in two looks, picked by the background behind it: outline on white, raised on a warm or tinted surface. Reach for it when the group is a distinct, self-contained unit, not as a default page wrapper.",
     importPath: "@/components/ui/card",
     whenToUse: [
       "A settings panel, form section, or selectable unit that should read as its own bounded piece of the page.",
+      "variant=\"outline\" (default) on a white background: the defined border is the edge.",
+      "variant=\"raised\" on a warm or tinted surface (the muted page, a dialog stage, a well): a soft hairline edge and a faint shadow lift it off the tint.",
+      "Media frames (a video, an image) stay outline on any background: a shadow makes a frame read as a floating card.",
       "Avoid decorative cards that only wrap static copy with no interactive or grouped purpose — that's just a paragraph with an unnecessary border.",
     ],
-    tokens: ["card", "card-foreground", "muted-foreground", "border", "muted", "accent"],
+    tokens: ["card", "card-foreground", "muted-foreground", "border", "hairline", "shadow-raised", "accent"],
     usageNotes: [
+      "The background decides (owner, 2026-10-30). Measured across the product: cards on the warm page and in dialogs lift; cards on white pages and in white side panels stay outlined.",
       "size: default (24px internal spacing) | sm (16px) — sm also shrinks CardTitle to text-sm.",
-      "Card fill is neutral-1; the page is surface-sunken — default Cards read by fill. Keep the border; don't add shadow-raised unless a pattern explicitly calls for lift. (Diverges from flat Rajini Card master — see CHANGELOG 2026-08-11.)",
       "Hover uses accent (same token as TableRow / Item) so selectable cards wash in light and dark. CardFooter follows via group-hover.",
       "CardHeader / CardContent / CardFooter compose in that order; CardFooter's bottom padding collapses automatically so it doesn't double up with the card's own padding.",
-      "For nested soft fill inside a card, use surface-sunken or Card + bg-muted. Never unbordered muted as a Card stand-in.",
+      "For nested soft fill inside a card, use surface-sunken. Never unbordered muted as a Card stand-in.",
     ],
     doItems: [
+      "Pick the variant from the background, not from taste: raised on tint, outline on white.",
       "Use size=\"sm\" for compact, densely packed cards (a sidebar widget) rather than overriding padding by hand.",
-      "Leave Card on default bg-card — it shares the page white on purpose; the hairline edge and raised shadow are what say \"panel\".",
       "For a selectable / linked card, rely on the built-in hover:bg-accent — don't invent a second wash.",
     ],
     dontItems: [
+      "Hand-build the lift with border-hairline shadow-raised; use variant=\"raised\".",
+      "Lift a card on white, or a video or image frame anywhere.",
       "Nest a Card inside another Card — that's the box-in-box pattern the system's flat surfaces are designed to avoid.",
-      "Use bg-muted or bg-surface-raised alone when the group needs a visible edge — Card's border is required.",
     ],
     preview: (
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle>Workspace</CardTitle>
-          <CardDescription>Invite teammates and manage access.</CardDescription>
-        </CardHeader>
-        <CardContent className="text-sm text-muted-foreground">
-          12 members · 3 pending invites
-        </CardContent>
-        <CardFooter>
-          <Button size="sm">Manage</Button>
-        </CardFooter>
-      </Card>
+      <div className="grid w-full gap-4 md:grid-cols-2">
+        {([
+          ["On white · outline", "bg-background", "outline"],
+          ["On the warm surface · raised", "bg-muted", "raised"],
+        ] as const).map(([label, surface, variant]) => (
+          <div key={variant} className={`flex flex-col gap-3 rounded-xl border border-hairline p-6 ${surface}`}>
+            <span className="text-xs font-medium text-muted-foreground">{label}</span>
+            <Card variant={variant} className="w-full">
+              <CardHeader>
+                <CardTitle>Workspace</CardTitle>
+                <CardDescription>Invite teammates and manage access.</CardDescription>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground">
+                12 members · 3 pending invites
+              </CardContent>
+              <CardFooter>
+                <Button size="sm">Manage</Button>
+              </CardFooter>
+            </Card>
+          </div>
+        ))}
+      </div>
     ),
   },
 
@@ -1202,6 +1246,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     description: "Interruptive confirmation for irreversible or high-impact actions. Unlike Dialog, it can't be dismissed by clicking outside.",
     importPath: "@/components/ui/alert-dialog",
     whenToUse: [
+      "Every confirm takes a Confirm mark: danger with the act's icon for removals, neutral for acts that cannot be taken back. The action button names the act and removals use the soft destructive variant.",
       "Delete, revoke, or otherwise destructive confirmations where an accidental dismiss would be worse than an extra click.",
       "Session-expiry warnings (see Session timeout) and other choices the user must actively make.",
     ],
@@ -1220,15 +1265,16 @@ export const componentRegistry: Record<string, ComponentDoc> = {
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              account.
+            <ConfirmMark danger icon={Trash2Icon} />
+            <AlertDialogTitle>Delete this account?</AlertDialogTitle>
+            <AlertDialogDescription className="flex flex-col">
+              <span>Its cases, documents and access are removed for everyone in the office.</span>
+              <IrreversibleNote>This cannot be undone.</IrreversibleNote>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>Continue</AlertDialogAction>
+            <AlertDialogCancel>Keep the account</AlertDialogCancel>
+            <AlertDialogAction variant="destructive">Delete account</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -1241,6 +1287,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     description: "Edge-anchored slide-over panel for secondary flows — filters, details, mobile navigation.",
     importPath: "@/components/ui/sheet",
     whenToUse: [
+      "Sheet is modal: it floats over the page and dims it. To look at one record while the list stays usable, use Side panel instead (the case peek).",
       "A detail or filter panel that should feel attached to the page it opened from, not centered like a Dialog.",
       "Mobile navigation drawers, right-side detail-on-row-click patterns.",
     ],
@@ -1715,9 +1762,9 @@ export const componentRegistry: Record<string, ComponentDoc> = {
 
   sonner: {
     slug: "sonner",
-    title: "Toast",
+    title: "Toast (primitive)",
     description:
-      "Non-blocking confirmation of background or completed actions. Auto-dismisses — never use for validation errors or anything requiring action.",
+      "The Sonner primitive that Notify draws into. Product code never calls it directly: raise toasts with Notify and mount Feedback toaster. The preview below shows the primitive's own variant colours, which the product no longer uses.",
     importPath: "@/components/ui/sonner",
     whenToUse: [
       "Product toasts go through Notify and Feedback toaster, which carry the 2.75s life, click-away and persistent errors. This page documents the primitive underneath.",
@@ -1922,6 +1969,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     usageNotes: [
       "StepperItem props: status (complete | current | upcoming), step (number shown until complete), title.",
       "The connector between items is teal only once the step it follows is complete — it never anticipates progress.",
+      "Connectors join the circles edge to edge and each label is centred under its circle (owner, 2026-09-01: no gap at either end of a line). Don't override the connector or label alignment.",
       "Stepper is a visual indicator only; it doesn't manage navigation state — drive status from your own step index.",
     ],
     doItems: [
@@ -2529,12 +2577,23 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     ],
     tokens: ["accent", "accent-strong", "foreground"],
     usageNotes: [
-      "variant: default | outline. size: sm | default | lg, matching Button's size ladder.",
+      "variant: default (edged; outline is the same) | pill (round filter pill, brand tint when on) | ghost (no edge: only inside a toolbar that is itself the edge). size: sm | default | lg.",
       "Hover fills bg-accent; pressed fills bg-accent-strong via aria-pressed / data-state — give an icon-only Toggle an aria-label since it has no visible text.",
     ],
     doItems: ["Give icon-only toggles an aria-label describing what they control, not their current state."],
     dontItems: ["Use Toggle for a setting that should apply immediately and persist — that's Switch's job."],
-    preview: <Toggle aria-label="Bold">B</Toggle>,
+    preview: (
+      <div className="flex flex-wrap items-center gap-3">
+        <Toggle aria-label="Bold">B</Toggle>
+        <Toggle aria-label="Italic" defaultPressed>
+          I
+        </Toggle>
+        <Toggle variant="pill" defaultPressed>
+          Overdue
+        </Toggle>
+        <Toggle variant="pill">Due today</Toggle>
+      </div>
+    ),
   },
 
   "segmented-control": {
@@ -2598,16 +2657,29 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     usageNotes: [
       "type: single (one active value) | multiple (several can be pressed at once) — matches Radix's toggle-group semantics.",
       "variant and size set on the group apply to every ToggleGroupItem inside it.",
+      "variant: default (edged) | pill (filter pills; the product's filter rows) | ghost (toolbars only, where the toolbar is the edge).",
     ],
     doItems: ["Keep the option count small enough to read as one control, typically two to five items."],
     dontItems: ["Leave a single-select toggle group with nothing pressed if one option should always represent the current state."],
     preview: (
+      <ToggleGroup type="multiple" variant="pill" defaultValue={["overdue"]} className="gap-2">
+        <ToggleGroupItem value="overdue">Overdue</ToggleGroupItem>
+        <ToggleGroupItem value="today">Due today</ToggleGroupItem>
+        <ToggleGroupItem value="week">This week</ToggleGroupItem>
+      </ToggleGroup>
+    ),
+    variantSections: [
+      {
+        label: "Edged, one choice",
+        content: (
       <ToggleGroup type="single" defaultValue="day">
         <ToggleGroupItem value="day">Day</ToggleGroupItem>
         <ToggleGroupItem value="week">Week</ToggleGroupItem>
         <ToggleGroupItem value="month">Month</ToggleGroupItem>
       </ToggleGroup>
-    ),
+        ),
+      },
+    ],
   },
 };
 

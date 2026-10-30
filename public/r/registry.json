@@ -552,6 +552,17 @@
       ]
     },
     {
+      "name": "side-panel",
+      "type": "registry:ui",
+      "title": "Side Panel",
+      "files": [
+        {
+          "path": "src/components/ui/side-panel.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "sidebar",
       "type": "registry:ui",
       "title": "Sidebar",

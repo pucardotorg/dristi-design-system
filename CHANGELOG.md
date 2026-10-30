@@ -2,6 +2,128 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 — Side panel: `push` speaks the designer's words
+
+`SidePanelRegion push` names what makes room, so a request maps straight to code:
+"push the content" → `push="content"` (every child steps aside); "the panel goes over the
+content" → `push="none"`; "push the header, the panel goes over the table" →
+`push="marked"` with `SIDE_PANEL_PUSH` on what moves. AGENTS.md rule 12 carries the
+mapping and when to use Sheet instead. The docs demo switches between all three.
+
+**Push only what the panel covers.** Pushing by the full 27rem left a wide empty band
+wherever content ended short of the window's edge (owner, on the docs page). The region
+now measures how far the panel reaches into it and pushes that much plus a 2rem gutter;
+content already clear of the panel stays. On the product's list screens, which run to the
+edge, the push is unchanged. Measured: a 32px gap at 1440 and 1100 wide.
+
+## 2026-10-30 — Phone confirms rise from the bottom; Side panel guidance
+
+- **`AlertDialog` on a phone is a bottom sheet** (lead designer, 2026-09-21; the product's
+  `useBottomSheet`): full width on the bottom edge, square at the bottom with the safe area
+  kept, content centred, buttons full width with the act on top, up 300ms / down 200ms on
+  the drawer curve, no fade or scale. From `sm` it stays centred; reduced motion keeps the
+  fade. On upgrade the product's hook becomes redundant for confirms.
+- **Side panel:** what steps aside is a choice, now documented. Header and toolbar always;
+  a list whose row actions sit on the right too (the panel would cover them: Raise
+  application); a wide table whose trigger is on the left stays put (Cases, owner Sept 11).
+  The docs demo moves its list, because its row actions are on the right.
+
+## 2026-10-30 — Side panel, from the product's case peek
+
+**New: `side-panel`** (`SidePanel`, `SidePanelRegion`, `SIDE_PANEL_PUSH`). A docked,
+non-modal panel beside the page for looking at one record while the list stays usable,
+promoted from the product's case peek (owner: the peek and Sheet do different jobs, so the
+system offers both).
+
+- From `sm` the page makes room: elements given `SIDE_PANEL_PUSH` step aside by the panel's
+  27rem while wide tables keep their width and the panel slides over their right edge (the
+  product's Sept 11 fix for a table re-flowing on every frame).
+- Slides in and out over 300ms with no fade, staying mounted through the exit.
+- A bottom drawer on phones. Escape closes it; focus moves in on open and back to the
+  opener on close. No scrim and no focus trap, by design.
+- Sheet's docs now point here for the peek case.
+
+## 2026-10-30 — Owner review round 2: primitives catch up with the product
+
+The product's copies of these primitives are identical to the design system's; where the
+product looked right, each screen had patched it by hand. The fixes now live here, and the
+product's per-screen patches can go on upgrade.
+
+- **Table:** the product's table treatment (`table-plate`) is the default: hairline rows,
+  a `surface-sunken` header strip with rounded ends, a rounded warm-well hover that hides
+  the neighbouring rule, rounded selected runs. The old default drew dark `border` rules.
+- **Tabs:** the line variant is `h-10`, flush, with the underline on the bottom edge and
+  square triggers (the product re-patched this 29 times). Pill triggers fill the list and
+  sit concentric: 7px inside the 10px list.
+- **Segmented control:** the pill sits the same inset from the well on every side and from
+  its neighbours (was 2px, 3px and 4px), so the curves run parallel.
+- **Sheet:** slides fully in and out over 300ms with no fade, as the product's filter
+  sheets and case peek do. The scrim still fades.
+- **Toggle / Toggle group:** the default has an edge (an edgeless toggle read as a letter);
+  `pill` is the product's filter pill with the brand tint when on; `ghost` keeps the
+  edgeless look for toolbars that are themselves the edge. On upgrade, the rich-text
+  toolbar moves to `ghost`.
+- **Switch:** the knob travels to an even 2px inset (it stopped 5px short, a teal halo).
+- **Menubar:** hairline edge, triggers concentric with the bar.
+- **Card:** on `raised`, the footer drops its fill and keeps the hairline divider; a muted
+  band merged with the tinted page.
+- **Card footer buttons sit on the right** (owner, 2026-10-30), with an 8px gap.
+- **Alert Dialog page:** the preview is the real pattern: Confirm mark, the act named on
+  the button, soft destructive.
+
+## 2026-10-30 — Owner review of the docs: four fixes
+
+- **`AlertDialog` with an icon:** the header set no column widths, so the icon's column
+  grew to 65px for a 40px icon and the title sat 41px away. It is now `auto 1fr`, a 16px
+  gap. Every confirm with an icon in the product had the same gap; it closes on upgrade.
+- **`Stepper` connectors join the circles and labels centre under them** by default (owner,
+  2026-09-01). The product built this as an override (`FlowStepper`); two product screens
+  still on the old gapped default (registration flow, vakalatnama wizard) come right on
+  upgrade.
+- **Toast page** is now "Toast (primitive)": the Sonner layer Notify draws into, never
+  called directly. Its preview shows the primitive's old pale variants for reference only.
+- **Status line docs:** the badge row shows one badge animating ("just changed") beside the
+  still ones, so Replay demonstrates the rule instead of appearing broken.
+
+## 2026-10-30 — Card: the background decides
+
+**`Card` gets `variant`: `outline` (default) and `raised`.** Outline is the existing look, a
+defined `border`. Raised is a `hairline` edge plus `shadow-raised`. Owner ruling: the
+background decides. Raised on a warm or tinted surface (the `muted` page, dialog stages,
+wells), outline on white; media frames stay outline anywhere. This narrows the 2026-08-25
+ruling that every panel lifts.
+
+**Measured across the product before deciding:** cards on the warm page and in dialogs
+already lift (the filing dashboard, case page, court dialogs), cards on white pages and in
+white side panels stay outlined (citizen home, bond signing, the case peek). The product
+builds the lift by hand today (`border-hairline shadow-raised` and shared constants); on
+upgrade those become `variant="raised"`. The onboarding modal, on the warm surface, was the
+one place breaking the rule and was fixed in the product (dristi-fe-design#176).
+
+The Card docs no longer say "don't add shadow-raised" and "the raised shadow says panel"
+side by side; AGENTS and the Laws page state the rule.
+
+## 2026-10-30 — Agent guidance: wrong facts fixed, three rules enforced
+
+From an audit of what agents read on every build, each mismatch checked against the design
+system's code and the product app's `main`.
+
+**Eight facts corrected:** the component count (AGENTS, llms.txt) and contrast-pair count
+(AGENTS) are no longer stated as numbers that drift; the Laws page now describes prefilled
+as it ships (amber fill, dashed `warning-ink` edge, hidden label); RESPONSIVE gives Dialog's
+real `sm:max-w-90`; llms.txt sends wells to `surface-sunken`, not `track`, and links to the
+real files; README lists the Motion and Status foundations and says which checks lint runs.
+
+**Three prose rules are now checks** in `check:tokens`: spacing off the ladder (rule 7a),
+a translucent status fill such as `bg-destructive/10` (rule 6; focus rings on invalid
+controls stay translucent on purpose), and a raw-pixel height such as `h-[42px]`. Spacing
+that predates the check (upstream primitives left as installed, and docs chrome) is listed
+in `SPACING_BACKLOG`; new code cannot add to it.
+
+**Not changed, open for decision:** whether `Card` lifts with `shadow-raised` (the Aug 25
+ruling says panels do; in the product 11 of 102 cards and 35 hand-built panels do), and
+whether side `Sheet`s go full width on phones (the product's advocate side already does).
+
 ## 2026-10-30 — Status & feedback: one mark, three weights
 
 Success, failure and warning were expressed 71 ways across Dristi, in 11 patterns, with
