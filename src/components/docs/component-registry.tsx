@@ -7,6 +7,7 @@ import {
   InfoIcon,
   SearchIcon,
   MoreHorizontalIcon,
+  Trash2Icon,
 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
@@ -17,6 +18,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ConfirmMark, IrreversibleNote } from "@/components/ui/confirm-mark";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -847,7 +849,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "table",
     title: "Table",
     description:
-      "Structured display for comparing the same fields across many records. Header uses muted surface; hover uses accent and selected uses accent-strong.",
+      "Structured display for comparing the same fields across many records. Hairline rows, a warm header strip with rounded ends, and a rounded warm-well hover; selected uses accent-strong. Promoted from the product's table treatment.",
     importPath: "@/components/ui/table",
     whenToUse: [
       "Rows of structured records that share the same columns — cases, invoices, filings.",
@@ -866,7 +868,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     ],
     dontItems: ["Encode meaning in row background color beyond the built-in hover/selected states."],
     preview: (
-      <div className="w-full overflow-hidden rounded-lg border border-border">
+      <div className="w-full overflow-hidden rounded-xl border border-hairline bg-card p-4">
         <Table>
           <TableHeader>
             <TableRow>
@@ -1216,6 +1218,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     description: "Interruptive confirmation for irreversible or high-impact actions. Unlike Dialog, it can't be dismissed by clicking outside.",
     importPath: "@/components/ui/alert-dialog",
     whenToUse: [
+      "Every confirm takes a Confirm mark: danger with the act's icon for removals, neutral for acts that cannot be taken back. The action button names the act and removals use the soft destructive variant.",
       "Delete, revoke, or otherwise destructive confirmations where an accidental dismiss would be worse than an extra click.",
       "Session-expiry warnings (see Session timeout) and other choices the user must actively make.",
     ],
@@ -1234,15 +1237,16 @@ export const componentRegistry: Record<string, ComponentDoc> = {
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              account.
+            <ConfirmMark danger icon={Trash2Icon} />
+            <AlertDialogTitle>Delete this account?</AlertDialogTitle>
+            <AlertDialogDescription className="flex flex-col">
+              <span>Its cases, documents and access are removed for everyone in the office.</span>
+              <IrreversibleNote>This cannot be undone.</IrreversibleNote>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>Continue</AlertDialogAction>
+            <AlertDialogCancel>Keep the account</AlertDialogCancel>
+            <AlertDialogAction variant="destructive">Delete account</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -2544,12 +2548,23 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     ],
     tokens: ["accent", "accent-strong", "foreground"],
     usageNotes: [
-      "variant: default | outline. size: sm | default | lg, matching Button's size ladder.",
+      "variant: default (edged; outline is the same) | pill (round filter pill, brand tint when on) | ghost (no edge: only inside a toolbar that is itself the edge). size: sm | default | lg.",
       "Hover fills bg-accent; pressed fills bg-accent-strong via aria-pressed / data-state — give an icon-only Toggle an aria-label since it has no visible text.",
     ],
     doItems: ["Give icon-only toggles an aria-label describing what they control, not their current state."],
     dontItems: ["Use Toggle for a setting that should apply immediately and persist — that's Switch's job."],
-    preview: <Toggle aria-label="Bold">B</Toggle>,
+    preview: (
+      <div className="flex flex-wrap items-center gap-3">
+        <Toggle aria-label="Bold">B</Toggle>
+        <Toggle aria-label="Italic" defaultPressed>
+          I
+        </Toggle>
+        <Toggle variant="pill" defaultPressed>
+          Overdue
+        </Toggle>
+        <Toggle variant="pill">Due today</Toggle>
+      </div>
+    ),
   },
 
   "segmented-control": {
@@ -2613,16 +2628,29 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     usageNotes: [
       "type: single (one active value) | multiple (several can be pressed at once) — matches Radix's toggle-group semantics.",
       "variant and size set on the group apply to every ToggleGroupItem inside it.",
+      "variant: default (edged) | pill (filter pills; the product's filter rows) | ghost (toolbars only, where the toolbar is the edge).",
     ],
     doItems: ["Keep the option count small enough to read as one control, typically two to five items."],
     dontItems: ["Leave a single-select toggle group with nothing pressed if one option should always represent the current state."],
     preview: (
+      <ToggleGroup type="multiple" variant="pill" defaultValue={["overdue"]} className="gap-2">
+        <ToggleGroupItem value="overdue">Overdue</ToggleGroupItem>
+        <ToggleGroupItem value="today">Due today</ToggleGroupItem>
+        <ToggleGroupItem value="week">This week</ToggleGroupItem>
+      </ToggleGroup>
+    ),
+    variantSections: [
+      {
+        label: "Edged, one choice",
+        content: (
       <ToggleGroup type="single" defaultValue="day">
         <ToggleGroupItem value="day">Day</ToggleGroupItem>
         <ToggleGroupItem value="week">Week</ToggleGroupItem>
         <ToggleGroupItem value="month">Month</ToggleGroupItem>
       </ToggleGroup>
-    ),
+        ),
+      },
+    ],
   },
 };
 

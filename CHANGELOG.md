@@ -2,6 +2,33 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 — Owner review round 2: primitives catch up with the product
+
+The product's copies of these primitives are identical to the design system's; where the
+product looked right, each screen had patched it by hand. The fixes now live here, and the
+product's per-screen patches can go on upgrade.
+
+- **Table:** the product's table treatment (`table-plate`) is the default: hairline rows,
+  a `surface-sunken` header strip with rounded ends, a rounded warm-well hover that hides
+  the neighbouring rule, rounded selected runs. The old default drew dark `border` rules.
+- **Tabs:** the line variant is `h-10`, flush, with the underline on the bottom edge and
+  square triggers (the product re-patched this 29 times). Pill triggers fill the list and
+  sit concentric: 7px inside the 10px list.
+- **Segmented control:** the pill sits the same inset from the well on every side and from
+  its neighbours (was 2px, 3px and 4px), so the curves run parallel.
+- **Sheet:** slides fully in and out over 300ms with no fade, as the product's filter
+  sheets and case peek do. The scrim still fades.
+- **Toggle / Toggle group:** the default has an edge (an edgeless toggle read as a letter);
+  `pill` is the product's filter pill with the brand tint when on; `ghost` keeps the
+  edgeless look for toolbars that are themselves the edge. On upgrade, the rich-text
+  toolbar moves to `ghost`.
+- **Switch:** the knob travels to an even 2px inset (it stopped 5px short, a teal halo).
+- **Menubar:** hairline edge, triggers concentric with the bar.
+- **Card:** on `raised`, the footer drops its fill and keeps the hairline divider; a muted
+  band merged with the tinted page.
+- **Alert Dialog page:** the preview is the real pattern: Confirm mark, the act named on
+  the button, soft destructive.
+
 ## 2026-10-30 — Owner review of the docs: four fixes
 
 - **`AlertDialog` with an icon:** the header set no column widths, so the icon's column

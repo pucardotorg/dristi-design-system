@@ -96,7 +96,9 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-footer"
       className={cn(
-        "flex items-center rounded-b-xl border-t bg-muted p-(--card-spacing)",
+        /* On a raised card the page behind is already tinted, so the footer drops its fill
+           and keeps only the hairline divider; a muted band would merge with the page. */
+        "flex items-center rounded-b-xl border-t bg-muted p-(--card-spacing) group-data-[variant=raised]/card:border-hairline group-data-[variant=raised]/card:bg-transparent",
         className
       )}
       {...props}
