@@ -2,6 +2,24 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 — Card: the background decides
+
+**`Card` gets `variant`: `outline` (default) and `raised`.** Outline is the existing look, a
+defined `border`. Raised is a `hairline` edge plus `shadow-raised`. Owner ruling: the
+background decides. Raised on a warm or tinted surface (the `muted` page, dialog stages,
+wells), outline on white; media frames stay outline anywhere. This narrows the 2026-08-25
+ruling that every panel lifts.
+
+**Measured across the product before deciding:** cards on the warm page and in dialogs
+already lift (the filing dashboard, case page, court dialogs), cards on white pages and in
+white side panels stay outlined (citizen home, bond signing, the case peek). The product
+builds the lift by hand today (`border-hairline shadow-raised` and shared constants); on
+upgrade those become `variant="raised"`. The onboarding modal, on the warm surface, was the
+one place breaking the rule and was fixed in the product (dristi-fe-design#176).
+
+The Card docs no longer say "don't add shadow-raised" and "the raised shadow says panel"
+side by side; AGENTS and the Laws page state the rule.
+
 ## 2026-10-30 — Agent guidance: wrong facts fixed, three rules enforced
 
 From an audit of what agents read on every build, each mismatch checked against the design

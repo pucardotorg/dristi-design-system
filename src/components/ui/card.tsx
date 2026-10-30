@@ -2,17 +2,29 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * The background decides the look (owner, 2026-10-30):
+ * - `outline` (default): a defined `border` edge, no shadow. For cards on white.
+ * - `raised`: a soft `hairline` edge and a faint `shadow-raised`. For cards on a warm or
+ *   tinted surface (the muted page, dialog stages, wells).
+ * Media frames (a video, an image) stay `outline` on any background.
+ */
 function Card({
   className,
   size = "default",
+  variant = "outline",
   ...props
-}: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
+}: React.ComponentProps<"div"> & {
+  size?: "default" | "sm"
+  variant?: "outline" | "raised"
+}) {
   return (
     <div
       data-slot="card"
       data-size={size}
+      data-variant={variant}
       className={cn(
-        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl border border-border bg-card py-(--card-spacing) text-sm text-card-foreground [--card-spacing:--spacing(6)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(4)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
+        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl border border-border bg-card data-[variant=raised]:border-hairline data-[variant=raised]:shadow-raised py-(--card-spacing) text-sm text-card-foreground [--card-spacing:--spacing(6)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(4)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
         className
       )}
       {...props}

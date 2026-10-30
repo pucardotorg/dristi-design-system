@@ -940,42 +940,56 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "card",
     title: "Card",
     description:
-      "Grouped content surface with a defined border and edge. Reach for it when the group is a distinct, self-contained unit — not as a default page wrapper.",
+      "Grouped content surface in two looks, picked by the background behind it: outline on white, raised on a warm or tinted surface. Reach for it when the group is a distinct, self-contained unit, not as a default page wrapper.",
     importPath: "@/components/ui/card",
     whenToUse: [
       "A settings panel, form section, or selectable unit that should read as its own bounded piece of the page.",
+      "variant=\"outline\" (default) on a white background: the defined border is the edge.",
+      "variant=\"raised\" on a warm or tinted surface (the muted page, a dialog stage, a well): a soft hairline edge and a faint shadow lift it off the tint.",
+      "Media frames (a video, an image) stay outline on any background: a shadow makes a frame read as a floating card.",
       "Avoid decorative cards that only wrap static copy with no interactive or grouped purpose — that's just a paragraph with an unnecessary border.",
     ],
-    tokens: ["card", "card-foreground", "muted-foreground", "border", "muted", "accent"],
+    tokens: ["card", "card-foreground", "muted-foreground", "border", "hairline", "shadow-raised", "accent"],
     usageNotes: [
+      "The background decides (owner, 2026-10-30). Measured across the product: cards on the warm page and in dialogs lift; cards on white pages and in white side panels stay outlined.",
       "size: default (24px internal spacing) | sm (16px) — sm also shrinks CardTitle to text-sm.",
-      "Card fill is neutral-1; the page is surface-sunken — default Cards read by fill. Keep the border; don't add shadow-raised unless a pattern explicitly calls for lift. (Diverges from flat Rajini Card master — see CHANGELOG 2026-08-11.)",
       "Hover uses accent (same token as TableRow / Item) so selectable cards wash in light and dark. CardFooter follows via group-hover.",
       "CardHeader / CardContent / CardFooter compose in that order; CardFooter's bottom padding collapses automatically so it doesn't double up with the card's own padding.",
-      "For nested soft fill inside a card, use surface-sunken or Card + bg-muted. Never unbordered muted as a Card stand-in.",
+      "For nested soft fill inside a card, use surface-sunken. Never unbordered muted as a Card stand-in.",
     ],
     doItems: [
+      "Pick the variant from the background, not from taste: raised on tint, outline on white.",
       "Use size=\"sm\" for compact, densely packed cards (a sidebar widget) rather than overriding padding by hand.",
-      "Leave Card on default bg-card — it shares the page white on purpose; the hairline edge and raised shadow are what say \"panel\".",
       "For a selectable / linked card, rely on the built-in hover:bg-accent — don't invent a second wash.",
     ],
     dontItems: [
+      "Hand-build the lift with border-hairline shadow-raised; use variant=\"raised\".",
+      "Lift a card on white, or a video or image frame anywhere.",
       "Nest a Card inside another Card — that's the box-in-box pattern the system's flat surfaces are designed to avoid.",
-      "Use bg-muted or bg-surface-raised alone when the group needs a visible edge — Card's border is required.",
     ],
     preview: (
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle>Workspace</CardTitle>
-          <CardDescription>Invite teammates and manage access.</CardDescription>
-        </CardHeader>
-        <CardContent className="text-sm text-muted-foreground">
-          12 members · 3 pending invites
-        </CardContent>
-        <CardFooter>
-          <Button size="sm">Manage</Button>
-        </CardFooter>
-      </Card>
+      <div className="grid w-full gap-4 md:grid-cols-2">
+        {([
+          ["On white · outline", "bg-background", "outline"],
+          ["On the warm surface · raised", "bg-muted", "raised"],
+        ] as const).map(([label, surface, variant]) => (
+          <div key={variant} className={`flex flex-col gap-3 rounded-xl border border-hairline p-6 ${surface}`}>
+            <span className="text-xs font-medium text-muted-foreground">{label}</span>
+            <Card variant={variant} className="w-full">
+              <CardHeader>
+                <CardTitle>Workspace</CardTitle>
+                <CardDescription>Invite teammates and manage access.</CardDescription>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground">
+                12 members · 3 pending invites
+              </CardContent>
+              <CardFooter>
+                <Button size="sm">Manage</Button>
+              </CardFooter>
+            </Card>
+          </div>
+        ))}
+      </div>
     ),
   },
 

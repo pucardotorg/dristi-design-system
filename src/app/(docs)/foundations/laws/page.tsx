@@ -122,17 +122,19 @@ export default function LawsPage() {
 
       <DocsSection
         title="Grouped content gets a border"
-        description="Self-contained panels need a visible edge. The page is white and card shares that white on purpose — a panel reads by its hairline edge and raised shadow, not by a fill difference. Dark is flat the same way (card = page). Keep the Card edge. bg-muted / surface-raised sit on neutral-2 — not a panel edge alone. Nested soft fill inside a card: surface-sunken, with a hairline when the well holds interactive content. Muted alone without an edge is still a defect."
+        description="Self-contained panels need a visible edge, and the background decides which. On white, Card variant outline: a defined border. On a warm or tinted surface (the muted page, a dialog stage, a well), Card variant raised: a hairline edge and a faint raised shadow. Media frames stay outline anywhere. Dark is flat the same way (card = page); the edge still defines the panel. bg-muted / surface-raised sit on neutral-2 — not a panel edge alone. Nested soft fill inside a card: surface-sunken, with a hairline when the well holds interactive content. Muted alone without an edge is still a defect."
       >
         <DoDont
           do={[
             "Card for FAQ blocks, form sections, and sidebar widgets",
+            "variant=\"raised\" on the warm page or in a dialog stage; the default outline on white",
             "Description list inside Card for a single record's key-value fields",
             "surface-sunken for nested media wells inside a Card (video placeholder, document preview)",
             "surface-sunken + a hairline for control-sized wells — the tabs list, a segmented control",
           ]}
           dont={[
             "rounded-xl bg-muted as a stand-in for Card — no edge, wrong role",
+            "A raised card on white, or a raised video or image frame",
             "Hand-rolled dl grids when Description list exists",
             "surface-raised or muted fill expecting it to read as a container without border",
             "Reach for bg-track on a control-sized well — track is for tiny countable marks only",
