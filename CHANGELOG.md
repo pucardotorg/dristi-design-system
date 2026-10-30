@@ -2,6 +2,20 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 · Side panel: padded pages push right, tabs in the header show their mark
+
+Two fixes found moving Dristi's case peek onto `SidePanel`. Nothing changes where the
+panel already looked right.
+
+- **Push measured inside the region's padding.** `SidePanelRegion` measured its border
+  edge, so a page whose padding sat on the region itself (Dristi's Cases page) counted
+  that padding twice and pushed its header 2rem too far. It now measures the content
+  edge: a padded region and a region inside padding push the same.
+- **Line tabs in `header` show their active mark.** The panel portals away from the page,
+  so tabs in its header were cut off from their `Tabs` root and drew no mark (the docs
+  demo showed this). The pinned header now stands in for the root's horizontal tabs
+  group, in the docked panel and the drawer.
+
 ## 2026-10-30 · Side panel: room for the case peek's header, focus stays put
 
 The product's case peek could not move onto `SidePanel` without a visible change. Four
