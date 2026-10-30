@@ -2,6 +2,68 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 — Status & feedback: one mark, three weights
+
+Success, failure and warning were expressed 71 ways across Dristi, in 11 patterns, with
+no shared component. 23 of those moments were a toast or nothing. The Dristi rollout
+(pucardotorg/dristi-fe-design#174, merged 2026-10-30) moved every flow onto one set of
+pieces, tested on phone, iPad and desktop, light and dark, with reduced motion. This
+brings those pieces into the system unchanged, so screens compose them instead of
+copying them.
+
+**New components** (Status & feedback): `status-mark`, `outcome`, `status-line`,
+`confirm-mark`, `notify` and `feedback-toaster`. Each has a docs page with live previews.
+
+**New foundations:** Motion (the budget by size, every duration and curve, reduced
+motion) and Status & feedback (tones, which piece, the rules, retired patterns).
+
+**Motion lives in `src/app/feedback.css`**, imported by `globals.css`. Only the status
+components use its classes.
+
+**Decided with the product owner during the rollout,** now component defaults:
+- The title sits under the mark; every outcome closes on a `surface-sunken` footer band.
+- Hero marks wait 160ms and hold until painted. Success rings once; loops and three
+  pulses were tried and dropped.
+- Small success ticks draw themselves; other small glyphs scale in.
+- Toasts last 2.75s and leave on any page press. Error toasts stay until closed, carry
+  a close button, and a repeated error re-enters from the bottom instead of stacking.
+- Partial results are neutral with a checklist icon, with a tally underneath.
+- Removals use the soft red `destructive` button, never `destructive-solid`.
+
+**`sonner` 2.0.7 → 2.0.8.** In 2.0.7, `toast.dismiss` does not remove a custom toast, so a
+repeated error stacked a second card. 2.0.8 (the version Dristi already runs) fixes it.
+
+**Fixed after an independent review (2026-10-30):**
+- `notify.error` waited for any `role="dialog"`, so an open popover or date picker held an
+  error back indefinitely. It now waits only for a modal (dialog, alert dialog, sheet,
+  drawer), and for 30s at most.
+- A fast double repeat of the same error could still stack two cards; a repeat during the
+  120ms gap now replaces the pending one.
+- Badge marks: guidance and previews pass `still`, so a list of badges does not animate on load.
+- Button, Toast, Alert, Banner and ACCESSIBILITY.md text now points at Notify, Outcome and
+  soft destructive instead of contradicting them.
+- Stale docblocks (toaster, status line, outcome), the skill's lock-line name, and the Motion
+  page's durations corrected; every motion class is now listed. Dead `fb-chip` removed.
+- The public registry ships `feedback.css` with each status component.
+
+**Decided on review (owner and lead designer, 2026-10-30):**
+- **Code leads for these components until the team decides on Figma.** Precedence puts the
+  Figma master first; these components have no master yet. The ruling is scoped to Status &
+  feedback and reversible: if Figma leads again, the components are built there from these
+  pages (every size, tone, colour and timing is documented) and Figma resumes first place.
+- **One footer grey: `surface-sunken`.** `DialogFooter` and `AlertDialogFooter` move from
+  `bg-muted` to `bg-surface-sunken` with a `hairline` top edge. This changes every dialog
+  footer, barely visible in light and a touch clearer in dark. `CardFooter` is unchanged.
+- **`Badge` fits a 14px status mark itself** (`has-data-[slot=status-mark]`), so the
+  `BADGE_WITH_MARK` workaround is gone. Products that used it drop the class on upgrade.
+- **`DialogContent pinned` and `DialogBody`:** header and footer stay put and only the body
+  scrolls, replacing the five classes every long dialog repeated by hand.
+- **The rule 6 exception is granted for three places only:** the outcome band fade, the page
+  outcome glow and the tally stripes. Everywhere else the three treatments stay strict.
+- **The check script for retired patterns ships with the product's DS upgrade,** where those
+  patterns lived. The design system lists them; the product enforces them.
+
+
 ## 2026-08-25 — Docs site catches up with the warm ramp
 
 The warm-neutral PR changed the tokens and the AGENTS contract but never touched

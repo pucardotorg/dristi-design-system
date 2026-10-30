@@ -20,6 +20,17 @@ const navSlugs = new Set(
     .map((h) => h.replace("/components/", ""))
 );
 
+/* The status components animate through classes in src/app/feedback.css, so an install of
+   any of them carries that file too. Import it from the product's global stylesheet. */
+const NEEDS_FEEDBACK_CSS = new Set([
+  "status-mark",
+  "outcome",
+  "status-line",
+  "confirm-mark",
+  "notify",
+  "feedback-toaster",
+]);
+
 const items = readUiFiles()
   .filter((slug) => navSlugs.has(slug))
   .sort()
@@ -35,6 +46,9 @@ const items = readUiFiles()
         path: `src/components/ui/${name}.tsx`,
         type: "registry:ui",
       },
+      ...(NEEDS_FEEDBACK_CSS.has(name)
+        ? [{ path: "src/app/feedback.css", type: "registry:file", target: "app/feedback.css" }]
+        : []),
     ],
   }));
 

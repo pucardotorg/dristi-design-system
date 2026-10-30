@@ -191,6 +191,22 @@
       ]
     },
     {
+      "name": "confirm-mark",
+      "type": "registry:ui",
+      "title": "Confirm Mark",
+      "files": [
+        {
+          "path": "src/components/ui/confirm-mark.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
+        }
+      ]
+    },
+    {
       "name": "context-menu",
       "type": "registry:ui",
       "title": "Context Menu",
@@ -275,6 +291,22 @@
         {
           "path": "src/components/ui/empty.tsx",
           "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "feedback-toaster",
+      "type": "registry:ui",
+      "title": "Feedback Toaster",
+      "files": [
+        {
+          "path": "src/components/ui/feedback-toaster.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
         }
       ]
     },
@@ -374,6 +406,38 @@
         {
           "path": "src/components/ui/navigation-menu.tsx",
           "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "notify",
+      "type": "registry:ui",
+      "title": "Notify",
+      "files": [
+        {
+          "path": "src/components/ui/notify.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
+        }
+      ]
+    },
+    {
+      "name": "outcome",
+      "type": "registry:ui",
+      "title": "Outcome",
+      "files": [
+        {
+          "path": "src/components/ui/outcome.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
         }
       ]
     },
@@ -539,6 +603,38 @@
         {
           "path": "src/components/ui/spinner.tsx",
           "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "status-line",
+      "type": "registry:ui",
+      "title": "Status Line",
+      "files": [
+        {
+          "path": "src/components/ui/status-line.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
+        }
+      ]
+    },
+    {
+      "name": "status-mark",
+      "type": "registry:ui",
+      "title": "Status Mark",
+      "files": [
+        {
+          "path": "src/components/ui/status-mark.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/app/feedback.css",
+          "type": "registry:file",
+          "target": "app/feedback.css"
         }
       ]
     },

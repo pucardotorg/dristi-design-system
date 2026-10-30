@@ -24,6 +24,10 @@ When sources disagree, resolve in this order:
 2. **This file**, then the code it points at.
 3. **Site prose** in `src/app/(docs)/`.
 
+**Exception, 2026-10-30:** the Status & feedback components (status-mark, outcome,
+status-line, confirm-mark, notify, feedback-toaster) have no Figma master; code leads for
+them until the team decides on Figma (lead designer). See `CHANGELOG.md`.
+
 A component master beating prose is normal. When it happens, change the code and record the
 discrepancy in `CHANGELOG.md` — do not silently leave the two disagreeing.
 
@@ -62,6 +66,7 @@ nothing about whether a hover is perceptible or a component matches its master.
 | `src/app/(docs)/` | Foundations, principles, and block pages. |
 | `src/hooks/use-mobile.ts` | `useIsMobile()` — the viewport check to use instead of `window.innerWidth`. |
 | `scripts/` | `sync-tokens` generates the inventory; `check-*` enforce the rules in `lint`. |
+| `src/app/feedback.css` | Motion for the status components. Only they use its classes. |
 
 ---
 
@@ -96,7 +101,8 @@ already installed. Compose them before adding a primitive.
 
 **6. Exactly three treatments per status** — solid (`success`), muted (`success-muted`), and
 ink (`success-ink`). Never invent a fourth, and never fake one with alpha (`bg-destructive/10`).
-Use the opaque `-muted` token instead.
+Use the opaque `-muted` token instead. One granted exception: three status blends of two opaque
+tokens, listed on `/foundations/status`.
 
 **6a. A status tint needs its own solid as a stroke when it sits on another tint.** The
 `-muted` fills are pale by design, so a status tile on any non-white surface has almost no
@@ -148,6 +154,14 @@ panel there. `muted` / `surface-raised` sit on neutral-2 — do not use them alo
 a panel without an edge. Nested wells inside a card use `surface-sunken`, with a
 hairline when the well holds interactive content. Never an unbordered muted box.
 Key-value rows use `DescriptionList` inside `Card`. Form chrome uses `bg-card`.
+
+**11. Outcomes use the status components, never a hand-built state.** Success, failure,
+partial results, notices, confirms before risky acts and dead ends compose `status-mark`,
+`outcome`, `status-line`, `confirm-mark` and `notify`. Never draw a tinted disc, a green
+strip, a solid slab, or use `Banner`, `Alert` or `toast()` as a confirmation. Motion is
+budgeted by size, one animated mark per screen, shake only for refused input; error
+toasts stay until closed. Full rules: `/foundations/status` and `/foundations/motion`;
+the decision tree for agents is `.agents/skills/feedback-states/SKILL.md`.
 
 To document a rule violation deliberately — an anti-example in the docs, say — put
 `ds-tokens-ignore` in a comment on that line or the one above it.
