@@ -2,6 +2,21 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-10-30 — Side panel, from the product's case peek
+
+**New: `side-panel`** (`SidePanel`, `SidePanelRegion`, `SIDE_PANEL_PUSH`). A docked,
+non-modal panel beside the page for looking at one record while the list stays usable,
+promoted from the product's case peek (owner: the peek and Sheet do different jobs, so the
+system offers both).
+
+- From `sm` the page makes room: elements given `SIDE_PANEL_PUSH` step aside by the panel's
+  27rem while wide tables keep their width and the panel slides over their right edge (the
+  product's Sept 11 fix for a table re-flowing on every frame).
+- Slides in and out over 300ms with no fade, staying mounted through the exit.
+- A bottom drawer on phones. Escape closes it; focus moves in on open and back to the
+  opener on close. No scrim and no focus trap, by design.
+- Sheet's docs now point here for the peek case.
+
 ## 2026-10-30 — Owner review round 2: primitives catch up with the product
 
 The product's copies of these primitives are identical to the design system's; where the

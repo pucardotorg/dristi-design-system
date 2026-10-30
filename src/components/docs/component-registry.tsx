@@ -56,6 +56,7 @@ import {
   statusLineVariants,
   statusMarkPreview,
 } from "@/components/docs/feedback-docs";
+import { SidePanelDemo } from "@/components/docs/side-panel-docs";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Banner } from "@/components/ui/banner";
@@ -291,6 +292,31 @@ function SessionTimeoutDemo() {
 }
 
 export const componentRegistry: Record<string, ComponentDoc> = {
+  "side-panel": {
+    slug: "side-panel",
+    title: "Side panel",
+    description:
+      "A docked panel beside the page for looking at one record without leaving the list. Not modal: no scrim, the page stays usable, and from sm up the page makes room for it.",
+    importPath: "@/components/ui/side-panel",
+    whenToUse: [
+      "Peeking at one row of a list while keeping the list in view (the product's case peek).",
+      "Use Sheet instead for a task that needs the person's full attention (filters, a form, mobile navigation): Sheet is modal, floats over the page and dims it.",
+    ],
+    tokens: ["popover", "hairline", "shadow-modal"],
+    usageNotes: [
+      "Wrap the page in SidePanelRegion open={…}. Give SIDE_PANEL_PUSH to the light chrome that should step aside (header, toolbar); leave wide tables alone so they do not re-flow on every frame, and the panel slides over their right edge.",
+      "Slides in from the right over 300ms with no fade and plays the same motion out before unmounting, so nothing snaps back. Reduced motion shows it in place.",
+      "27rem wide from sm; full width below. On a phone it becomes a bottom drawer.",
+      "Escape closes it, focus moves into the panel on open and back to the opener on close. It has no focus trap: the page behind stays usable by design.",
+    ],
+    doItems: ["Open it from a row's own control, and let the panel replace its content when another row is peeked."],
+    dontItems: [
+      "Use it for something the person must finish before carrying on. That is Sheet or Dialog.",
+      "Put SIDE_PANEL_PUSH on a wide table.",
+    ],
+    preview: <SidePanelDemo />,
+  },
+
   "status-mark": {
     slug: "status-mark",
     title: "Status mark",
@@ -1259,6 +1285,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     description: "Edge-anchored slide-over panel for secondary flows — filters, details, mobile navigation.",
     importPath: "@/components/ui/sheet",
     whenToUse: [
+      "Sheet is modal: it floats over the page and dims it. To look at one record while the list stays usable, use Side panel instead (the case peek).",
       "A detail or filter panel that should feel attached to the page it opened from, not centered like a Dialog.",
       "Mobile navigation drawers, right-side detail-on-row-click patterns.",
     ],
