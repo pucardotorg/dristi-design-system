@@ -154,12 +154,5 @@ export function StatusFieldError({
   );
 }
 
-/**
- * The class for a badge that carries a mark: 4px padding plus the badge's 1px border puts a
- * 14px mark 5px from the top, the bottom and the end of the 24px pill, so it is concentric
- * with the rounded end. Pair with `<StatusMark size={14} … />`.
- */
-export const BADGE_WITH_MARK = "gap-1.5 pl-1";
-
 /** The row a dialog acted on, for one glow when the dialog closes back onto the list. */
 export const LANDING = "fb-land";

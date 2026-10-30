@@ -33,18 +33,23 @@ components use its classes.
 **`sonner` 2.0.7 → 2.0.8.** In 2.0.7, `toast.dismiss` does not remove a custom toast, so a
 repeated error stacked a second card. 2.0.8 (the version Dristi already runs) fixes it.
 
-**One exception to rule 6, for review.** The outcome band, the page glow and the tally
-stripes blend two opaque tokens with `color-mix`. None uses alpha, but the system did not
-define these blends before. Documented on /foundations/status.
+**Decided on review (owner and lead designer, 2026-10-30):**
+- **Code leads for these components until the team decides on Figma.** Precedence puts the
+  Figma master first; these components have no master yet. The ruling is scoped to Status &
+  feedback and reversible: if Figma leads again, the components are built there from these
+  pages (every size, tone, colour and timing is documented) and Figma resumes first place.
+- **One footer grey: `surface-sunken`.** `DialogFooter` and `AlertDialogFooter` move from
+  `bg-muted` to `bg-surface-sunken` with a `hairline` top edge. This changes every dialog
+  footer, barely visible in light and a touch clearer in dark. `CardFooter` is unchanged.
+- **`Badge` fits a 14px status mark itself** (`has-data-[slot=status-mark]`), so the
+  `BADGE_WITH_MARK` workaround is gone. Products that used it drop the class on upgrade.
+- **`DialogContent pinned` and `DialogBody`:** header and footer stay put and only the body
+  scrolls, replacing the five classes every long dialog repeated by hand.
+- **The rule 6 exception is granted for three places only:** the outcome band fade, the page
+  outcome glow and the tally stripes. Everywhere else the three treatments stay strict.
+- **The check script for retired patterns ships with the product's DS upgrade,** where those
+  patterns lived. The design system lists them; the product enforces them.
 
-**Open for this review:**
-- `DialogFooter` defaults to `bg-muted`; outcomes use `bg-surface-sunken`. Which is the
-  outcome band?
-- `Badge` has no leading-mark slot; `BADGE_WITH_MARK` sets the inset for now.
-- The pinned dialog layout (header and footer pinned, middle scrolls) is a recipe in the
-  docs, not a primitive variant.
-- Deprecated patterns are listed, not enforced. A check script belongs with the app's
-  DS upgrade, where the old patterns live.
 
 ## 2026-08-25 — Docs site catches up with the warm ramp
 

@@ -297,7 +297,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     importPath: "@/components/ui/status-mark",
     whenToUse: [
       "Inside the feedback pieces (outcome header, status line, toast, tally). Screens rarely place it directly.",
-      "Directly only for a mark in a badge (with BADGE_WITH_MARK) or a mark beside a tally line.",
+      "Directly only for a 14px mark in a Badge (it fits itself) or a mark beside a tally line.",
       "Tones: success it happened · error it did not · warning it happened with a catch · info sent, not decided · neutral not news · danger the question before a removal.",
     ],
     tokens: ["success", "destructive", "warning", "info", "surface-sunken", "input", "destructive-muted", "destructive-ink"],
@@ -337,8 +337,8 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     usageNotes: [
       "titleFrom: dialog in a Dialog whose header the outcome replaces, alert-dialog in an AlertDialog that turns into its result, plain elsewhere.",
       "The title always sits under the mark, never in a header above it.",
-      "Every outcome closes on the footer band: border-t border-hairline bg-surface-sunken, with the buttons on it.",
-      "Pin the dialog's header and footer; only the middle scrolls.",
+      "Every outcome closes on the footer band (DialogFooter, surface-sunken), with the buttons on it.",
+      "Use DialogContent pinned with DialogBody: header and footer stay put, only the middle scrolls.",
       "compact on phones: a 60px mark and a title-s title, full size from sm up.",
       "Partial result: tone neutral with a checklist icon, never the big tick (reads as all well) or the ! (reads as alarm).",
       "Payment outcomes lead with the amount. Waiting on the person (sign later, pay later) is neutral with a clock; waiting on someone else is info.",
@@ -367,7 +367,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     whenToUse: [
       "StatusLine for a note inside a page or dialog: a result that stays, a load error with Try again, a standing warning. It stays as long as what it says is true; it has no close and no timer.",
       "StatusFieldControl + StatusFieldError + useRefusal when the person's own input was refused. Missing input is never a toast.",
-      "BADGE_WITH_MARK with a 14px StatusMark for a standing state on a row (Signed, Overdue).",
+      "A 14px StatusMark inside a Badge for a standing state on a row (Signed, Overdue). Badge sets the inset itself.",
       "LANDING on the row a dialog changed, once, when the dialog closes onto the list.",
     ],
     tokens: ["card", "hairline", "success", "destructive", "warning", "info", "input", "destructive-ink"],
@@ -375,7 +375,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "The rail is straight, full height and flush left, clipped by the corner radius. It never bends with it.",
       "An animated line is a live region (status, or alert for errors). A still line is not, so a line already true when the screen opened is not announced.",
       "Field refusal: focus moves into the field and its red ring grows in; the error line opens its own room and drops in under the field. A repeat press shakes the field once and replays the line. Call reset once the input is valid.",
-      "A mark in a pill is concentric: BADGE_WITH_MARK sets equal inset at the top, bottom and end for a 14px mark.",
+      "A mark in a pill is concentric: Badge gives a 14px mark equal inset at the top, bottom and end.",
     ],
     doItems: [
       "Use it inside a dialog for a failure; a toast behind a dialog cannot be closed.",

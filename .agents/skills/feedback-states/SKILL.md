@@ -59,8 +59,9 @@ Ask, in order:
    - A secondary act under an outcome's facts (open a link, download): centred on a phone,
      left-aligned with the facts from tablet up.
    - The lock line (`note`) follows the text above it: centred on a phone, left from tablet.
-   - Every outcome stage closes on the warm footer band: `border-t border-hairline
-     bg-surface-sunken`, buttons on it, never loose in the white body.
+   - Every outcome stage closes on the footer band (`DialogFooter`, `surface-sunken`), buttons
+     on it, never loose in the white body. Use `DialogContent pinned` with `DialogBody`, so the
+     header and footer stay put and only the middle scrolls.
    - Some went through: `tone="neutral"` with a checklist icon (neither the big tick nor the "!", owner Oct 29); the header says only what fully happened; `OutcomeTally` shows
      the split, one marked line per outcome.
 4. **Is it a quick act where the page stays put** (access given, reminder sent,
@@ -75,7 +76,7 @@ Ask, in order:
    and stays flat. A page whose only content is the outcome (account ready) takes
    `scale="hero"`.
 7. **Is it a standing state on a row** (Signed, Overdue, Errored)? Use a `Badge` with
-   `className={BADGE_WITH_MARK}` and `<StatusMark size={14} … />` (or a plain badge).
+   `<StatusMark size={14} … />` inside (or a plain badge). `Badge` sets the inset itself.
 8. **Did a dialog close back onto a list?** Add `LANDING` to the row it changed, once.
 
 ## 2. Pick the tone, carefully
@@ -125,7 +126,7 @@ neutral, choose neutral.
 - **Rails are straight**, full height and flush left, clipped by the corner radius.
   They never bend with it.
 - **A mark in a pill is concentric**, with equal inset at the top, bottom and end
-  (`BADGE_WITH_MARK` with a 14px mark).
+  (`Badge` does it for a 14px mark).
 - **Labels that state the outcome** (Every signature is in, Joined as …) use success
   green, never teal: teal is the action colour and reads as clickable.
 - **Dark mode:** the pieces lift themselves (the toast to `surface-raised`). Never put a

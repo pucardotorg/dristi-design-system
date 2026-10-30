@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/description-list";
 import {
   Dialog,
+  DialogBody,
   DialogContent,
   DialogFooter,
   DialogTrigger,
@@ -50,7 +51,6 @@ import {
   PageOutcome,
 } from "@/components/ui/outcome";
 import {
-  BADGE_WITH_MARK,
   LANDING,
   StatusFieldControl,
   StatusFieldError,
@@ -94,16 +94,14 @@ function OutcomeDialog({ label, children }: { label: string; children: React.Rea
       <DialogTrigger asChild>
         <Button variant="outline">{label}</Button>
       </DialogTrigger>
-      <DialogContent className="flex max-h-[85dvh] flex-col gap-0 overflow-hidden p-0 sm:max-w-xl">
+      <DialogContent pinned className="sm:max-w-xl">
         {children}
       </DialogContent>
     </Dialog>
   );
 }
 
-const OutcomeFooter = ({ children }: { children: React.ReactNode }) => (
-  <DialogFooter className="mx-0 mb-0 shrink-0 border-hairline bg-surface-sunken">{children}</DialogFooter>
-);
+const OutcomeFooter = ({ children }: { children: React.ReactNode }) => <DialogFooter>{children}</DialogFooter>;
 
 const TONES: MarkTone[] = ["success", "error", "warning", "info", "neutral", "danger"];
 const SIZES: MarkSize[] = [14, 16, 20, 24, 40, 56, 72];
@@ -171,13 +169,13 @@ export const outcomePreview = (
             title="Bail application submitted"
             body="The court has received your application. You will be told by SMS when a decision is made."
           />
-          <div className="px-6 py-4">
+          <DialogBody>
             <DescriptionList>
               <Row term="Submitted on">24-08-2026</Row>
               <Row term="Submission ID">KL-000847-2026-AP1</Row>
               <Row term="Court fee">₹50 paid</Row>
             </DescriptionList>
-          </div>
+          </DialogBody>
           <OutcomeFooter>
             <Button>Done</Button>
           </OutcomeFooter>
@@ -186,14 +184,14 @@ export const outcomePreview = (
           <OutcomeHeader titleFrom="dialog" compact title="Payment successful" body="Your case file is complete.">
             <OutcomeAmount label="Amount paid" value="₹1,250" />
           </OutcomeHeader>
-          <div className="px-6 py-4">
+          <DialogBody>
             <OutcomeSummary>
               <DescriptionList>
                 <Row term="Case file number">KL-000847-2026</Row>
                 <Row term="Payment reference">PAY-55102</Row>
               </DescriptionList>
             </OutcomeSummary>
-          </div>
+          </DialogBody>
           <OutcomeFooter>
             <Button>Done</Button>
           </OutcomeFooter>
@@ -218,7 +216,7 @@ export const outcomePreview = (
         </OutcomeDialog>
         <OutcomeDialog label="Partial (tally)">
           <OutcomeHeader titleFrom="dialog" tone="neutral" icon={ListChecksIcon} compact title="3 processes signed" />
-          <div className="px-6 py-4">
+          <DialogBody>
             <OutcomeTally
               label="Sent"
               done={2}
@@ -226,7 +224,7 @@ export const outcomePreview = (
               doneLine="2 are now in Sent in Service."
               failedLine="1 could not be sent and is in Errored in Issuance."
             />
-          </div>
+          </DialogBody>
           <OutcomeFooter>
             <Button>Done</Button>
           </OutcomeFooter>
@@ -386,15 +384,15 @@ export const statusLineVariants = [
         content: (
           <Replay>
             <div className="flex flex-wrap items-center gap-3">
-              <Badge variant="success" className={BADGE_WITH_MARK}>
+              <Badge variant="success">
                 <StatusMark size={14} />
                 Signed
               </Badge>
-              <Badge variant="destructive" className={BADGE_WITH_MARK}>
+              <Badge variant="destructive">
                 <StatusMark size={14} tone="error" />
                 Overdue
               </Badge>
-              <Badge variant="warning" className={BADGE_WITH_MARK}>
+              <Badge variant="warning">
                 <StatusMark size={14} tone="warning" />
                 Due today
               </Badge>

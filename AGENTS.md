@@ -24,6 +24,10 @@ When sources disagree, resolve in this order:
 2. **This file**, then the code it points at.
 3. **Site prose** in `src/app/(docs)/`.
 
+**Exception, 2026-10-30:** the Status & feedback components (status-mark, outcome,
+status-line, confirm-mark, notify, feedback-toaster) have no Figma master; code leads for
+them until the team decides on Figma (lead designer). See `CHANGELOG.md`.
+
 A component master beating prose is normal. When it happens, change the code and record the
 discrepancy in `CHANGELOG.md` — do not silently leave the two disagreeing.
 
@@ -97,7 +101,8 @@ already installed. Compose them before adding a primitive.
 
 **6. Exactly three treatments per status** — solid (`success`), muted (`success-muted`), and
 ink (`success-ink`). Never invent a fourth, and never fake one with alpha (`bg-destructive/10`).
-Use the opaque `-muted` token instead.
+Use the opaque `-muted` token instead. One granted exception: three status blends of two opaque
+tokens, listed on `/foundations/status`.
 
 **6a. A status tint needs its own solid as a stroke when it sits on another tint.** The
 `-muted` fills are pale by design, so a status tile on any non-white surface has almost no
