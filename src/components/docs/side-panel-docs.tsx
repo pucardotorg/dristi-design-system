@@ -11,13 +11,14 @@ import {
   DescriptionTerm,
 } from "@/components/ui/description-list"
 import { SegmentedControl, SegmentedControlItem } from "@/components/ui/segmented-control"
-import { SIDE_PANEL_PUSH, SidePanel, SidePanelRegion } from "@/components/ui/side-panel"
+import { SIDE_PANEL_INSET, SIDE_PANEL_PUSH, SidePanel, SidePanelRegion } from "@/components/ui/side-panel"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 
 const CASES = [
-  { id: "ST 412/2026", parties: "Sunil Varghese v. Anand Traders", stage: "Evidence" },
-  { id: "ST 418/2026", parties: "Meenakshi Nair v. Coastal Agro", stage: "Appearance" },
-  { id: "ST 431/2026", parties: "Kiran Mathew v. Harbour Line", stage: "Cognizance" },
+  { id: "ST 412/2026", parties: "Sunil Varghese v. Anand Traders", stage: "Evidence", court: "JFCM Court I, Kollam" },
+  { id: "ST 418/2026", parties: "Meenakshi Nair v. Coastal Agro", stage: "Appearance", court: "JFCM Court II, Kollam" },
+  { id: "ST 431/2026", parties: "Kiran Mathew v. Harbour Line", stage: "Cognizance", court: "JFCM Court I, Kollam" },
 ]
 
 type Push = "content" | "none" | "marked"
@@ -66,22 +67,54 @@ export function SidePanelDemo() {
             </div>
           ))}
         </div>
-        <SidePanel open={Boolean(open)} onOpenChange={(next) => !next && setOpen(null)} title={open?.parties ?? ""}>
-          {open ? (
-            <DescriptionList>
-              <DescriptionRow className="border-hairline">
-                <DescriptionTerm>Case number</DescriptionTerm>
-                <DescriptionDetails>{open.id}</DescriptionDetails>
-              </DescriptionRow>
-              <DescriptionRow className="border-hairline">
-                <DescriptionTerm>Stage</DescriptionTerm>
-                <DescriptionDetails>
-                  <Badge variant="info">{open.stage}</Badge>
-                </DescriptionDetails>
-              </DescriptionRow>
-            </DescriptionList>
-          ) : null}
-        </SidePanel>
+        {/* The tab row lives in the pinned header and its panels in the body, so the
+            Tabs root wraps the panel; `contents` keeps it out of the page's layout. */}
+        <Tabs key={open?.id} defaultValue="overview" className="contents">
+          <SidePanel
+            open={Boolean(open)}
+            onOpenChange={(next) => !next && setOpen(null)}
+            title={open?.parties ?? ""}
+            subtitle={
+              <p className="text-body-compact text-muted-foreground">
+                {open?.id} · {open?.court}
+              </p>
+            }
+            header={
+              <div className={cn("border-b border-hairline", SIDE_PANEL_INSET)}>
+                <TabsList variant="line" aria-label="Case sections" className="h-10 justify-start">
+                  <TabsTrigger value="overview" className="h-full flex-none">
+                    Overview
+                  </TabsTrigger>
+                  <TabsTrigger value="history" className="h-full flex-none">
+                    History
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+            }
+          >
+            {open ? (
+              <>
+                <TabsContent value="overview" className="pt-6">
+                  <DescriptionList>
+                    <DescriptionRow className="border-hairline">
+                      <DescriptionTerm>Case number</DescriptionTerm>
+                      <DescriptionDetails>{open.id}</DescriptionDetails>
+                    </DescriptionRow>
+                    <DescriptionRow className="border-hairline">
+                      <DescriptionTerm>Stage</DescriptionTerm>
+                      <DescriptionDetails>
+                        <Badge variant="info">{open.stage}</Badge>
+                      </DescriptionDetails>
+                    </DescriptionRow>
+                  </DescriptionList>
+                </TabsContent>
+                <TabsContent value="history" className="pt-6 text-body-compact text-muted-foreground">
+                  Filed, then listed for {open.stage.toLowerCase()}.
+                </TabsContent>
+              </>
+            ) : null}
+          </SidePanel>
+        </Tabs>
       </SidePanelRegion>
     </div>
   )

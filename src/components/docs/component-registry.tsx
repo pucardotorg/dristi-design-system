@@ -308,8 +308,9 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "Wrap the page in SidePanelRegion open={…} push=…. The push value is the designer's words: \"push the content\" → push=\"content\" (everything steps aside); \"the panel goes over the content\" → push=\"none\" (nothing moves); \"push the header, the panel goes over the table\" → push=\"marked\" with SIDE_PANEL_PUSH on the parts that move.",
       "When nothing was said: push the content if any row's control sits on the right (the panel would cover it, as in Raise application); keep a wide table still with push=\"marked\" if its trigger is on the left (re-flowing it every frame was choppy: Cases, owner Sept 11).",
       "Slides in from the right over 300ms with no fade and plays the same motion out before unmounting, so nothing snaps back. Reduced motion shows it in place.",
-      "27rem wide from sm; full width below. On a phone it becomes a bottom drawer.",
-      "Escape closes it, focus moves into the panel on open and back to the opener on close. It has no focus trap: the page behind stays usable by design.",
+      "27rem wide from sm; full width below. On a phone it becomes a bottom drawer; drawerWhen moves that line (the case peek also uses the drawer on an upright tablet). Pass the region open={false} wherever the panel is a drawer.",
+      "subtitle sits under the title in its column (case numbers, court). header is pinned under the title row and runs edge to edge, so only the body scrolls: give its padded parts SIDE_PANEL_INSET, and let a tab row draw its own divider.",
+      "Escape closes it from anywhere. Focus stays on the opener when it opens, so the list stays usable; on close it returns to the opener only if it was inside the panel. The phone drawer takes focus and hands it back on close. No focus trap: the page behind stays usable by design.",
     ],
     doItems: ["Open it from a row's own control, and let the panel replace its content when another row is peeked."],
     dontItems: [
