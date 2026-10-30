@@ -304,6 +304,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     ],
     tokens: ["popover", "hairline", "shadow-modal"],
     usageNotes: [
+      "Content steps aside only as far as the panel covers it, leaving a 2rem gap; content that already ends clear of the panel does not move. On a list that runs to the window's edge that is the full panel width.",
       "Wrap the page in SidePanelRegion open={…} push=…. The push value is the designer's words: \"push the content\" → push=\"content\" (everything steps aside); \"the panel goes over the content\" → push=\"none\" (nothing moves); \"push the header, the panel goes over the table\" → push=\"marked\" with SIDE_PANEL_PUSH on the parts that move.",
       "When nothing was said: push the content if any row's control sits on the right (the panel would cover it, as in Raise application); keep a wide table still with push=\"marked\" if its trigger is on the left (re-flowing it every frame was choppy: Cases, owner Sept 11).",
       "Slides in from the right over 300ms with no fade and plays the same motion out before unmounting, so nothing snaps back. Reduced motion shows it in place.",

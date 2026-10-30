@@ -24,7 +24,6 @@ import { cn } from "@/lib/utils"
  * - Below `sm` it rises as a bottom drawer instead.
  */
 
-const PANEL_WIDTH = "27rem"
 const PHONE_QUERY = "(max-width: 639.98px)"
 const EXIT_MS = 300
 
@@ -78,9 +77,31 @@ function SidePanelRegion({
    */
   push?: "content" | "none" | "marked"
 }) {
-  const room = open && push !== "none" ? PANEL_WIDTH : "0px"
+  const ref = React.useRef<HTMLDivElement>(null)
+  /* Push only what the panel covers, plus a 2rem gutter. Content that already ends
+     clear of the panel does not move; content that runs to the window's edge (the
+     product's list screens) moves the full panel width and keeps its edge gap. */
+  React.useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const measure = () => {
+      if (!open || push === "none") {
+        el.style.setProperty("--side-panel-mr", "0px")
+        return
+      }
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16
+      const panel = 27 * rem
+      const gutter = 2 * rem
+      const gap = window.innerWidth - el.getBoundingClientRect().right
+      el.style.setProperty("--side-panel-mr", `${Math.max(0, panel + gutter - gap)}px`)
+    }
+    measure()
+    window.addEventListener("resize", measure)
+    return () => window.removeEventListener("resize", measure)
+  }, [open, push])
   return (
     <div
+      ref={ref}
       data-slot="side-panel-region"
       data-panel-open={open || undefined}
       data-push={push}
@@ -91,7 +112,7 @@ function SidePanelRegion({
           "[&>*]:transition-[margin] [&>*]:duration-300 [&>*]:ease-out motion-reduce:[&>*]:transition-none sm:[&>*]:mr-[var(--side-panel-mr,0px)]",
         className
       )}
-      style={{ "--side-panel-mr": room, ...style } as React.CSSProperties}
+      style={style}
       {...props}
     />
   )

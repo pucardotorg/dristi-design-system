@@ -10,6 +10,12 @@ content" → `push="none"`; "push the header, the panel goes over the table" →
 `push="marked"` with `SIDE_PANEL_PUSH` on what moves. AGENTS.md rule 12 carries the
 mapping and when to use Sheet instead. The docs demo switches between all three.
 
+**Push only what the panel covers.** Pushing by the full 27rem left a wide empty band
+wherever content ended short of the window's edge (owner, on the docs page). The region
+now measures how far the panel reaches into it and pushes that much plus a 2rem gutter;
+content already clear of the panel stays. On the product's list screens, which run to the
+edge, the push is unchanged. Measured: a 32px gap at 1440 and 1100 wide.
+
 ## 2026-10-30 — Phone confirms rise from the bottom; Side panel guidance
 
 - **`AlertDialog` on a phone is a bottom sheet** (lead designer, 2026-09-21; the product's
