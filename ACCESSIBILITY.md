@@ -114,16 +114,3 @@ Even on the shortest product checklists, these never drop:
 | Modal focus trap | `Dialog` / `AlertDialog` / `Sheet` |
 | Status without colour-alone | `Badge` + text, or icon + label |
 | 40px touch primary action | `Button` default (`h-10`) or larger |
-
----
-
-## Agent rules (short)
-
-1. Target **WCAG 2.1 AA** + **WAI-ARIA 1.2**.
-2. Never remove visible focus rings.
-3. Never ship placeholder-only inputs.
-4. Touch targets ≥ **40×40px**.
-5. Warn before session timeout; use `SessionTimeout` when building auth/session UX.
-6. Don’t hide critical UI behind hover.
-7. Support 200% zoom and Indic script locales in layout and typography choices.
-8. Verify NVDA / JAWS / VoiceOver and keyboard-only paths for critical flows.

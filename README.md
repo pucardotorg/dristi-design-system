@@ -66,7 +66,7 @@ correct if it meets them.
 | [`AGENTS.md`](./AGENTS.md) | Token rules, the Laws, and how to add or change a component |
 | [`CHANGELOG.md`](./CHANGELOG.md) | Reconciliation history against the Figma contract |
 
-Both standards are also documented on the site, at `/foundations/accessibility` and
+Accessibility and the Laws are also on the docs site, at `/foundations/accessibility` and
 `/foundations/laws`.
 
 ---

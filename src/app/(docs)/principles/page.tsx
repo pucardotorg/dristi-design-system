@@ -105,8 +105,8 @@ export default function PrinciplesPage() {
         <DoDont
           do={[
             "Keep the teal focus ring on every interactive element.",
-            "Check new token pairs against both light and dark before shipping.",
-            "Follow the full checklist on Accessibility (keyboard, labels, zoom, timeouts, scripts).",
+            "Add every new text or meaning pair to check:contrast; it measures both themes.",
+            "Follow the full checklist on Accessibility (screen readers, keyboard, voice, labels, 200% zoom, timeouts, Indic scripts).",
           ]}
           dont={[
             "Ship a status fill under 4.5:1 because it \"looks fine\" in one theme.",
@@ -134,22 +134,6 @@ export default function PrinciplesPage() {
           Off-ladder sizing (a 38px button, a 20px chip) is banned the same
           way an arbitrary hex value is — it isn&apos;t a style choice.
         </Callout>
-      </DocsSection>
-
-      <DocsSection
-        title="9. Accessibility is product behaviour"
-        description="Screen readers (NVDA, JAWS, VoiceOver), keyboard-only use, voice control, 200% text zoom, session timeout warnings, and Indic script support are part of the system — not a separate audit after ship."
-      >
-        <DoDont
-          do={[
-            "Visible Label on every field; SessionTimeout before expiry.",
-            "Fluid layouts that survive 200% zoom; font stacks that cover court scripts.",
-          ]}
-          dont={[
-            "Expire sessions silently on draft flows.",
-            "Assume Helvetica covers Devanagari or Tamil.",
-          ]}
-        />
       </DocsSection>
     </div>
   );

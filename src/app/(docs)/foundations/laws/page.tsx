@@ -23,7 +23,10 @@ export default function LawsPage() {
         <Link href="/principles" className="underline underline-offset-3">
           Principles
         </Link>
-        .
+        . <code>npm run lint</code> catches alpha status fills, off-ladder
+        spacing and raw-pixel heights. Sentence case, one teal action per view,
+        control heights on the ladder, prefilled and grouped panels are yours
+        to get right: nothing checks them.
       </Callout>
 
       <DocsSection
