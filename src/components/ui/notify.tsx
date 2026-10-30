@@ -115,10 +115,12 @@ function show(tone: Tone, title: React.ReactNode, options: Options = {}) {
 
 /* An error toast behind an open modal cannot be closed (it stays until closed, and the
    modal blocks the page). Callers should say it inside the modal; as a safety net, one
-   raised while a modal is open waits for it to close. Only modal surfaces count: a popover
-   or date picker is also `role="dialog"` but leaves the page usable. */
+   raised while a modal is open waits for it to close. Only modal surfaces count (the DS
+   modals, or a hand-built `aria-modal` dialog): a popover or date picker is also
+   `role="dialog"` but leaves the page usable. */
 const MODAL_OPEN = ["dialog-content", "alert-dialog-content", "sheet-content", "drawer-content"]
   .map((slot) => `[data-slot="${slot}"][data-state="open"]`)
+  .concat('[role="dialog"][aria-modal="true"]')
   .join(", ");
 
 /* The longest an error waits behind a modal. Past this it shows anyway: an error shown late
