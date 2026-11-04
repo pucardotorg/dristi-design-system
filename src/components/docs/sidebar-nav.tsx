@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { docsNav } from "@/lib/docs-nav";
+import { Badge } from "@/components/ui/badge";
+import { docsNav, docsNavTags } from "@/lib/docs-nav";
 import { cn } from "@/lib/utils";
 
 export function DocsSidebarNav({ onNavigate }: { onNavigate?: () => void }) {
@@ -18,6 +19,7 @@ export function DocsSidebarNav({ onNavigate }: { onNavigate?: () => void }) {
           </p>
           <ul className="flex flex-col gap-0.5">
             {section.items.map((item) => {
+              const tag = docsNavTags[item.href];
               const active =
                 item.href === "/"
                   ? pathname === "/"
@@ -30,13 +32,21 @@ export function DocsSidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                     href={item.href}
                     onClick={onNavigate}
                     className={cn(
-                      "block rounded-md px-2 py-1.5 text-sm transition-colors",
+                      "flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
                       active
                         ? "bg-accent font-medium text-accent-foreground"
                         : "text-muted-foreground hover:bg-accent hover:text-foreground"
                     )}
                   >
                     {item.title}
+                    {tag ? (
+                      <Badge
+                        variant={tag === "new" ? "info" : "outline"}
+                        className="h-5 px-1.5 font-normal"
+                      >
+                        {tag === "new" ? "New" : "Updated"}
+                      </Badge>
+                    ) : null}
                   </Link>
                 </li>
               );

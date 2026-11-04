@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Callout } from "@/components/docs/callout";
+import { ChangesBox } from "@/components/docs/changed-mark";
 import { DoDont } from "@/components/docs/do-dont";
 import { PageHeader } from "@/components/docs/page-header";
 import { DocsSection } from "@/components/docs/section";
@@ -16,6 +17,13 @@ export default function PrinciplesPage() {
       <PageHeader
         title="Principles"
         description="Non-negotiable rules that keep Pucar UI consistent across products, teams, and generated code."
+      />
+
+      <ChangesBox
+        items={[
+          "Principle 7 now sends new colour pairs to check:contrast and lists what the Accessibility checklist covers.",
+          "The separate principle 9 on accessibility was folded into principle 7.",
+        ]}
       />
 
       <DocsSection
@@ -100,6 +108,7 @@ export default function PrinciplesPage() {
 
       <DocsSection
         title="7. WCAG 2.1 AA is the floor"
+        changed
         description="Conformance target is WCAG 2.1 Level AA plus WAI-ARIA 1.2. Text ≥ 4.5:1, UI boundaries ≥ 3:1, in both themes — proven by contrast checks, never eyeballed. Focus is always visible."
       >
         <DoDont
@@ -112,6 +121,10 @@ export default function PrinciplesPage() {
             "Ship a status fill under 4.5:1 because it \"looks fine\" in one theme.",
             "Remove a focus ring for aesthetics.",
             "Use placeholder-only fields or hide critical actions behind hover.",
+          ]}
+          changed={[
+            "Add every new text or meaning pair to check:contrast; it measures both themes.",
+            "Follow the full checklist on Accessibility (screen readers, keyboard, voice, labels, 200% zoom, timeouts, Indic scripts).",
           ]}
         />
         <Callout className="mt-4">

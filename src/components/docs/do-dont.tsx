@@ -1,13 +1,17 @@
+import { ChangedStar } from "@/components/docs/changed-mark";
 import { cn } from "@/lib/utils";
 
 export function DoDont({
   do: doItems,
   dont: dontItems,
   className,
+  changed = [],
 }: {
   do: string[];
   dont: string[];
   className?: string;
+  /** Items to star as changed. */
+  changed?: string[];
 }) {
   return (
     <div className={cn("grid gap-4 md:grid-cols-2", className)}>
@@ -16,6 +20,7 @@ export function DoDont({
         <ul className="flex flex-col gap-2 text-sm text-foreground">
           {doItems.map((item) => (
             <li key={item} className="leading-relaxed">
+              {changed.includes(item) ? <ChangedStar className="mr-1.5" /> : null}
               {item}
             </li>
           ))}
@@ -26,6 +31,7 @@ export function DoDont({
         <ul className="flex flex-col gap-2 text-sm text-foreground">
           {dontItems.map((item) => (
             <li key={item} className="leading-relaxed">
+              {changed.includes(item) ? <ChangedStar className="mr-1.5" /> : null}
               {item}
             </li>
           ))}

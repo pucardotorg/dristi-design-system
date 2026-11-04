@@ -115,6 +115,38 @@ export const docsNav: DocsNavSection[] = [
   },
 ];
 
+/** Pages added or changed in the latest round (Oct 30, 2026), tagged in the sidebar. */
+export const docsNavTags: Record<string, "new" | "updated"> = {
+  "/foundations/motion": "new",
+  "/foundations/status": "new",
+  "/components/status-mark": "new",
+  "/components/outcome": "new",
+  "/components/status-line": "new",
+  "/components/confirm-mark": "new",
+  "/components/notify": "new",
+  "/components/feedback-toaster": "new",
+  "/components/side-panel": "new",
+  "/principles": "updated",
+  "/foundations/laws": "updated",
+  "/components/badge": "updated",
+  "/components/alert": "updated",
+  "/components/banner": "updated",
+  "/components/sonner": "updated",
+  "/components/stepper": "updated",
+  "/components/alert-dialog": "updated",
+  "/components/button": "updated",
+  "/components/card": "updated",
+  "/components/dialog": "updated",
+  "/components/menubar": "updated",
+  "/components/segmented-control": "updated",
+  "/components/sheet": "updated",
+  "/components/switch": "updated",
+  "/components/table": "updated",
+  "/components/tabs": "updated",
+  "/components/toggle": "updated",
+  "/components/toggle-group": "updated",
+};
+
 export function getComponentNavItem(slug: string) {
   return docsNav
     .flatMap((section) => section.items)

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Callout } from "@/components/docs/callout";
+import { ChangedStar, ChangesBox } from "@/components/docs/changed-mark";
 import { DoDont } from "@/components/docs/do-dont";
 import { PageHeader } from "@/components/docs/page-header";
 import { DocsSection } from "@/components/docs/section";
@@ -18,12 +19,21 @@ export default function LawsPage() {
         description="Hard constraints from the Abhiram Figma Laws page. Breaking these is a defect, not a style preference."
       />
 
+      <ChangesBox
+        items={[
+          "The lint note now says what npm run lint checks, and what nothing checks.",
+          "Prefilled is amber fill with a dashed edge and a hidden label, set by the prefilled prop.",
+          "Grouped content: the background decides. Outline card on white, raised card on a warm or tinted surface.",
+        ]}
+      />
+
       <Callout tone="warning" title="Also in AGENTS.md">
         Coding agents must follow these laws. Full product principles live on{" "}
         <Link href="/principles" className="underline underline-offset-3">
           Principles
         </Link>
-        . <code>npm run lint</code> catches alpha status fills, off-ladder
+        . <ChangedStar className="mr-1" />
+        <code>npm run lint</code> catches alpha status fills, off-ladder
         spacing and raw-pixel heights. Sentence case, one teal action per view,
         control heights on the ladder, prefilled and grouped panels are yours
         to get right: nothing checks them.
@@ -109,10 +119,16 @@ export default function LawsPage() {
 
       <DocsSection
         title="Prefilled is amber fill with a dashed edge"
+        changed
         description="Machine-read values use bg-prefilled with a dashed warning-ink border and a hidden “machine filled, not yet verified” label, so prefilled never relies on colour alone. Input and Textarea do this with the prefilled prop."
       >
         <DoDont
           do={['<Input prefilled /> or <Textarea prefilled />', "Let the prop set the fill, the dashed edge and the label"]}
+          changed={[
+            "<Input prefilled /> or <Textarea prefilled />",
+            "Let the prop set the fill, the dashed edge and the label",
+            "Hand-built amber fills or borders for prefilled",
+          ]}
           dont={[
             "Hand-built amber fills or borders for prefilled",
             "Using warning as a stand-in for prefilled",
@@ -122,6 +138,7 @@ export default function LawsPage() {
 
       <DocsSection
         title="Grouped content gets a border"
+        changed
         description="Self-contained panels need a visible edge, and the background decides which. On white, Card variant outline: a defined border. On a warm or tinted surface (the muted page, a dialog stage, a well), Card variant raised: a hairline edge and a faint raised shadow. Media frames stay outline anywhere. Dark is flat the same way (card = page); the edge still defines the panel. bg-muted / surface-raised sit on neutral-2 — not a panel edge alone. Nested soft fill inside a card: surface-sunken, with a hairline when the well holds interactive content. Muted alone without an edge is still a defect."
       >
         <DoDont
@@ -138,6 +155,10 @@ export default function LawsPage() {
             "Hand-rolled dl grids when Description list exists",
             "surface-raised or muted fill expecting it to read as a container without border",
             "Reach for bg-track on a control-sized well — track is for tiny countable marks only",
+          ]}
+          changed={[
+            'variant="raised" on the warm page or in a dialog stage; the default outline on white',
+            "A raised card on white, or a raised video or image frame",
           ]}
         />
       </DocsSection>

@@ -5,6 +5,8 @@ import { Preview } from "@/components/docs/preview";
 import { DocsSection } from "@/components/docs/section";
 import { DoDont } from "@/components/docs/do-dont";
 import { getComponentDoc } from "@/components/docs/component-registry";
+import { ChangedStar, ChangesBox } from "@/components/docs/changed-mark";
+import { docsChanges } from "@/lib/docs-changes";
 
 export function ComponentDocPage({ slug }: { slug: string }) {
   const doc = getComponentDoc(slug);
@@ -20,23 +22,39 @@ export function ComponentDocPage({ slug }: { slug: string }) {
     );
   }
 
+  const changes = docsChanges[slug];
+  const changedItems = changes?.items ?? [];
+  const star = (item: string) =>
+    changedItems.includes(item) ? <ChangedStar className="mr-1.5" /> : null;
+
   return (
     <div className="flex flex-col gap-12">
       <PageHeader title={doc.title} description={doc.description} />
+
+      {changes ? <ChangesBox items={changes.summary} /> : null}
 
       <code className="w-fit rounded-md bg-muted px-2 py-1 font-mono text-xs text-foreground">
         {doc.importPath}
       </code>
 
-      <DocsSection title="When to use">
+      <DocsSection
+        title="When to use"
+        changed={doc.whenToUse.some((item) => changedItems.includes(item))}
+      >
         <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
           {doc.whenToUse.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item}>
+              {star(item)}
+              {item}
+            </li>
           ))}
         </ul>
       </DocsSection>
 
-      <DocsSection title={doc.previewLabel ?? "Preview"}>
+      <DocsSection
+        title={doc.previewLabel ?? "Preview"}
+        changed={changes?.preview}
+      >
         <Preview
           label={doc.previewLabel ?? "Preview"}
           className={
@@ -57,6 +75,7 @@ export function ComponentDocPage({ slug }: { slug: string }) {
                 key={section.label}
                 label={section.label}
                 className={section.className}
+                changed={changes?.sections.includes(section.label)}
               >
                 {section.content}
               </Preview>
@@ -69,28 +88,47 @@ export function ComponentDocPage({ slug }: { slug: string }) {
       ) : null}
 
       {doc.doItems && doc.dontItems ? (
-        <DocsSection title="Do and don’t">
-          <DoDont do={doc.doItems} dont={doc.dontItems} />
+        <DocsSection
+          title="Do and don’t"
+          changed={[...doc.doItems, ...doc.dontItems].some((item) =>
+            changedItems.includes(item)
+          )}
+        >
+          <DoDont
+            do={doc.doItems}
+            dont={doc.dontItems}
+            changed={changedItems}
+          />
         </DocsSection>
       ) : null}
 
-      <DocsSection title="Token coupling">
+      <DocsSection
+        title="Token coupling"
+        changed={doc.tokens.some((token) => changedItems.includes(token))}
+      >
         <div className="flex flex-wrap gap-2">
           {doc.tokens.map((token) => (
             <code
               key={token}
-              className="rounded-md border border-border bg-card px-2 py-1 font-mono text-xs text-foreground"
+              className="inline-flex items-center gap-1 rounded-md border border-border bg-card px-2 py-1 font-mono text-xs text-foreground"
             >
+              {star(token)}
               {token}
             </code>
           ))}
         </div>
       </DocsSection>
 
-      <DocsSection title="Usage notes">
+      <DocsSection
+        title="Usage notes"
+        changed={doc.usageNotes.some((item) => changedItems.includes(item))}
+      >
         <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
           {doc.usageNotes.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item}>
+              {star(item)}
+              {item}
+            </li>
           ))}
         </ul>
       </DocsSection>
