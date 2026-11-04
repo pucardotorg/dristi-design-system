@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { ComponentDocPage } from "@/components/docs/component-doc-page";
-import { getAllComponentSlugs, getComponentNavItem } from "@/lib/docs-nav";
+import {
+  docsNavFolded,
+  getAllComponentSlugs,
+  getComponentNavItem,
+} from "@/lib/docs-nav";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -26,6 +30,11 @@ export default async function ComponentPage({ params }: Props) {
 
   if (!known) {
     notFound();
+  }
+
+  const foldedInto = docsNavFolded[`/components/${slug}`];
+  if (foldedInto) {
+    redirect(foldedInto);
   }
 
   return <ComponentDocPage slug={slug} />;

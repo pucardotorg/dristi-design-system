@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
-import { docsNav, docsNavTags } from "@/lib/docs-nav";
+import { docsNav, docsNavFolded, docsNavTags } from "@/lib/docs-nav";
 import { cn } from "@/lib/utils";
 
 export function DocsSidebarNav({ onNavigate }: { onNavigate?: () => void }) {
@@ -18,7 +18,9 @@ export function DocsSidebarNav({ onNavigate }: { onNavigate?: () => void }) {
             {section.title}
           </p>
           <ul className="flex flex-col gap-0.5">
-            {section.items.map((item) => {
+            {section.items
+              .filter((item) => !docsNavFolded[item.href])
+              .map((item) => {
               const tag = docsNavTags[item.href];
               const active =
                 item.href === "/"

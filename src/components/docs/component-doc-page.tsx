@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { PageHeader } from "@/components/docs/page-header";
 import { Preview } from "@/components/docs/preview";
 import { DocsSection } from "@/components/docs/section";
@@ -7,8 +9,16 @@ import { DoDont } from "@/components/docs/do-dont";
 import { getComponentDoc } from "@/components/docs/component-registry";
 import { ChangedStar, ChangesBox } from "@/components/docs/changed-mark";
 import { docsChanges } from "@/lib/docs-changes";
+import { Callout } from "@/components/docs/callout";
+import { ToastDocPage } from "@/components/docs/toast-docs";
 
 export function ComponentDocPage({ slug }: { slug: string }) {
+  /* Notify and Feedback toaster are one toast: shown together on the Toast page. */
+  if (slug === "notify") return <ToastDocPage />;
+  return <RegistryDocPage slug={slug} />;
+}
+
+function RegistryDocPage({ slug }: { slug: string }) {
   const doc = getComponentDoc(slug);
 
   if (!doc) {
@@ -32,6 +42,13 @@ export function ComponentDocPage({ slug }: { slug: string }) {
       <PageHeader title={doc.title} description={doc.description} />
 
       {changes ? <ChangesBox items={changes.summary} /> : null}
+
+      {slug === "sonner" ? (
+        <Callout title="Not for product screens">
+          This is the library underneath the toast, kept here so it can be upgraded. Screens
+          raise toasts with Notify. See <Link href="/components/notify" className="underline">Toast</Link>.
+        </Callout>
+      ) : null}
 
       <code className="w-fit rounded-md bg-muted px-2 py-1 font-mono text-xs text-foreground">
         {doc.importPath}

@@ -45,7 +45,7 @@ export const docsNav: DocsNavSection[] = [
       { title: "Outcome", href: "/components/outcome" },
       { title: "Status line", href: "/components/status-line" },
       { title: "Confirm mark", href: "/components/confirm-mark" },
-      { title: "Notify", href: "/components/notify" },
+      { title: "Toast", href: "/components/notify" },
       { title: "Feedback toaster", href: "/components/feedback-toaster" },
       { title: "Toast (primitive)", href: "/components/sonner" },
       { title: "Tooltip", href: "/components/tooltip" },
@@ -114,6 +114,15 @@ export const docsNav: DocsNavSection[] = [
     ],
   },
 ];
+
+/**
+ * Pages kept as routes and registry entries (agents, the registry build and check:ds read
+ * them) but shown inside another page. The sidebar hides them; the route sends readers to
+ * the section that now holds them.
+ */
+export const docsNavFolded: Record<string, string> = {
+  "/components/feedback-toaster": "/components/notify#feedback-toaster",
+};
 
 /** Pages added or changed in the latest round (Oct 30, 2026), tagged in the sidebar. */
 export const docsNavTags: Record<string, "new" | "updated"> = {
