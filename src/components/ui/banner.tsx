@@ -19,8 +19,7 @@ import { StatusMark, type MarkTone } from "@/components/ui/status-mark"
  * anything but white, which takes a hairline above and below it (`onWarm`).
  *
  * Its content lines up with the page's own content: pass the page's side padding as
- * `inset` (default 16px, 24px from `sm`). Its one action sits on the right (under the words
- * on a phone, so the sentence keeps its width): an underlined
+ * `inset` (default 16px, 24px from `sm`). Its one action sits on the right at every width: an underlined
  * link in the tone's ink when it takes the person somewhere, a small outline button when it
  * does something (with a working state while it runs). When the act succeeds, the banner
  * itself changes to the new condition or goes away; no extra message on top.
@@ -122,10 +121,8 @@ function Banner({
     >
       <div className={cn("flex min-h-14 items-center gap-3 py-3", inset)}>
         <StatusMark tone={tone} icon={icon} glyph={glyph ?? "i"} size={title ? 40 : 28} still onTint />
-        {/* On a phone the action sits under the words, so the sentence keeps the full
-            width; from 640px it sits on the right. */}
-        <div className="flex min-w-0 flex-1 flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-4">
-          <div className="flex w-full min-w-0 flex-col gap-0.5 py-0.5 sm:w-auto sm:flex-1">
+        <div className="flex min-w-0 flex-1 items-center gap-4">
+          <div className="flex min-w-0 flex-1 flex-col gap-0.5 py-0.5">
             <p className={cn("text-body-compact text-pretty", title ? "font-semibold" : "font-medium")}>
               {title ?? children}
             </p>

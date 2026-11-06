@@ -32,7 +32,8 @@ page (owner, Nov 6).
 - **Banner actions follow what they do.** `{ label, href }` takes the person somewhere: the
   underlined link. `{ label, onClick, busy, busyLabel }` does something: a small outline
   button with a working state. On success the banner becomes the new condition (Access
-  requested) or goes away, with no toast on top. On a phone the action sits under the words.
+  requested) or goes away, with no toast on top. The action stays on the right at every
+  width (the owner tried it under the words on phones and kept it on the right).
 - **Button guidance (docs only, the component is unchanged).** The working state as a
   pattern: spinner, the -ing label, disabled, aria-busy, and a width that never changes
   (both labels share one cell). After a one-time act the button goes away or the screen

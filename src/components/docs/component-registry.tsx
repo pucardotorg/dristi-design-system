@@ -1890,7 +1890,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "title + children: a semibold title over a detail line in the tone's own text. children alone: one medium line.",
       "inset: pass the page's own side padding, so the banner's content lines up with the page title at every width.",
       "onWarm (neutral only): on anything but white, hairlines run above and below so the grey band does not melt into the page.",
-      "One action, on the right (under the words on a phone, so the sentence keeps its full width), picked by what it does. Takes the person somewhere (action={{ label, href }}): an underlined link in the tone's ink, with the button press (1px), a heavier underline on hover, the focus ring and a 40px hit area on touch screens. Does something and they stay (action={{ label, onClick }}): a small outline button, with the working state while it runs (busy, busyLabel).",
+      "One action, on the right at every width, picked by what it does. Takes the person somewhere (action={{ label, href }}): an underlined link in the tone's ink, with the button press (1px), a heavier underline on hover, the focus ring and a 40px hit area on touch screens. Does something and they stay (action={{ label, onClick }}): a small outline button, with the working state while it runs (busy, busyLabel).",
       "When that act succeeds, the banner itself changes to the new condition (Access requested, blue with the hourglass) or goes away. No toast on top. When it fails, the button comes back and an error toast says why.",
       "Banners do not animate: they are part of the page as it loads. role=\"status\" is built in.",
     ],
