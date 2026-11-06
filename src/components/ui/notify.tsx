@@ -234,7 +234,9 @@ function ToastCard({
            each slot the screen width less its margins, and the card fills that slot, so the
            stack stays centred on any phone. */
         "relative flex w-(--width) max-w-full items-center gap-3 overflow-hidden rounded-2xl p-2.5 text-foreground shadow-overlay ring-1 ring-inset in-data-[sonner-toaster]:max-[600px]:w-full dark:ring-border",
-        action || persistent ? "pr-2.5" : "pr-3",
+        /* An action button keeps 16px to the edge, like the space around the words; the
+           error's ghost close sits closer, its icon already well inside its own box. */
+        action ? "pr-4" : persistent ? "pr-2.5" : "pr-3",
         TINT[tone],
         EDGE[tone],
       )}

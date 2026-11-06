@@ -461,7 +461,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     tokens: ["success-muted", "destructive-muted", "warning-muted", "surface-sunken", "border", "warning-ink"],
     usageNotes: [
       "Look: one box tinted in its tone, 18px corners, an edge one step deeper in the same tone (the border in dark), the status line's marks (neutral as a white chip) and weight rule. 380px wide; on a phone the screen width less 16px margins. One-line toasts 44px, two-line 66px.",
-      "Buttons (an action, the error's close) are 32px, tucked into the padding, with a 40px hit area on touch screens.",
+      "Buttons (an action, the error's close) are 32px, tucked into the padding, with a 40px hit area on touch screens. An action keeps 16px to the right edge.",
       "Success, warning and neutral last 2.75s, show a thin timer on the bottom edge (the warning's in warning ink), pause while the pointer is over them, and leave on any press on the page outside the toasts.",
       "Error toasts stay until closed, carry a close button and ignore page presses. Before this system they left after 4s with no close, so an error could vanish unread.",
       "The same error again never stacks a copy: the old card leaves and the error comes up from the bottom afresh about 120ms later, so a retry that failed again reads as new news. Different errors still stack.",
