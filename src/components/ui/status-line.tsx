@@ -12,9 +12,10 @@ import { StatusMark, type MarkTone } from "@/components/ui/status-mark";
  * Feedback inside a page or an open dialog.
  *
  * - `StatusLine`: one shape for every inline note (success, error, warning, info,
- *   neutral). A white line with a straight rail in its tone, flush left and clipped by the
- *   corner radius, never bending with it. It replaces the success and failure uses of
- *   `Banner` and `Alert`.
+ *   neutral). One box tinted in its tone (the opaque `-muted` fill), no rail, no divider.
+ *   A title and its detail stack with no rule between; the detail is in the tone's own
+ *   text. Mark, words and action share one centre line, and the action stays on the right
+ *   at every width. It replaces the success and failure uses of `Banner` and `Alert`.
  * - `StatusField*`: the field error. The field's red ring grows in, the line opens its own
  *   room, and the cross and the words drop in together from under the field. A repeat press
  *   shakes the field once and plays the line again (`useRefusal`).
@@ -23,14 +24,30 @@ import { StatusMark, type MarkTone } from "@/components/ui/status-mark";
  * A mark inside a `Badge` needs nothing from here: `Badge` sets its inset itself.
  */
 
-const RAIL: Record<MarkTone, string> = {
-  success: "bg-success",
-  error: "bg-destructive",
-  danger: "bg-destructive",
-  warning: "bg-warning",
-  info: "bg-info",
-  neutral: "bg-input",
+/* The tone's opaque tint: a status fill, never alpha. Neutral is the warm well. */
+const TINT: Record<MarkTone, string> = {
+  success: "bg-success-muted",
+  error: "bg-destructive-muted",
+  danger: "bg-destructive-muted",
+  warning: "bg-warning-muted",
+  info: "bg-info-muted",
+  neutral: "bg-surface-sunken",
 };
+
+/* A title's detail, in the tone's own text on its tint (the measured -muted pair). */
+const DETAIL: Record<MarkTone, string> = {
+  success: "text-success-muted-foreground",
+  error: "text-destructive-muted-foreground",
+  danger: "text-destructive-muted-foreground",
+  warning: "text-warning-muted-foreground",
+  info: "text-info-muted-foreground",
+  neutral: "text-muted-foreground",
+};
+
+/* The action keeps a 32px look (pass `Button size="xs"`), concentric with the 18px corner
+   at the 10px inset; on a touch screen an invisible ring takes its hit area to 40px. */
+const ACTION =
+  "shrink-0 [&>*]:relative pointer-coarse:[&>*]:after:absolute pointer-coarse:[&>*]:after:-inset-1";
 
 export function StatusLine({
   tone,
@@ -45,6 +62,7 @@ export function StatusLine({
   tone: MarkTone;
   title?: React.ReactNode;
   children: React.ReactNode;
+  /** One button, `size="xs"`, `variant="outline"`. It stays on the right at every width. */
   action?: React.ReactNode;
   icon?: React.ComponentProps<typeof StatusMark>["icon"];
   /** Every line after the first in one screen arrives without motion. */
@@ -56,23 +74,24 @@ export function StatusLine({
 }) {
   return (
     <div
+      data-slot="status-line"
       role={still ? undefined : (role ?? (tone === "error" ? "alert" : "status"))}
       className={cn(
-        "relative flex items-center gap-3 overflow-hidden rounded-lg bg-card py-3 pr-3 pl-4 ring-1 ring-hairline",
+        "flex items-center gap-3 rounded-2xl p-2.5 text-foreground",
+        action ? "pr-2.5" : "pr-3",
+        TINT[tone],
         !still && "fb-rise",
         className,
       )}
     >
-      <span aria-hidden className={cn("absolute inset-y-0 left-0 w-1", RAIL[tone])} />
-      {/* With a title, the mark centres on the title and the body's first line. */}
-      <span className={title ? "mt-1.5 self-start" : "self-center"}>
-        <StatusMark tone={tone} icon={icon} size={24} still={still} />
-      </span>
-      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-        {title ? <p className="text-body-compact font-semibold">{title}</p> : null}
-        <div className={cn("text-body-compact text-pretty", title ? "text-muted-foreground" : "font-semibold")}>{children}</div>
+      {/* A titled line is taller, so its mark steps up to 28px. */}
+      <StatusMark tone={tone} icon={icon} size={title ? 28 : 24} still={still} onTint />
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5 py-0.5">
+        {title ? <p className="text-body-compact font-semibold text-pretty">{title}</p> : null}
+        {/* Weight: a title over a detail is semibold; a line on its own is medium. */}
+        <div className={cn("text-body-compact text-pretty", title ? DETAIL[tone] : "font-medium")}>{children}</div>
       </div>
-      {action ? <div className="shrink-0">{action}</div> : null}
+      {action ? <div className={ACTION}>{action}</div> : null}
     </div>
   );
 }

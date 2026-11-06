@@ -2,6 +2,36 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-11-06 · Status line: one tinted box, no rail
+
+The product lead found the status line's coloured rail ugly. After several rounds of
+exploration the owner chose a plainer shape (owner, Nov 6):
+
+- **One box tinted in its tone** (the opaque `-muted` fill, neutral on `surface-sunken`),
+  18px corners, no rail, no white card, no divider.
+- **A title and its detail stack straight.** The detail is in the tone's own text
+  (`*-muted-foreground`). A titled line's mark steps up to 28px (new `StatusMark` size);
+  a one-line mark stays 24px.
+- **Mark, words and action share one centre line.** The action is one
+  `Button size="xs" variant="outline"`, concentric with the corner, and stays on the right
+  at every width, phones included. On touch screens it gets an invisible 40px hit area.
+- **Neutral mark on a tint is a white chip** (`StatusMark onTint`): the grey disc vanished
+  into the grey note and left only its outline, which read like an icon that did not load.
+  In dark it is one step lighter than the note (`secondary`).
+- Docs example for "no match" uses search-with-a-cross, as the app already does. Info's
+  example now says what info means (sent, waiting on someone else).
+
+- **Weight follows the line's job** (owner): a title with a detail line under it stays
+  semibold; a line on its own is medium, like Card, Dialog and Alert titles. Applied to the
+  status line, the toast title and the tally's failed line. Large outcome headings and the
+  summary card's label stay semibold.
+
+- **Neutral outcome headers** use the same white chip: their band is the warm well, the
+  neutral disc's own colour, so only its outline showed (owner). Only a `neutral` header
+  changes.
+
+The toast keeps its rail for now; its redesign is still open.
+
 ## 2026-10-30 · Side panel: padded pages push right, tabs in the header show their mark
 
 Two fixes found moving Dristi's case peek onto `SidePanel`. Nothing changes where the

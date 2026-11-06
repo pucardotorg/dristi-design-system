@@ -33,7 +33,7 @@ import { cn } from "@/lib/utils";
  */
 
 export type MarkTone = "success" | "error" | "warning" | "info" | "neutral" | "danger";
-export type MarkSize = 14 | 16 | 20 | 24 | 40 | 56 | 60 | 72 | 96;
+export type MarkSize = 14 | 16 | 20 | 24 | 28 | 40 | 56 | 60 | 72 | 96;
 
 type IconType = React.ComponentType<{ className?: string; strokeWidth?: number; "aria-hidden"?: boolean }>;
 
@@ -42,6 +42,7 @@ const SIZE: Record<MarkSize, string> = {
   16: "size-4",
   20: "size-5",
   24: "size-6",
+  28: "size-7",
   40: "size-10",
   56: "size-14",
   60: "size-15",
@@ -58,6 +59,11 @@ const DISC: Record<MarkTone, string> = {
   neutral: "bg-surface-sunken text-foreground ring-1 ring-input ring-inset",
   danger: "bg-destructive-muted text-destructive-ink",
 };
+
+/* On a status tint (StatusLine) the neutral disc would vanish into the grey note and leave
+   only its outline, like an icon that did not load. There it is a white chip lifted off
+   the note; in dark, one step lighter than the note. */
+const NEUTRAL_ON_TINT = "bg-card text-foreground shadow-raised dark:bg-secondary";
 
 const RING: Partial<Record<MarkTone, string>> = {
   success: "bg-success",
@@ -105,6 +111,7 @@ export function StatusMark({
   delay,
   className,
   label,
+  onTint = false,
 }: {
   tone?: MarkTone;
   size?: MarkSize;
@@ -119,6 +126,8 @@ export function StatusMark({
   /** Read out only where the mark is the sole carrier of the meaning; usually the text
       beside it already says it, so the mark stays hidden from assistive tech. */
   label?: string;
+  /** The mark sits on a status tint (StatusLine): a neutral mark becomes a white chip. */
+  onTint?: boolean;
 }) {
   const full = !still && size >= 44;
   const quick = !still && !full;
@@ -162,7 +171,7 @@ export function StatusMark({
       <span
         className={cn(
           "relative flex size-full items-center justify-center rounded-full",
-          DISC[tone],
+          onTint && tone === "neutral" ? NEUTRAL_ON_TINT : DISC[tone],
           !iconTone && "shadow-raised",
           full && "fb-pop",
           quick && "fb-pop-quick",
@@ -170,7 +179,7 @@ export function StatusMark({
       >
         {iconTone && Icon ? (
           <span className={cn("flex", !still && "fb-glyph-in")}>
-            <Icon className={size <= 16 ? "size-2.5" : size <= 24 ? "size-3.5" : size <= 40 ? "size-5" : size <= 72 ? "size-7" : "size-10"} strokeWidth={size <= 24 ? 2.4 : 2} aria-hidden />
+            <Icon className={size <= 16 ? "size-2.5" : size <= 24 ? "size-3.5" : size <= 28 ? "size-4" : size <= 40 ? "size-5" : size <= 72 ? "size-7" : "size-10"} strokeWidth={size <= 24 ? 2.4 : 2} aria-hidden />
           </span>
         ) : (
           <span

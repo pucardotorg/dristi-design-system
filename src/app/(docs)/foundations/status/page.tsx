@@ -102,8 +102,9 @@ export default function StatusPage() {
             <code>border-t border-hairline bg-surface-sunken</code>) with its buttons on it.
           </li>
           <li>
-            <span className="text-foreground">Rails are straight,</span> full height and flush
-            left, clipped by the corner radius. They never bend with it.
+            <span className="text-foreground">The status line has no rail:</span> one box in its
+            tone&apos;s tint. A toast&apos;s rail is straight, full height and flush left, clipped by
+            the corner radius; it never bends with it.
           </li>
           <li>
             <span className="text-foreground">A mark in a pill is concentric:</span> equal inset at

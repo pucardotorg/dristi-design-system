@@ -394,7 +394,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "status-line",
     title: "Status line",
     description:
-      "Feedback inside a page or an open dialog: one white line with a straight rail in its tone. Also the field error, the badge mark and the landing highlight.",
+      "Feedback inside a page or an open dialog: one box tinted in its tone, no rail. Also the field error, the badge mark and the landing highlight.",
     importPath: "@/components/ui/status-line",
     whenToUse: [
       "StatusLine for a note inside a page or dialog: a result that stays, a load error with Try again, a standing warning. It stays as long as what it says is true; it has no close and no timer.",
@@ -402,9 +402,13 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "A 14px StatusMark inside a Badge for a standing state on a row (Signed, Overdue). Badge sets the inset itself. Pass still to every badge already true on load.",
       "LANDING on the row a dialog changed, once, when the dialog closes onto the list.",
     ],
-    tokens: ["card", "hairline", "success", "destructive", "warning", "info", "input", "destructive-ink"],
+    tokens: ["success-muted", "destructive-muted", "warning-muted", "info-muted", "surface-sunken", "card", "destructive-ink"],
     usageNotes: [
-      "The rail is straight, full height and flush left, clipped by the corner radius. It never bends with it.",
+      "One tinted box, 18px corners, no rail and no divider. A title and its detail stack straight; the detail is in the tone's own text. A titled line's mark is 28px, a one-line mark 24px.",
+      "Weight: a title over a detail is semibold; a line on its own is medium (as Card, Dialog and Alert titles).",
+      "Mark, words and action share one centre line. The action is one Button size=\"xs\" variant=\"outline\" and stays on the right at every width, phones included; on touch screens it gets a 40px hit area.",
+      "The neutral mark on the grey note is a white chip, lifted by a shadow (one step lighter than the note in dark). Pass the act's own icon; each screen picks the one that fits its moment.",
+      "Place it on the white page or a white dialog body. On a sunken or tinted surface its fill has no edge (rule 6a): give it a ring in className.",
       "An animated line is a live region (status, or alert for errors). A still line is not, so a line already true when the screen opened is not announced.",
       "Field refusal: focus moves into the field and its red ring grows in; the error line opens its own room and drops in under the field. A repeat press shakes the field once and replays the line. Call reset once the input is valid.",
       "A mark in a pill is concentric: Badge gives a 14px mark equal inset at the top, bottom and end.",

@@ -125,8 +125,19 @@ neutral, choose neutral.
 - **Live regions are built in.** Toasts announce through sonner's region; an animated
   `StatusLine` is a status (or alert, for errors); a `still` one is not. Don't wrap these
   pieces in another `role="status"`.
-- **Rails are straight**, full height and flush left, clipped by the corner radius.
+- **`StatusLine` is one tinted box** (the tone's `-muted` fill, 18px corners), no rail and
+  no divider. A title's detail is in the tone's own text. The action is one
+  `Button size="xs" variant="outline"` and stays on the right at every width. Put it on a
+  white surface; on a sunken or tinted one give it a ring.
+- **Weight in the small feedback pieces** (status line, toast, tally): a title with a
+  detail line under it is semibold; a line on its own is medium. Large outcome headings
+  stay semibold.
+- **Toast rails are straight**, full height and flush left, clipped by the corner radius.
   They never bend with it.
+- **Stacked cards get even space around them.** When a dialog or page stacks summary
+  cards or tallies, give the stack the same space on every side (above, below, between
+  and at the edges), on the spacing ladder. Pick the size from the context, usually the
+  surface's own side inset; never more at the sides than above and below.
 - **A mark in a pill is concentric**, with equal inset at the top, bottom and end
   (`Badge` does it for a 14px mark).
 - **Labels that state the outcome** (Every signature is in, Joined as …) use success

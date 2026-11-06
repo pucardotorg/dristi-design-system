@@ -203,7 +203,8 @@ function ToastCard({
         <StatusMark tone={tone} icon={tone === "neutral" ? icon : undefined} size={24} />
       </span>
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <p className="text-body-compact font-semibold text-pretty">{title}</p>
+        {/* Weight: a title over a detail is semibold; a title on its own is medium. */}
+        <p className={cn("text-body-compact text-pretty", description ? "font-semibold" : "font-medium")}>{title}</p>
         {description ? <p className="text-body-compact text-pretty text-muted-foreground">{description}</p> : null}
       </div>
       {action ? (

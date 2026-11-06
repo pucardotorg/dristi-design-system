@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import {
-  FileQuestionIcon,
   LinkIcon,
   ListChecksIcon,
   LockIcon,
@@ -10,6 +9,7 @@ import {
   RotateCcwIcon,
   Trash2Icon,
   UserXIcon,
+  SearchXIcon,
 } from "lucide-react";
 
 import {
@@ -236,14 +236,23 @@ export const statusLinePreview = (
       <Replay>
         <div className="flex w-full max-w-3xl flex-col gap-4">
           <StatusLine tone="success">Access given to Adv. Meera Nair, Rahul (clerk)</StatusLine>
-          <StatusLine tone="error" action={<Button size="sm" variant="outline">Try again</Button>}>
-            Cases could not be loaded. Nothing has been changed. Try again in a moment.
+          <StatusLine tone="error" action={<Button size="xs" variant="outline">Try again</Button>}>
+            Cases could not be loaded.
           </StatusLine>
           <StatusLine tone="warning" title="12 days beyond the one-month limit">
             The court can still take this on file, but it must be asked to condone the delay.
           </StatusLine>
-          <StatusLine tone="info">We could not load your case. Your case number and hearing date are on your summons.</StatusLine>
-          <StatusLine tone="neutral" icon={FileQuestionIcon}>
+          <StatusLine tone="info" title="Your request has been submitted">
+            We will notify you when your advocate profile is approved. Your litigant profile remains active.
+          </StatusLine>
+          <StatusLine
+            tone="error"
+            title="Documents could not be loaded"
+            action={<Button size="xs" variant="outline">Try again</Button>}
+          >
+            Nothing has been changed. Try again in a moment.
+          </StatusLine>
+          <StatusLine tone="neutral" icon={SearchXIcon}>
             No case matches this number. Check your summons, or the case may not be in the system yet.
           </StatusLine>
         </div>

@@ -115,7 +115,9 @@ export function OutcomeHeader({
       )}
       style={{ background: `linear-gradient(180deg, ${BAND[tone]} 0%, color-mix(in oklab, ${BAND[tone]} 55%, ${SURFACE[surface]}) 100%)` }}
     >
-      <StatusMark tone={tone} icon={icon} size={compact ? 60 : 72} reject={reject} still={still} className={compact ? undefined : "max-sm:size-15"} />
+      {/* The neutral band is the warm well, the neutral disc's own colour: there the mark is
+          a white chip (onTint), or only its outline shows. */}
+      <StatusMark tone={tone} icon={icon} size={compact ? 60 : 72} reject={reject} still={still} onTint={tone === "neutral"} className={compact ? undefined : "max-sm:size-15"} />
       <div className="flex max-w-md flex-col items-center gap-1.5">
         {title ? (
         <Title
@@ -268,7 +270,7 @@ export function OutcomeTally({
         </li>
         <li className="flex items-center gap-2.5 py-2.5">
           <StatusMark size={20} tone={failedTone} still={still} delay={linesAt + 160} />
-          <span className="text-body-compact font-semibold">{failedLine}</span>
+          <span className="text-body-compact font-medium">{failedLine}</span>
         </li>
       </ul>
     </OutcomeSummary>
