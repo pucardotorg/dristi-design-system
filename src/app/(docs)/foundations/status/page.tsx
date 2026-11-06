@@ -102,9 +102,9 @@ export default function StatusPage() {
             <code>border-t border-hairline bg-surface-sunken</code>) with its buttons on it.
           </li>
           <li>
-            <span className="text-foreground">The status line has no rail:</span> one box in its
-            tone&apos;s tint. A toast&apos;s rail is straight, full height and flush left, clipped by
-            the corner radius; it never bends with it.
+            <span className="text-foreground">No rails:</span> the status line and the toast
+            are one box in their tone&apos;s tint. The toast is the status line, floating, with an
+            edge in its own tone and its timer on the bottom edge.
           </li>
           <li>
             <span className="text-foreground">A mark in a pill is concentric:</span> equal inset at
@@ -119,9 +119,9 @@ export default function StatusPage() {
             toast behind a dialog cannot be closed.
           </li>
           <li>
-            <span className="text-foreground">Dark mode lifts feedback surfaces.</span> The toast
-            sits on <code>surface-raised</code> with a full border; on <code>popover</code> alone it
-            disappears into the page.
+            <span className="text-foreground">Dark mode keeps feedback surfaces apart from the
+            page.</span> The toast&apos;s edge becomes the full <code>border</code>; a tint alone would
+            sink into the dark page.
           </li>
           <li>
             <span className="text-foreground">Copy:</span> keep the product&apos;s own words; a

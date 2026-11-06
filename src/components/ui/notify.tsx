@@ -24,8 +24,12 @@ import { StatusMark } from "@/components/ui/status-mark";
  * - **warning**: only where the product already treats it as a warning.
  * - **neutral**: not news (a draft saved, a step not open yet). Pass the act's `icon`.
  *
+ * Look: the status line, floating (owner, 2026-11-06). One box tinted in its tone, 18px
+ * corners, no rail, an edge in its own tone, the same marks and weight rule, 380px wide
+ * (the screen width less 16px margins on a phone). One-line toasts are 44px, two-line 66px.
+ *
  * Success, warning and neutral toasts last **2.75s** (the old default was 4s; lead
- * designer, 2026-10-29), show a thin timer, pause while the pointer is over them, and
+ * designer, 2026-10-29), show a thin timer on the bottom edge, pause while the pointer is over them, and
  * leave as soon as the person presses anywhere on the page outside the toasts
  * (`FeedbackToaster` listens).
  *
@@ -155,15 +159,51 @@ export const notify = {
   neutral: (title: React.ReactNode, options?: Options) => show("neutral", title, options),
 };
 
-const RAIL: Record<Tone, string> = {
-  success: "bg-success",
-  error: "bg-destructive",
-  warning: "bg-warning",
-  neutral: "bg-input",
+/* The toast is the status line, floating: one box in its tone's opaque tint, 18px corners,
+   no rail. */
+const TINT: Record<Tone, string> = {
+  success: "bg-success-muted",
+  error: "bg-destructive-muted",
+  warning: "bg-warning-muted",
+  neutral: "bg-surface-sunken",
 };
 
-/* Keeps the 36px look of a small button with a 40×40px touch target (ACCESSIBILITY §8). */
-const HIT = "relative after:absolute after:-inset-0.5";
+/* A detail line in the tone's own text on its tint (the measured -muted pair). */
+const DETAIL: Record<Tone, string> = {
+  success: "text-success-muted-foreground",
+  error: "text-destructive-muted-foreground",
+  warning: "text-warning-muted-foreground",
+  neutral: "text-muted-foreground",
+};
+
+/* The edge in the toast's own tone, one step deeper than its tint; in dark, the border.
+   A warm grey hairline around a green or red tint read as a pale beige rim. It is an inset
+   ring, drawn inside the fill, so the fill never shows past it at the corners. */
+const EDGE: Record<Tone, string> = {
+  success: "ring-success-muted-hover",
+  error: "ring-destructive-muted-hover",
+  warning: "ring-warning-muted-hover",
+  neutral: "ring-border",
+};
+
+/* The timer in the tone's solid. On its own tint the warning yellow barely shows, so the
+   warning timer takes the warning ink. */
+const TIMER: Record<Tone, string> = {
+  success: "bg-success",
+  error: "bg-destructive",
+  warning: "bg-warning-ink",
+  neutral: "bg-muted-foreground",
+};
+
+/* The timer runs the full width, resting on the 1px edge line. Its clip is a box one pixel
+   inside the card with the corner radius less that pixel, parallel to the edge line, so the
+   line sits exactly on the edge into each corner. */
+const TIMER_CLIP =
+  "pointer-events-none absolute inset-px overflow-hidden rounded-[calc(var(--radius-2xl)-1px)]";
+
+/* Buttons look 32px and eat into the padding, so every one-line toast is 44px tall and every
+   two-line toast 66px; on a touch screen the hit area grows to 40px (ACCESSIBILITY §8). */
+const TUCK = "relative -my-1 shrink-0 pointer-coarse:after:absolute pointer-coarse:after:-inset-1";
 
 function ToastCard({
   tone,
@@ -187,44 +227,42 @@ function ToastCard({
      already rises in, so the card does not animate its own entrance. */
   return (
     <div
-      /* A custom toast's list item shrink-wraps its content, so the card takes the
-         toaster's measure itself; on a phone the item is full width and this clamps. */
+      data-toast-card=""
       className={cn(
-        "relative flex w-(--width) max-w-full items-center gap-2.5 overflow-hidden rounded-lg py-3 pr-3 pl-4 text-popover-foreground shadow-overlay ring-1",
-        /* In dark, popover is the page colour: the toast lifts to the raised surface with a
-           full border, or it disappears into the page. */
-        "bg-popover ring-hairline dark:bg-surface-raised dark:ring-border",
+        /* A custom toast's list item shrink-wraps its content, so the card takes the
+           toaster's 380px measure itself. On a phone (sonner's 600px line) the toaster makes
+           each slot the screen width less its margins, and the card fills that slot, so the
+           stack stays centred on any phone. */
+        "relative flex w-(--width) max-w-full items-center gap-3 overflow-hidden rounded-2xl p-2.5 text-foreground shadow-overlay ring-1 ring-inset in-data-[sonner-toaster]:max-[600px]:w-full dark:ring-border",
+        action || persistent ? "pr-2.5" : "pr-3",
+        TINT[tone],
+        EDGE[tone],
       )}
     >
-      <span aria-hidden className={cn("absolute inset-y-0 left-0 w-1", RAIL[tone])} />
-      {/* One block of text: the mark sits in its middle. With a detail line, it centres on
-          the title and the detail's first line. */}
-      <span className={description ? "mt-2 self-start" : "self-center"}>
-        <StatusMark tone={tone} icon={tone === "neutral" ? icon : undefined} size={24} />
-      </span>
-      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+      {/* Mark, words and buttons share one centre line. A title over a detail is taller,
+          so its mark steps up to 28px. */}
+      <StatusMark tone={tone} icon={tone === "neutral" ? icon : undefined} size={description ? 28 : 24} onTint />
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5 py-0.5">
         {/* Weight: a title over a detail is semibold; a title on its own is medium. */}
         <p className={cn("text-body-compact text-pretty", description ? "font-semibold" : "font-medium")}>{title}</p>
-        {description ? <p className="text-body-compact text-pretty text-muted-foreground">{description}</p> : null}
+        {description ? <p className={cn("text-body-compact text-pretty", DETAIL[tone])}>{description}</p> : null}
       </div>
       {action ? (
-        <Button size="sm" variant="outline" className={cn("shrink-0", HIT)} onClick={action.onClick}>
+        <Button size="xs" variant="outline" className={TUCK} onClick={action.onClick}>
           {action.label}
         </Button>
       ) : null}
       {persistent ? (
-        <Button size="icon-sm" variant="ghost" className={cn("shrink-0 self-start text-muted-foreground", HIT)} aria-label="Close" onClick={onClose}>
+        <Button size="icon-xs" variant="ghost" className={cn(TUCK, "text-muted-foreground")} aria-label="Close" onClick={onClose}>
           <XIcon aria-hidden />
         </Button>
       ) : (
-        <span
-          aria-hidden
-          className={cn(
-            "fb-drain absolute inset-x-0 bottom-0 h-0.5",
-            tone === "neutral" ? "bg-muted-foreground" : tone === "warning" ? "bg-warning" : "bg-success",
-          )}
-          style={{ ["--fb-life" as string]: `${TOAST_LIFE_MS}ms` }}
-        />
+        <span aria-hidden className={TIMER_CLIP}>
+          <span
+            className={cn("fb-drain absolute inset-x-0 bottom-0 h-0.5", TIMER[tone])}
+            style={{ ["--fb-life" as string]: `${TOAST_LIFE_MS}ms` }}
+          />
+        </span>
       )}
     </div>
   );

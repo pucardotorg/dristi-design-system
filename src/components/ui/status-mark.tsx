@@ -62,8 +62,10 @@ const DISC: Record<MarkTone, string> = {
 
 /* On a status tint (StatusLine) the neutral disc would vanish into the grey note and leave
    only its outline, like an icon that did not load. There it is a white chip lifted off
-   the note; in dark, one step lighter than the note. */
-const NEUTRAL_ON_TINT = "bg-card text-foreground shadow-raised dark:bg-secondary";
+   the note; in dark, one step lighter than the note. White on the warm note is nearly the
+   same light, so without an edge the eye reads only the icon and the chip looks smaller
+   than the solid marks beside it: it takes the `border` edge, and a slightly larger icon. */
+const NEUTRAL_ON_TINT = "bg-card text-foreground shadow-raised ring-1 ring-border dark:bg-secondary";
 
 const RING: Partial<Record<MarkTone, string>> = {
   success: "bg-success",
@@ -179,7 +181,7 @@ export function StatusMark({
       >
         {iconTone && Icon ? (
           <span className={cn("flex", !still && "fb-glyph-in")}>
-            <Icon className={size <= 16 ? "size-2.5" : size <= 24 ? "size-3.5" : size <= 28 ? "size-4" : size <= 40 ? "size-5" : size <= 72 ? "size-7" : "size-10"} strokeWidth={size <= 24 ? 2.4 : 2} aria-hidden />
+            <Icon className={size <= 16 ? "size-2.5" : size <= 24 ? (onTint ? "size-4" : "size-3.5") : size <= 28 ? (onTint ? "size-4.5" : "size-4") : size <= 40 ? "size-5" : size <= 72 ? "size-7" : "size-10"} strokeWidth={size <= 24 ? 2.4 : 2} aria-hidden />
           </span>
         ) : (
           <span

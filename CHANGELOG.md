@@ -2,6 +2,28 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-11-06 · Toast: the status line, floating
+
+The toast had the same coloured rail as the status line. It now matches the new status
+line (owner, Nov 6), after a round of exploration:
+
+- **One box tinted in its tone,** 18px corners, no rail, no white card. The edge is one
+  step deeper in its own tone (a warm grey hairline read as a beige rim); in dark it is
+  the border. Same marks as the status line (28px with a detail line, neutral as a white
+  chip with an edge) and the same weight rule.
+- **Heights are fixed:** one-line toasts 44px, two-line 66px. The action and the error's
+  close are 32px and tucked into the padding, with a 40px hit area on touch screens.
+- **The timer** runs the full width on the bottom edge, clipped parallel to the edge line
+  so it sits exactly on it. The warning's timer is in warning ink (yellow on its own tint
+  was 1.5:1).
+- **Fixes in `FeedbackToaster`:** sonner's square list item cast the overlay shadow, which
+  showed as sharp corners past the card's curve: it casts none now. On phones wider than
+  390px the 380px card sat left in its slot; it fills the slot now, so the stack stays
+  centred. In a collapsed stack the cards behind take the front card's height and hide
+  their words (feedback.css), so the pile has one bottom edge.
+- The neutral mark on a tint now has an edge and a larger icon: white on the warm note was
+  nearly the same light, so it looked smaller than the solid marks.
+
 ## 2026-11-06 · Status line: one tinted box, no rail
 
 The product lead found the status line's coloured rail ugly. After several rounds of

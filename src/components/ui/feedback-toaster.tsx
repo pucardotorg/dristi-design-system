@@ -14,9 +14,11 @@ import { Toaster } from "@/components/ui/sonner";
  * - **Width:** 380px, enough for a full-sentence title on two lines at most.
  * - **Click-away:** any press on the page outside the toasts dismisses every toast except
  *   errors (lead designer, 2026-10-29). Presses on the toasts themselves are left alone.
- * - **Elevation:** the overlay shadow, not sonner's own.
+ * - **Elevation:** the card's own overlay shadow; the list item behind it casts none.
+ * - **Stacking:** sonner's collapsed stack (newest in front, up to three, the rest wait);
+ *   the cards behind take the front card's height (feedback.css).
  *
- * `notify` cards draw their own surface, rail and mark. The variables below only matter
+ * `notify` cards draw their own surface, edge, timer and mark. The variables below only matter
  * for a direct `toast.success` / `toast.error` call, which the system retires: each status
  * sits on its `-muted` fill with the ink already paired to it, edged with its step-7 ramp
  * colour so the toast reads as an object rather than a 1.1:1 tint.
@@ -80,11 +82,10 @@ export function FeedbackToaster() {
       }
       toastOptions={{
         classNames: { toast: "cn-toast" },
-        /* A toast is an overlay, so it takes the sanctioned overlay elevation. Sonner
-           ships `0 4px 12px rgba(0,0,0,.1)`, which is not one of ours and sits wrong
-           against the panels underneath. Inline, because the primitive's own rule
-           carries the same specificity as anything this file could add in CSS. */
-        style: { boxShadow: "var(--shadow-overlay)" },
+        /* The `notify` card draws its own rounded overlay shadow. Sonner's list item behind
+           it is square, so a shadow there showed as sharp corners past the card's curve:
+           none here. */
+        style: { boxShadow: "none" },
       }}
     />
   );

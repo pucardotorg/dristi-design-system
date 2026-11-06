@@ -22,7 +22,7 @@ import type { ComponentDoc } from "@/lib/component-doc-types";
 const pieces: [string, string, string, string][] = [
   [
     "What it is",
-    "The toast itself: its words, mark, rail, timer and how long it stays.",
+    "The toast itself: its words, mark, tint, timer and how long it stays.",
     "The place toasts appear: bottom centre, 380px wide, click-away.",
     "The Sonner library both sit on.",
   ],

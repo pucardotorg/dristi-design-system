@@ -132,8 +132,9 @@ neutral, choose neutral.
 - **Weight in the small feedback pieces** (status line, toast, tally): a title with a
   detail line under it is semibold; a line on its own is medium. Large outcome headings
   stay semibold.
-- **Toast rails are straight**, full height and flush left, clipped by the corner radius.
-  They never bend with it.
+- **The toast is the status line, floating** (`notify`): tinted box, 18px corners, no rail,
+  an edge one step deeper in its own tone (the border in dark), the same marks and weight
+  rule, the timer on the bottom edge. Never restyle it or draw a toast by hand.
 - **Stacked cards get even space around them.** When a dialog or page stacks summary
   cards or tallies, give the stack the same space on every side (above, below, between
   and at the edges), on the spacing ladder. Pick the size from the context, usually the
@@ -142,8 +143,8 @@ neutral, choose neutral.
   (`Badge` does it for a 14px mark).
 - **Labels that state the outcome** (Every signature is in, Joined as …) use success
   green, never teal: teal is the action colour and reads as clickable.
-- **Dark mode:** the pieces lift themselves (the toast to `surface-raised`). Never put a
-  feedback surface on `popover` alone in dark.
+- **Dark mode:** the pieces keep their own edge (the toast's becomes the border). Never put
+  a feedback surface on `popover` alone in dark.
 - **Reduced motion:** everything appears in its final state; timers still run.
 
 ## 4. Copy

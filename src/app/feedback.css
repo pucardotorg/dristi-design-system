@@ -142,6 +142,17 @@
 [data-sonner-toaster]:hover .fb-drain,
 [data-sonner-toast][data-expanded="true"] .fb-drain { animation-play-state: paused; }
 
+/* A collapsed stack: sonner holds every toast behind the front one to the front one's
+   height. The card (`notify`, `data-toast-card`) fills that height and hides its words, so
+   the pile has one bottom edge and only clean tinted slivers peek out above the front
+   toast. Hovering fans them out at their own heights, words back. Sonner wraps the card in
+   two plain divs, which take the height too. */
+[data-sonner-toast][data-expanded="false"][data-front="false"] > div,
+[data-sonner-toast][data-expanded="false"][data-front="false"] > div > div,
+[data-sonner-toast][data-expanded="false"][data-front="false"] [data-toast-card] { height: 100%; }
+[data-sonner-toast][data-expanded="false"][data-front="false"] [data-toast-card] > * { opacity: 0; }
+[data-toast-card] > * { transition: opacity 400ms; }
+
 /* A refused field: its red ring grows in from nothing to the DS invalid ring. */
 @keyframes fb-ring-in { from { box-shadow: 0 0 0 0 transparent; } }
 .fb-field [aria-invalid="true"] { animation: fb-ring-in 260ms ease-out; }

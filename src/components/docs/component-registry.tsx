@@ -450,7 +450,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "notify",
     title: "Notify",
     description:
-      "The product's toasts for quick acts where the page stays put. White card, solid mark, a straight rail, raised in dark. Raise them through notify, never toast() directly.",
+      "The product's toasts for quick acts where the page stays put. The status line, floating: a box tinted in its tone, no rail, an edge in its own tone. Raise them through notify, never toast() directly.",
     importPath: "@/components/ui/notify",
     whenToUse: [
       "notify.success for a quick act that worked (access given, reminder sent).",
@@ -458,9 +458,11 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "notify.warning only where the product already treats the thing as a warning.",
       "notify.neutral for news that is not news (a draft saved, a step not open yet), with the act's icon.",
     ],
-    tokens: ["card", "surface-raised", "border", "success", "destructive", "warning", "input"],
+    tokens: ["success-muted", "destructive-muted", "warning-muted", "surface-sunken", "border", "warning-ink"],
     usageNotes: [
-      "Success, warning and neutral last 2.75s, show a thin timer bar, pause while the pointer is over them, and leave on any press on the page outside the toasts.",
+      "Look: one box tinted in its tone, 18px corners, an edge one step deeper in the same tone (the border in dark), the status line's marks (neutral as a white chip) and weight rule. 380px wide; on a phone the screen width less 16px margins. One-line toasts 44px, two-line 66px.",
+      "Buttons (an action, the error's close) are 32px, tucked into the padding, with a 40px hit area on touch screens.",
+      "Success, warning and neutral last 2.75s, show a thin timer on the bottom edge (the warning's in warning ink), pause while the pointer is over them, and leave on any press on the page outside the toasts.",
       "Error toasts stay until closed, carry a close button and ignore page presses. Before this system they left after 4s with no close, so an error could vanish unread.",
       "The same error again never stacks a copy: the old card leaves and the error comes up from the bottom afresh about 120ms later, so a retry that failed again reads as new news. Different errors still stack.",
       "notify.error while a dialog is open waits for the dialog to close; a toast behind a dialog cannot be closed. Say the failure inside the dialog instead.",
@@ -478,16 +480,17 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "feedback-toaster",
     title: "Feedback toaster",
     description:
-      "The toaster notify draws into: bottom centre, 380px wide, 56px up (64px and full width on a phone), click-away for every toast but errors, and a raised surface in dark.",
+      "The toaster notify draws into: bottom centre, 380px wide, 56px up (64px and full width on a phone), click-away for every toast but errors, and a collapsed stack.",
     importPath: "@/components/ui/feedback-toaster",
     whenToUse: [
       "Mount once per product area, instead of the Toaster primitive.",
       "Pair with notify; the two share the click-away list.",
     ],
-    tokens: ["card", "surface-raised", "border"],
+    tokens: ["border"],
     usageNotes: [
       "Toaster in sonner.tsx stays the upgradeable registry primitive; the feedback system's decisions are composed here.",
-      "In dark the toast lifts to surface-raised with a full border; on popover alone it disappears into the page.",
+      "Stacking is sonner's: newest in front, up to three on screen, the rest wait and step forward as the front ones leave. In a collapsed stack the cards behind take the front card's height and hide their words; hovering fans them out.",
+      "The card casts its own rounded shadow; sonner's square list item casts none, or its corners would show past the card's curve.",
     ],
     dontItems: ["Mount it twice in one area: the toasts would draw twice."],
     preview: feedbackToasterPreview,
