@@ -12,8 +12,8 @@ const tones = [
   ["success", "It happened.", "A draft saved or an archive (neutral)."],
   ["error", "It did not happen, or was refused.", "A missed lookup or a typo-level miss (neutral)."],
   ["warning", "It happened with a catch, or needs a look.", "A gate, a question, a dead end, an irreversible act."],
-  ["info", "Sent, not decided yet.", "General tips."],
-  ["neutral", "Not news: gates, drafts, dead ends, no match, waiting on you.", "Anything that went wrong."],
+  ["info", "Worth knowing: sent and waiting (the hourglass), or anything else the person should take in (the “i”: a scope, a consequence, how it works now).", "Housekeeping the person can safely skip."],
+  ["neutral", "Quiet housekeeping: drafts saved, tasks archived, no match, nothing to review, waiting on you.", "Anything the person should take in, or anything that went wrong."],
   ["danger", "The question before a removal or discard.", "Outcomes. Confirms only."],
 ];
 
@@ -23,7 +23,8 @@ const pieces = [
   ["Act reaching the court, moving money or adding a signature", "Outcome header", "Takes over the top of the same dialog."],
   ["Some went through, some did not", "Outcome header (neutral, checklist) + tally", "The header says only what fully happened."],
   ["Quick act, page stays put", "Notify", "2.75s, click-away. Errors stay until closed."],
-  ["A note inside a page or dialog", "Status line", "Stays as long as it is true."],
+  ["A note inside a page or dialog", "Status line", "Stays as long as it is true. Neutral on anything but white takes a hairline edge."],
+  ["A condition true for the whole page on load", "Banner", "The band under the page header. One per page; never in a dialog or a card."],
   ["The whole page is the outcome, or a dead end", "Page outcome", "Dead ends are neutral and flat."],
   ["A standing state on a row", "Badge with a 14px mark", "Concentric in the pill."],
   ["A dialog closed back onto a list", "Landing", "The changed row glows once."],
@@ -43,7 +44,7 @@ export default function StatusPage() {
         the motion, sizes, tones and accessibility, and a screen supplies only words and facts.
       </Callout>
 
-      <DocsSection title="Tones" description="When unsure between warning and neutral, choose neutral. Warning only where the product already treats the thing as a warning.">
+      <DocsSection title="Tones" description="Blue or grey? Ask whether skipping it could leave the person surprised later: if so, info. Grey is built to be ignored. When unsure between warning and neutral, choose neutral; warning only where the product already treats the thing as a warning.">
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-left text-sm">
             <thead className="bg-surface-sunken text-xs text-muted-foreground">
@@ -93,7 +94,7 @@ export default function StatusPage() {
         <ul className="list-disc space-y-2 pl-6 text-sm leading-relaxed text-muted-foreground">
           <li>
             <span className="text-foreground">Never colour alone.</span> Every mark has its own
-            glyph: check, cross, !, hourglass, or the act&apos;s icon. A tally&apos;s failed share
+            glyph: check, cross, !, hourglass or i, or the act&apos;s icon. A tally&apos;s failed share
             also carries stripes. Glyphs must read at 16–20px in greyscale.
           </li>
           <li>

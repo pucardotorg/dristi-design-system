@@ -49,6 +49,8 @@ const values = [
   ["fb-bar", "280ms from 150ms", "cubic-bezier(0.34, 1.56, 0.64, 1)", "Hero !, bar drops in"],
   ["fb-dot", "220ms from 330ms", "cubic-bezier(0.34, 1.56, 0.64, 1)", "Hero !, dot pops"],
   ["fb-flip", "900ms from 250ms", "cubic-bezier(0.65, 0, 0.35, 1)", "Hero hourglass, turns once"],
+  ["fb-i-dot", "280ms from 200ms", "cubic-bezier(0.34, 1.56, 0.64, 1)", "Hero info i, dot drops in"],
+  ["fb-i-stem", "320ms from 400ms", "cubic-bezier(0.2, 0.8, 0.2, 1)", "Hero info i, stem draws down"],
   ["fb-ring", "900ms from 200ms", "ease-out", "Success ring, once"],
   ["fb-ring-soft", "650ms from 330ms", "ease-out", "Warning ring, once"],
   ["fb-sway", "420ms from 330ms", "ease-in-out", "Warning, ±5° once"],

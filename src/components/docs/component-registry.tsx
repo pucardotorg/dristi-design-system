@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   AlertCircleIcon,
   CheckCircle2Icon,
+  EyeIcon,
   InfoIcon,
   SearchIcon,
   MoreHorizontalIcon,
@@ -45,6 +46,7 @@ import {
   ButtonIconMatrix,
   ButtonMasterMatrix,
   ButtonWithIconsMatrix,
+  ButtonWorkingDemo,
 } from "@/components/docs/button-docs";
 import {
   confirmMarkPreview,
@@ -53,6 +55,7 @@ import {
   outcomePreview,
   outcomeVariants,
   statusLinePreview,
+  BannerRequestDemo,
   statusLineVariants,
   statusMarkPreview,
 } from "@/components/docs/feedback-docs";
@@ -324,12 +327,12 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "status-mark",
     title: "Status mark",
     description:
-      "The one mark every outcome uses: a solid disc with a glyph, in six tones and nine sizes. Its motion is budgeted by size.",
+      "The one mark every outcome uses: a solid disc with a glyph, in six tones and ten sizes. Its motion is budgeted by size.",
     importPath: "@/components/ui/status-mark",
     whenToUse: [
       "Inside the feedback pieces (outcome header, status line, toast, tally). Screens rarely place it directly.",
       "Directly only for a 14px mark in a Badge (it fits itself) or a mark beside a tally line.",
-      "Tones: success it happened · error it did not · warning it happened with a catch · info sent, not decided · neutral not news · danger the question before a removal.",
+      "Tones: success it happened · error it did not · warning it happened with a catch · info worth knowing (hourglass: sent and waiting; glyph=\"i\": anything else to take in) · neutral quiet housekeeping · danger the question before a removal.",
     ],
     tokens: ["success", "destructive", "warning", "info", "surface-sunken", "input", "destructive-muted", "destructive-ink"],
     usageNotes: [
@@ -341,6 +344,8 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "reject: one small shake after a hero error mark lands, only when the person's own input was refused.",
       "delay moves the whole mark, glyph included, so marks that belong together play in order.",
       "Neutral and danger marks always show an icon: pass the act's own (lock, trash, user-x).",
+      "Info shows the hourglass by default (sent, waiting). glyph=\"i\" swaps it for a slim i, the warning's ! turned over: at 44px and up the dot drops in, then the stem draws down; smaller, it scales in.",
+      "onTint: the mark sits on a status tint, so a neutral mark becomes a white chip with an edge and a slightly larger icon.",
     ],
     doItems: [
       "Keep one animated mark per screen; everything else is still.",
@@ -408,7 +413,8 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "Weight: a title over a detail is semibold; a line on its own is medium (as Card, Dialog and Alert titles).",
       "Mark, words and action share one centre line. The action is one Button size=\"xs\" variant=\"outline\" and stays on the right at every width, phones included; on touch screens it gets a 40px hit area.",
       "The neutral mark on the grey note is a white chip, lifted by a shadow (one step lighter than the note in dark). Pass the act's own icon; each screen picks the one that fits its moment.",
-      "Place it on the white page or a white dialog body. On a sunken or tinted surface its fill has no edge (rule 6a): give it a ring in className.",
+      "A neutral line on anything but white (the app's beige page, a dialog's warm stage) takes onWarm: a hairline edge, the toast's, or its grey melts into the surface. Coloured lines need none.",
+      "Info lines pass glyph=\"i\" for something to take in (a scope, a consequence); the hourglass default is only for sent and waiting.",
       "An animated line is a live region (status, or alert for errors). A still line is not, so a line already true when the screen opened is not announced.",
       "Field refusal: focus moves into the field and its red ring grows in; the error line opens its own room and drops in under the field. A repeat press shakes the field once and replays the line. Call reset once the input is valid.",
       "A mark in a pill is concentric: Badge gives a 14px mark equal inset at the top, bottom and end.",
@@ -456,12 +462,13 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "notify.success for a quick act that worked (access given, reminder sent).",
       "notify.error for an act raised from a page that did not happen.",
       "notify.warning only where the product already treats the thing as a warning.",
-      "notify.neutral for news that is not news (a draft saved, a step not open yet), with the act's icon.",
+      "notify.info for something worth knowing after an act: glyph: \"i\" for something to take in, the hourglass default when it was sent and is waiting on someone else.",
+      "notify.neutral for quiet housekeeping (a draft saved, a task archived), with the act's icon.",
     ],
     tokens: ["success-muted", "destructive-muted", "warning-muted", "surface-sunken", "border", "warning-ink"],
     usageNotes: [
       "Look: one box tinted in its tone, 18px corners, an edge one step deeper in the same tone (the border in dark), the status line's marks (neutral as a white chip) and weight rule. 380px wide; on a phone the screen width less 16px margins. One-line toasts 44px, two-line 66px.",
-      "Buttons (an action, the error's close) are 32px, tucked into the padding, with a 40px hit area on touch screens. An action keeps 16px to the right edge.",
+      "The error's close is 32px, tucked into the padding. A toast with an action is a step taller (56px): 12px all round the 32px button, whose 6px corner runs parallel to the toast's 18px. Both get a 40px hit area on touch screens.",
       "Success, warning and neutral last 2.75s, show a thin timer on the bottom edge (the warning's in warning ink), pause while the pointer is over them, and leave on any press on the page outside the toasts.",
       "Error toasts stay until closed, carry a close button and ignore page presses. Before this system they left after 4s with no close, so an error could vanish unread.",
       "The same error again never stacks a copy: the old card leaves and the error comes up from the bottom afresh about 120ms later, so a retry that failed again reads as new news. Different errors still stack.",
@@ -526,6 +533,9 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     ],
     usageNotes: [
       "Props: variant · size · asChild. State (hover / focus / disabled) is CSS/DOM — not a prop.",
+      "Working state (a pattern, not a prop): while the act runs, show a Spinner before the label's -ing form (Submitting…, Requesting…), set disabled and aria-busy, and keep the width exactly the same: size the button for the longer of its two labels from the start (both labels in one grid cell), so nothing beside it moves.",
+      "After a one-time act succeeds, the button goes away or the screen changes around it (the dialog closes, the banner becomes the new condition, the row gets its badge). Never leave a green Done button behind.",
+      "The one exception: a small repeatable act with nothing else on screen to show it worked (Copy link) may confirm on the button for about two seconds with the system's 16px success mark (it pops, the tick draws) and the past tense (Copied), then go back. A resend with a wait shows its countdown (Resend in 30s), disabled.",
       "variant: default | outline | secondary | ghost | destructive | destructive-solid | success | warning | info | destructive-ghost | link.",
       "size: xs 32 · sm 36 · default 40 · lg 44. Icon-only: icon-xs · icon-sm · icon · icon-lg.",
       "destructive is the soft/at-rest treatment; destructive-solid only for a confirmed irreversible action.",
@@ -563,6 +573,11 @@ export const componentRegistry: Record<string, ComponentDoc> = {
         label: "With icons — icon start · icon end · both",
         className: "items-stretch justify-start overflow-x-auto",
         content: <ButtonWithIconsMatrix />,
+      },
+      {
+        label: "Working state and brief confirmation · press to try",
+        className: "items-stretch justify-start",
+        content: <ButtonWorkingDemo />,
       },
     ],
   },
@@ -620,12 +635,11 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "alert",
     title: "Alert",
     description:
-      "Inline feedback that stays on the page. Use for persistent notices, not transient toasts. Prefer Banner for page-load standing conditions.",
+      "Retired (Nov 2026): every inline note is now a Status line. Kept only until the product's last Alerts are moved.",
     importPath: "@/components/ui/alert",
     whenToUse: [
-      "Surface form or page-level messages the user should not miss.",
-      "Explain system state without blocking the rest of the UI.",
-      "Use Banner for conditions that load with the page; Notify for quick confirmations; Status line or Outcome for results.",
+      "Do not use in new work. A note inside a page, a form or a dialog is a Status line; a condition for the whole page is a Banner.",
+      "Moving an Alert: destructive to error, warning to warning, success to success; info and default to info with glyph=\"i\" when the person should take it in, neutral when it is housekeeping.",
     ],
     tokens: [
       "card",
@@ -641,11 +655,10 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "Keep the title short — a few words. Put detail in the description.",
     ],
     doItems: [
-      "Use Alert for a message tied to the current form or page state.",
-      "Use Banner instead for a condition that's true for the whole page on load.",
+      "Use a Status line for any note tied to the current form, page or dialog.",
     ],
     dontItems: [
-      "Stack more than one or two alerts on the same view.",
+      "Add a new Alert anywhere.",
       "Use Alert for a confirmation — that's Notify, Status line or Outcome.",
     ],
     preview: (
@@ -1863,51 +1876,57 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "banner",
     title: "Banner",
     description:
-      "Full-width standing notice that loads with the page — information, not feedback. Not action-triggered, not dismissible by default.",
+      "A condition true for the whole page from the moment it loads, as a band under the page header. Information, not feedback on an act.",
     importPath: "@/components/ui/banner",
     whenToUse: [
-      "Page-load conditions that remain while true (court holiday, read-only mode).",
-      "Prefer Alert for contextual form/page feedback; Notify for quick confirmations.",
+      "Whole-page conditions that stay while true: the court is closed that day, read-only access, filing closes at 5 pm, planned downtime.",
+      "A note about one part of a page, a dialog or a card is a Status line, never a Banner (most banners in the app before Nov 2026 were such notes).",
       "Never as a success or failure confirmation: use Outcome, Status line or Notify.",
     ],
-    tokens: [
-      "info-muted",
-      "warning-muted",
-      "success-muted",
-      "destructive-muted",
-      "muted",
-      "border",
-    ],
+    tokens: ["info-muted", "warning-muted", "success-muted", "destructive-muted", "surface-sunken", "border"],
     usageNotes: [
-      "variant: info | warning | success | error | neutral — opaque muted fills only, each with a matching leading icon baked in.",
-      "role=\"status\" is built in; icon is chosen automatically per variant.",
-      "Optional action prop docks a single quiet link/button on the right (e.g. View order).",
+      "The band: across the whole area it belongs to (the page column under the page header, never under the rail), square, in its tone's opaque tint, no rail and no edge lines. The status line's marks and weight rule a step larger: a 28px mark, 40px with a title; at least 56px tall.",
+      "Blue is the usual banner (something to take in) and shows the i by default; glyph=\"hourglass\" for sent and waiting. Neutral takes the condition's own icon.",
+      "title + children: a semibold title over a detail line in the tone's own text. children alone: one medium line.",
+      "inset: pass the page's own side padding, so the banner's content lines up with the page title at every width.",
+      "onWarm (neutral only): on anything but white, hairlines run above and below so the grey band does not melt into the page.",
+      "One action, on the right (under the words on a phone, so the sentence keeps its full width), picked by what it does. Takes the person somewhere (action={{ label, href }}): an underlined link in the tone's ink, with the button press (1px), a heavier underline on hover, the focus ring and a 40px hit area on touch screens. Does something and they stay (action={{ label, onClick }}): a small outline button, with the working state while it runs (busy, busyLabel).",
+      "When that act succeeds, the banner itself changes to the new condition (Access requested, blue with the hourglass) or goes away. No toast on top. When it fails, the button comes back and an error toast says why.",
+      "Banners do not animate: they are part of the page as it loads. role=\"status\" is built in.",
     ],
     doItems: [
-      "Reserve Banner for a condition that's true for the whole page, not one field or action.",
-      "Keep to one banner per page — stacking several dilutes all of them.",
+      "Keep to one banner per page; stacking several dilutes all of them.",
+      "Say the condition and what it means together (closed on 14 November; hearings move to the next working day).",
     ],
     dontItems: [
-      "Use Banner for a one-time confirmation — that's Notify.",
-      "Put more than one action in the action slot.",
+      "Put a Banner inside a dialog, a card or a form: that is a Status line.",
+      "Use Banner for a one-time confirmation: that is Notify.",
+      "Put more than one action in it, or a teal button.",
     ],
     preview: (
-      <div className="flex w-full flex-col gap-3">
-        <Banner
-          variant="info"
-          action={
-            <Button variant="link" size="sm">
-              View order
-            </Button>
-          }
-        >
-          Standing notice text
+      <div className="flex w-full flex-col gap-4 overflow-hidden rounded-xl py-4 ring-1 ring-border">
+        <Banner variant="info" title="The court is closed on 14 November">
+          Hearings listed that day move to the next working day.
         </Banner>
-        <Banner variant="warning">Standing notice text</Banner>
-        <Banner variant="success">Standing notice text</Banner>
-        <Banner variant="neutral">Standing notice text</Banner>
+        <Banner variant="neutral" icon={EyeIcon} action={{ label: "Request access", onClick: () => undefined }}>
+          You are viewing this case as a read-only observer.
+        </Banner>
+        <Banner variant="warning">Filing closes at 5:00 pm today. Drafts stay saved.</Banner>
+        <Banner variant="error" action={{ label: "Try again", onClick: () => undefined }}>
+          Cases could not be loaded.
+        </Banner>
+        <Banner variant="success" action={{ label: "View order", href: "#" }}>
+          This case is disposed. The final order is in Orders.
+        </Banner>
       </div>
     ),
+    variantSections: [
+      {
+        label: "An action that does something · press Request access",
+        className: "items-stretch justify-start",
+        content: <BannerRequestDemo />,
+      },
+    ],
   },
 
   "description-list": {

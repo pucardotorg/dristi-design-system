@@ -44,7 +44,10 @@ Ask, in order:
    - All went through: `tone="success"`.
    - Nothing went through: `tone="error"`, with no shake (the system failed, not the
      person).
-   - Sent but not decided (an application awaiting an order): `tone="info"`.
+   - Sent but not decided (an application awaiting an order): `tone="info"` (the hourglass,
+     its default).
+   - Something the person must take in (a scope, a consequence, how it works now):
+     `tone="info" glyph="i"`.
    - Nothing to do, nothing wrong (every item was already done): `tone="neutral"`, with the
      act's `icon` if it has one.
    - Saved and waiting on the person (sign later, pay later): `tone="neutral"` with a clock
@@ -65,12 +68,19 @@ Ask, in order:
    - Some went through: `tone="neutral"` with a checklist icon (neither the big tick nor the "!", owner Oct 29); the header says only what fully happened; `OutcomeTally` shows
      the split, one marked line per outcome.
 4. **Is it a quick act where the page stays put** (access given, reminder sent,
-   archived)? Use `notify.success`, `notify.error`, `notify.warning` or
-   `notify.neutral`. Never call `toast()` from sonner directly. **Never `notify.error`
+   archived)? Use `notify.success`, `notify.error`, `notify.warning`, `notify.info`
+   (`glyph: "i"` unless it is sent and waiting) or `notify.neutral`. Never call `toast()` from sonner directly. **Never `notify.error`
    while a dialog is open:** the dialog blocks the page, so the toast could not be closed.
    Inside a dialog, a failure is a `StatusLine` or an `OutcomeHeader`.
 5. **Is it a note inside a page or an open dialog?** Use `StatusLine` in the matching
-   tone.
+   tone. A neutral line on anything but white (the app's beige page, a dialog's warm
+   stage) takes `onWarm`, a hairline edge, or it melts into the surface.
+5a. **Is it a condition true for the whole page from the moment it loads** (the court is
+   closed that day, read-only access, filing closes at 5 pm)? Use `Banner`: the band under
+   the page header, across the page column. Pass the page's side padding as `inset`; a
+   neutral band on anything but white takes `onWarm`. One per page, one action (an
+   underlined link, `{ label, onClick | href }`). Never a Banner inside a dialog or a card,
+   and never `Alert` (it is retired): those notes are `StatusLine`.
 6. **Is the whole page the outcome, or a dead end?** Use `PageOutcome`. Success and error
    get a soft glow; a dead end (not found, link expired) is `neutral` with the act's icon,
    and stays flat. A page whose only content is the outcome (account ready) takes
@@ -88,9 +98,14 @@ Ask, in order:
 | success | it happened | a draft saved, an archive (use neutral) |
 | error | it did not happen, or was refused | a missed lookup or a typo-level miss (neutral) |
 | warning | it happened with a catch, or needs a look | a gate, a question, a dead end, an irreversible act |
-| info | sent, not decided yet | general tips |
-| neutral | not news: gates, drafts, dead ends, "no match" | anything that went wrong |
+| info | **worth knowing**: something the person should take in. Two kinds: sent and waiting on someone else (the hourglass, the default) and everything else worth noticing (`glyph="i"`: a scope, a consequence, how it works now) | housekeeping the person can safely skip (use neutral) |
+| neutral | **quiet housekeeping**: low stakes, nothing to remember (a draft saved, a task archived, no match, nothing to review) | anything the person should take in (use info), anything that went wrong |
 | danger | the question before a removal (confirms only) | outcomes |
+
+**Blue or grey? Ask: "If they skip this, could they misunderstand or be surprised
+later?"** Yes: info. No: neutral. "Anil can access all 78 of your cases, and new cases
+are shared automatically" is info; "Task archived" is neutral. Grey is built to be
+ignored; never put something that matters in it (owner, 2026-11-06).
 
 Use warning **only where the product already treats the thing as a warning** (late
 notice, offline, limitation passed, partial send). When unsure between warning and
@@ -119,7 +134,7 @@ neutral, choose neutral.
   ignore page presses. The same error again never stacks a copy: the old card leaves and
   it comes up from the bottom afresh (`notify.error` does this). Success, warning and neutral
   toasts are for quick acts only; anything that needs action is a dialog or inline.
-- **Never colour alone.** Every mark has a distinct glyph: check, cross, "!", hourglass,
+- **Never colour alone.** Every mark has a distinct glyph: check, cross, "!", hourglass or "i",
   or the act's icon (a neutral mark without one shows an info icon; pass the real one). A
   tally's failed share also carries stripes.
 - **Live regions are built in.** Toasts announce through sonner's region; an animated
@@ -127,8 +142,8 @@ neutral, choose neutral.
   pieces in another `role="status"`.
 - **`StatusLine` is one tinted box** (the tone's `-muted` fill, 18px corners), no rail and
   no divider. A title's detail is in the tone's own text. The action is one
-  `Button size="xs" variant="outline"` and stays on the right at every width. Put it on a
-  white surface; on a sunken or tinted one give it a ring.
+  `Button size="xs" variant="outline"` and stays on the right at every width. A neutral
+  line on anything but white takes `onWarm` (a hairline edge); coloured lines need none.
 - **Weight in the small feedback pieces** (status line, toast, tally): a title with a
   detail line under it is semibold; a line on its own is medium. Large outcome headings
   stay semibold.

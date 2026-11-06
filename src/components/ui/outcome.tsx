@@ -70,12 +70,15 @@ export function OutcomeHeader({
   still = false,
   reject = false,
   icon,
+  glyph,
   children,
   className,
 }: {
   tone?: HeaderTone;
   /** Neutral only: the act's own icon. */
   icon?: React.ComponentProps<typeof StatusMark>["icon"];
+  /** Info only: the hourglass (sent, waiting; the default) or the "i" (worth knowing). */
+  glyph?: "hourglass" | "i";
   /** Omit only when something above already says the outcome; the band then carries the
       mark and the line. Prefer a title: it always sits under the mark. */
   title?: React.ReactNode;
@@ -117,7 +120,7 @@ export function OutcomeHeader({
     >
       {/* The neutral band is the warm well, the neutral disc's own colour: there the mark is
           a white chip (onTint), or only its outline shows. */}
-      <StatusMark tone={tone} icon={icon} size={compact ? 60 : 72} reject={reject} still={still} onTint={tone === "neutral"} className={compact ? undefined : "max-sm:size-15"} />
+      <StatusMark tone={tone} icon={icon} glyph={glyph} size={compact ? 60 : 72} reject={reject} still={still} onTint={tone === "neutral"} className={compact ? undefined : "max-sm:size-15"} />
       <div className="flex max-w-md flex-col items-center gap-1.5">
         {title ? (
         <Title
@@ -287,6 +290,7 @@ export function OutcomeTally({
 export function PageOutcome({
   tone,
   icon,
+  glyph,
   title,
   body,
   action,
@@ -298,6 +302,8 @@ export function PageOutcome({
 }: {
   tone: MarkTone;
   icon?: React.ComponentProps<typeof StatusMark>["icon"];
+  /** Info only: the hourglass (sent, waiting; the default) or the "i" (worth knowing). */
+  glyph?: "hourglass" | "i";
   title: React.ReactNode;
   body?: React.ReactNode;
   action?: React.ReactNode;
@@ -330,7 +336,7 @@ export function PageOutcome({
           style={{ background: `radial-gradient(ellipse at 50% 32%, ${glow}, var(--background) 70%)` }}
         />
       ) : null}
-      <StatusMark tone={tone} icon={icon} size={scale === "hero" ? 96 : 56} still={still} />
+      <StatusMark tone={tone} icon={icon} glyph={glyph} size={scale === "hero" ? 96 : 56} still={still} />
       {/* Centred text keeps a short measure; a left-aligned page keeps its column's. */}
       <div className={cn("flex flex-col gap-2", align === "center" ? "max-w-md items-center" : "max-w-2xl")}>
         <Heading

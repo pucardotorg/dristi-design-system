@@ -44,6 +44,12 @@ const DETAIL: Record<MarkTone, string> = {
   neutral: "text-muted-foreground",
 };
 
+/* A neutral line anywhere but on white (the app's beige page, a dialog's warm stage, a
+   tinted panel): its grey fill nearly matches the surface, so it takes a hairline edge,
+   the same edge the toast has (owner, 2026-11-06). On white it stays without one. Opt-in:
+   the line cannot see what is behind it. */
+const NEUTRAL_ON_WARM = "ring-1 ring-inset ring-border";
+
 /* The action keeps a 32px look (pass `Button size="xs"`), concentric with the 18px corner
    at the 10px inset; on a touch screen an invisible ring takes its hit area to 40px. */
 const ACTION =
@@ -58,6 +64,8 @@ export function StatusLine({
   still,
   role,
   className,
+  onWarm = false,
+  glyph,
 }: {
   tone: MarkTone;
   title?: React.ReactNode;
@@ -71,7 +79,13 @@ export function StatusLine({
       A `still` line (already true when the screen opened) is not a live region. */
   role?: "status" | "alert";
   className?: string;
+  /** Neutral only: the line sits on anything but white (a beige page, a warm stage), so
+      it takes a hairline edge. */
+  onWarm?: boolean;
+  /** Info only: the hourglass (sent, waiting; the default) or the "i" (worth knowing). */
+  glyph?: "hourglass" | "i";
 }) {
+  const warm = onWarm && tone === "neutral";
   return (
     <div
       data-slot="status-line"
@@ -80,12 +94,13 @@ export function StatusLine({
         "flex items-center gap-3 rounded-2xl p-2.5 text-foreground",
         action ? "pr-2.5" : "pr-3",
         TINT[tone],
+        warm && NEUTRAL_ON_WARM,
         !still && "fb-rise",
         className,
       )}
     >
       {/* A titled line is taller, so its mark steps up to 28px. */}
-      <StatusMark tone={tone} icon={icon} size={title ? 28 : 24} still={still} onTint />
+      <StatusMark tone={tone} icon={icon} glyph={glyph} size={title ? 28 : 24} still={still} onTint />
       <div className="flex min-w-0 flex-1 flex-col gap-0.5 py-0.5">
         {title ? <p className="text-body-compact font-semibold text-pretty">{title}</p> : null}
         {/* Weight: a title over a detail is semibold; a line on its own is medium. */}

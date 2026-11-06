@@ -1,5 +1,6 @@
 /**
- * What changed on each updated page in the Oct 30, 2026 round. Local preview aid only:
+ * What changed on each updated page (the Oct 30, 2026 round, plus the Nov 6 feedback round
+ * for the status pieces). Local preview aid only:
  * items are matched by exact text, so a later edit to an item drops its star.
  */
 export type DocsChange = {
@@ -21,27 +22,73 @@ export const docsChanges: Record<string, DocsChange> = {
     preview: true,
     sections: [],
   },
-  alert: {
+  "status-mark": {
     summary: [
-      "Guidance now sends confirmations to Notify, Status line or Outcome, never Alert.",
+      "Nov 6: info can show an \"i\" (glyph=\"i\") for something worth taking in, with its own motion; the hourglass stays the default for sent and waiting. New 28px size; onTint for marks on a status tint.",
     ],
     items: [
-      "Use Banner for conditions that load with the page; Notify for quick confirmations; Status line or Outcome for results.",
-      "Use Alert for a confirmation — that's Notify, Status line or Outcome.",
+      "Tones: success it happened · error it did not · warning it happened with a catch · info worth knowing (hourglass: sent and waiting; glyph=\"i\": anything else to take in) · neutral quiet housekeeping · danger the question before a removal.",
+      "Info shows the hourglass by default (sent, waiting). glyph=\"i\" swaps it for a slim i, the warning's ! turned over: at 44px and up the dot drops in, then the stem draws down; smaller, it scales in.",
+      "onTint: the mark sits on a status tint, so a neutral mark becomes a white chip with an edge and a slightly larger icon.",
+    ],
+    preview: true,
+    sections: [],
+  },
+  "status-line": {
+    summary: [
+      "Nov 6: one tinted box with no rail; glyph=\"i\" for blue notes worth taking in; onWarm gives a neutral line a hairline edge on anything but white.",
+    ],
+    items: [
+      "A neutral line on anything but white (the app's beige page, a dialog's warm stage) takes onWarm: a hairline edge, the toast's, or its grey melts into the surface. Coloured lines need none.",
+      "Info lines pass glyph=\"i\" for something to take in (a scope, a consequence); the hourglass default is only for sent and waiting.",
+    ],
+    preview: true,
+    sections: [],
+  },
+  notify: {
+    summary: [
+      "Nov 6: the toast is the status line, floating (tinted, no rail). New notify.info (the \"i\" or the hourglass). A toast with an action is 56px, with 12px round the button and matching corners.",
+    ],
+    items: [
+      "notify.info for something worth knowing after an act: glyph: \"i\" for something to take in, the hourglass default when it was sent and is waiting on someone else.",
+      "The error's close is 32px, tucked into the padding. A toast with an action is a step taller (56px): 12px all round the 32px button, whose 6px corner runs parallel to the toast's 18px. Both get a 40px hit area on touch screens.",
+      "notify.neutral for quiet housekeeping (a draft saved, a task archived), with the act's icon.",
+    ],
+    preview: true,
+    sections: [],
+  },
+  outcome: {
+    summary: [
+      "Nov 6: a blue outcome can show the \"i\" (glyph=\"i\"); a neutral header's mark is a white chip so it shows on the beige band.",
+    ],
+    items: [],
+    preview: false,
+    sections: [],
+  },
+  alert: {
+    summary: [
+      "Retired for new work (Nov 6). Every inline note is now a Status line; the docs say how each variant moves.",
+    ],
+    items: [
+      "Do not use in new work. A note inside a page, a form or a dialog is a Status line; a condition for the whole page is a Banner.",
+      "Moving an Alert: destructive to error, warning to warning, success to success; info and default to info with glyph=\"i\" when the person should take it in, neutral when it is housekeeping.",
+      "Use a Status line for any note tied to the current form, page or dialog.",
+      "Add a new Alert anywhere.",
     ],
     preview: false,
     sections: [],
   },
   banner: {
     summary: [
-      "Never a success or failure confirmation now. Guidance points to Notify, Outcome and Status line.",
+      "Rebuilt as the band (Nov 6): a whole-page condition under the page header, in the status line's family, with one underlined link on the right.",
     ],
     items: [
-      "Prefer Alert for contextual form/page feedback; Notify for quick confirmations.",
-      "Never as a success or failure confirmation: use Outcome, Status line or Notify.",
-      "Use Banner for a one-time confirmation — that's Notify.",
+      "Whole-page conditions that stay while true: the court is closed that day, read-only access, filing closes at 5 pm, planned downtime.",
+      "A note about one part of a page, a dialog or a card is a Status line, never a Banner (most banners in the app before Nov 2026 were such notes).",
+      "inset: pass the page's own side padding, so the banner's content lines up with the page title at every width.",
+      "onWarm (neutral only): on anything but white, hairlines run above and below so the grey band does not melt into the page.",
     ],
-    preview: false,
+    preview: true,
     sections: [],
   },
   sonner: {

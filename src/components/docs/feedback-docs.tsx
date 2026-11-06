@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  EyeIcon,
   LinkIcon,
   ListChecksIcon,
   LockIcon,
@@ -24,6 +25,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
+import { Banner } from "@/components/ui/banner";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ConfirmMark, IrreversibleNote } from "@/components/ui/confirm-mark";
@@ -103,29 +105,39 @@ function OutcomeDialog({ label, children }: { label: string; children: React.Rea
 
 const OutcomeFooter = ({ children }: { children: React.ReactNode }) => <DialogFooter>{children}</DialogFooter>;
 
-const TONES: MarkTone[] = ["success", "error", "warning", "info", "neutral", "danger"];
-const SIZES: MarkSize[] = [14, 16, 20, 24, 40, 56, 72];
+/* Rows: each tone, with info shown twice (the hourglass default, then glyph="i"). */
+const ROWS: { label: string; tone: MarkTone; glyph?: "i" }[] = [
+  { label: "success", tone: "success" },
+  { label: "error", tone: "error" },
+  { label: "warning", tone: "warning" },
+  { label: "info", tone: "info" },
+  { label: "info · i", tone: "info", glyph: "i" },
+  { label: "neutral", tone: "neutral" },
+  { label: "danger", tone: "danger" },
+];
+const SIZES: MarkSize[] = [14, 16, 20, 24, 28, 40, 56, 72];
 
 function MarkMatrix() {
   return (
     <Replay>
       <div className="overflow-x-auto">
-        <div className="grid grid-cols-[auto_repeat(7,minmax(0,1fr))] items-center gap-4">
+        <div className="grid grid-cols-[auto_repeat(8,minmax(0,1fr))] items-center gap-4">
           <span />
           {SIZES.map((s) => (
             <span key={s} className="text-caption tabular-nums text-muted-foreground">
               {s}px
             </span>
           ))}
-          {TONES.map((t) => (
-            <React.Fragment key={t}>
-              <span className="text-body-compact font-medium">{t}</span>
+          {ROWS.map((r) => (
+            <React.Fragment key={r.label}>
+              <span className="text-body-compact font-medium whitespace-nowrap">{r.label}</span>
               {SIZES.map((s) => (
                 <StatusMark
                   key={s}
-                  tone={t}
+                  tone={r.tone}
+                  glyph={r.glyph}
                   size={s}
-                  icon={t === "neutral" ? LockIcon : t === "danger" ? Trash2Icon : undefined}
+                  icon={r.tone === "neutral" ? LockIcon : r.tone === "danger" ? Trash2Icon : undefined}
                 />
               ))}
             </React.Fragment>
@@ -242,6 +254,9 @@ export const statusLinePreview = (
           <StatusLine tone="warning" title="12 days beyond the one-month limit">
             The court can still take this on file, but it must be asked to condone the delay.
           </StatusLine>
+          <StatusLine tone="info" glyph="i" title="Anil Raghavan can access all 78 of your cases">
+            Any new case you get is shared with them automatically.
+          </StatusLine>
           <StatusLine tone="info" title="Your request has been submitted">
             We will notify you when your advocate profile is approved. Your litigant profile remains active.
           </StatusLine>
@@ -315,6 +330,20 @@ export const notifyPreview = (
         </Button>
         <Button variant="outline" onClick={() => notify.warning("2 required documents still needed")}>
           Warning
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() =>
+            notify.info("Anil Raghavan can access all your cases", {
+              glyph: "i",
+              description: "New cases are shared with them automatically.",
+            })
+          }
+        >
+          Info
+        </Button>
+        <Button variant="outline" onClick={() => notify.info("Sent to the court")}>
+          Info, waiting
         </Button>
         <Button
           variant="outline"
@@ -428,3 +457,58 @@ export const statusLineVariants = [
         ),
       },
     ];
+
+
+/* ─────────────── Banner: an action that does something ─────────────── */
+
+/**
+ * Request access, live. The button runs (spinner, "Requesting…"); on success the banner
+ * itself becomes the new condition (blue, hourglass: sent and waiting) with no button and
+ * no toast on top; on failure the button comes back and an error toast says why.
+ */
+export function BannerRequestDemo() {
+  const [stage, setStage] = React.useState<"idle" | "busy" | "sent">("idle");
+  const [fail, setFail] = React.useState(false);
+  const request = () => {
+    setStage("busy");
+    window.setTimeout(() => {
+      if (fail) {
+        setStage("idle");
+        notify.error("Your request could not be sent", { description: "Nothing was sent. Try again." });
+      } else {
+        setStage("sent");
+      }
+    }, 1600);
+  };
+  return (
+    <div className="flex w-full flex-col gap-4">
+      <FeedbackToaster />
+      <div className="flex flex-wrap items-center gap-3 text-body-compact">
+        <label className="inline-flex items-center gap-2">
+          <input type="checkbox" checked={fail} onChange={(e) => setFail(e.target.checked)} className="size-4 accent-primary" />
+          Make the request fail
+        </label>
+        <Button size="sm" variant="ghost" onClick={() => setStage("idle")}>
+          Reset
+        </Button>
+      </div>
+      <div className="overflow-hidden rounded-xl bg-muted ring-1 ring-border">
+        {stage === "sent" ? (
+          <Banner variant="info" glyph="hourglass" title="Access requested">
+            You will be told when the case&apos;s advocate replies.
+          </Banner>
+        ) : (
+          <Banner
+            variant="neutral"
+            icon={EyeIcon}
+            onWarm
+            action={{ label: "Request access", busyLabel: "Requesting…", busy: stage === "busy", onClick: request }}
+          >
+            You are viewing this case as a read-only observer.
+          </Banner>
+        )}
+        <div className="p-6 text-body-compact text-muted-foreground">The case page</div>
+      </div>
+    </div>
+  );
+}

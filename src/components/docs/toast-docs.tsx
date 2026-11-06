@@ -49,7 +49,8 @@ const pieces: [string, string, string, string][] = [
 const toastCases: [string, string][] = [
   ["A quick act worked and the page stays put (access given, reminder sent, task archived)", "notify.success"],
   ["A quick act raised from a page did not happen", "notify.error. Stays until closed."],
-  ["Not news: a draft saved, a step not open yet", "notify.neutral, with the act's icon"],
+  ["Worth knowing after an act (who can now see a case; sent and waiting)", "notify.info: glyph \"i\" to take in, the hourglass when waiting"],
+  ["Quiet housekeeping: a draft saved, a task archived", "notify.neutral, with the act's icon"],
   ["A catch the product already treats as a warning", "notify.warning"],
 ];
 

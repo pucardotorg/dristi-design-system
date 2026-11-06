@@ -22,7 +22,9 @@ import { StatusMark } from "@/components/ui/status-mark";
  *   Inside an open dialog, a failure is never a toast (the dialog blocks the page, so the
  *   toast could not be closed): use `StatusLine` or `OutcomeHeader` there.
  * - **warning**: only where the product already treats it as a warning.
- * - **neutral**: not news (a draft saved, a step not open yet). Pass the act's `icon`.
+ * - **info**: worth knowing after an act. The hourglass by default (sent, waiting on someone
+ *   else); `glyph: "i"` for something the person should notice that is not waiting.
+ * - **neutral**: quiet housekeeping (a draft saved, a task archived). Pass the act's `icon`.
  *
  * Look: the status line, floating (owner, 2026-11-06). One box tinted in its tone, 18px
  * corners, no rail, an edge in its own tone, the same marks and weight rule, 380px wide
@@ -38,11 +40,13 @@ import { StatusMark } from "@/components/ui/status-mark";
 
 export const TOAST_LIFE_MS = 2750;
 
-type Tone = "success" | "error" | "warning" | "neutral";
+type Tone = "success" | "error" | "warning" | "info" | "neutral";
 type Options = {
   description?: React.ReactNode;
   action?: { label: string; onClick: () => void };
   icon?: React.ComponentProps<typeof StatusMark>["icon"];
+  /** Info only: the hourglass (sent, waiting; the default) or the "i" (worth knowing). */
+  glyph?: "hourglass" | "i";
   id?: string | number;
 };
 
@@ -99,6 +103,7 @@ function show(tone: Tone, title: React.ReactNode, options: Options = {}) {
         description={options.description}
         action={options.action}
         icon={options.icon}
+        glyph={options.glyph}
         persistent={persistent}
         onClose={() => toast.dismiss(toastId)}
       />
@@ -156,6 +161,7 @@ export const notify = {
   success: (title: React.ReactNode, options?: Options) => show("success", title, options),
   error: (title: React.ReactNode, options?: Options) => whenNoModal(() => showError(title, options)),
   warning: (title: React.ReactNode, options?: Options) => show("warning", title, options),
+  info: (title: React.ReactNode, options?: Options) => show("info", title, options),
   neutral: (title: React.ReactNode, options?: Options) => show("neutral", title, options),
 };
 
@@ -165,6 +171,7 @@ const TINT: Record<Tone, string> = {
   success: "bg-success-muted",
   error: "bg-destructive-muted",
   warning: "bg-warning-muted",
+  info: "bg-info-muted",
   neutral: "bg-surface-sunken",
 };
 
@@ -173,6 +180,7 @@ const DETAIL: Record<Tone, string> = {
   success: "text-success-muted-foreground",
   error: "text-destructive-muted-foreground",
   warning: "text-warning-muted-foreground",
+  info: "text-info-muted-foreground",
   neutral: "text-muted-foreground",
 };
 
@@ -183,6 +191,7 @@ const EDGE: Record<Tone, string> = {
   success: "ring-success-muted-hover",
   error: "ring-destructive-muted-hover",
   warning: "ring-warning-muted-hover",
+  info: "ring-info-muted-hover",
   neutral: "ring-border",
 };
 
@@ -192,6 +201,7 @@ const TIMER: Record<Tone, string> = {
   success: "bg-success",
   error: "bg-destructive",
   warning: "bg-warning-ink",
+  info: "bg-info",
   neutral: "bg-muted-foreground",
 };
 
@@ -205,12 +215,17 @@ const TIMER_CLIP =
    two-line toast 66px; on a touch screen the hit area grows to 40px (ACCESSIBILITY §8). */
 const TUCK = "relative -my-1 shrink-0 pointer-coarse:after:absolute pointer-coarse:after:-inset-1";
 
+/* A toast with an action is a step taller: 12px all round the button, and the button's
+   corner (6px) concentric with the toast's 18px at that inset. */
+const ACTION_BUTTON = "relative shrink-0 rounded-sm pointer-coarse:after:absolute pointer-coarse:after:-inset-1";
+
 function ToastCard({
   tone,
   title,
   description,
   action,
   icon,
+  glyph,
   persistent,
   onClose,
 }: {
@@ -219,6 +234,7 @@ function ToastCard({
   description?: React.ReactNode;
   action?: Options["action"];
   icon?: Options["icon"];
+  glyph?: Options["glyph"];
   persistent: boolean;
   onClose: () => void;
 }) {
@@ -234,23 +250,23 @@ function ToastCard({
            each slot the screen width less its margins, and the card fills that slot, so the
            stack stays centred on any phone. */
         "relative flex w-(--width) max-w-full items-center gap-3 overflow-hidden rounded-2xl p-2.5 text-foreground shadow-overlay ring-1 ring-inset in-data-[sonner-toaster]:max-[600px]:w-full dark:ring-border",
-        /* An action button keeps 16px to the edge, like the space around the words; the
-           error's ghost close sits closer, its icon already well inside its own box. */
-        action ? "pr-4" : persistent ? "pr-2.5" : "pr-3",
+        /* With an action the toast is a step taller, 12px all round (see ACTION_BUTTON);
+           the error's ghost close sits closer, its icon already well inside its own box. */
+        action ? "p-3" : persistent ? "pr-2.5" : "pr-3",
         TINT[tone],
         EDGE[tone],
       )}
     >
       {/* Mark, words and buttons share one centre line. A title over a detail is taller,
           so its mark steps up to 28px. */}
-      <StatusMark tone={tone} icon={tone === "neutral" ? icon : undefined} size={description ? 28 : 24} onTint />
+      <StatusMark tone={tone} icon={tone === "neutral" ? icon : undefined} glyph={glyph} size={description ? 28 : 24} onTint />
       <div className="flex min-w-0 flex-1 flex-col gap-0.5 py-0.5">
         {/* Weight: a title over a detail is semibold; a title on its own is medium. */}
         <p className={cn("text-body-compact text-pretty", description ? "font-semibold" : "font-medium")}>{title}</p>
         {description ? <p className={cn("text-body-compact text-pretty", DETAIL[tone])}>{description}</p> : null}
       </div>
       {action ? (
-        <Button size="xs" variant="outline" className={TUCK} onClick={action.onClick}>
+        <Button size="xs" variant="outline" className={ACTION_BUTTON} onClick={action.onClick}>
           {action.label}
         </Button>
       ) : null}

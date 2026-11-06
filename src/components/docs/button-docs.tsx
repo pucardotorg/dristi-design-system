@@ -1,8 +1,12 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
+import * as React from "react";
+
+import { CopyIcon, PlusIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import { StatusMark } from "@/components/ui/status-mark";
 import { cn } from "@/lib/utils";
 
 export const BUTTON_VARIANTS = [
@@ -330,6 +334,117 @@ export function ButtonWithIconsMatrix() {
             </Button>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+
+/* ─────────────── Working state and brief confirmation (patterns, not props) ─────────────── */
+
+/**
+ * The label slot of a button that switches between two labels. Both labels and the
+ * spinner's room sit in one grid cell, so the button is as wide as the longer one from the
+ * start and its width never changes when it switches. Docs pattern; the Button itself is
+ * untouched.
+ */
+function SteadyLabel({ rest, busy, busyLabel }: { rest: React.ReactNode; busy: boolean; busyLabel: React.ReactNode }) {
+  return (
+    <span className="grid">
+      <span className={cn("col-start-1 row-start-1 inline-flex items-center justify-center gap-1.5", busy && "invisible")}>
+        {rest}
+      </span>
+      <span
+        aria-hidden={!busy}
+        className={cn("col-start-1 row-start-1 inline-flex items-center justify-center gap-1.5", !busy && "invisible")}
+      >
+        <Spinner aria-hidden />
+        {busyLabel}
+      </span>
+    </span>
+  );
+}
+
+/**
+ * One button that runs an act: press it and it shows a spinner and an "-ing…" label,
+ * cannot be pressed again, keeps exactly the same width, and tells screen readers it is
+ * busy. The result is said by the feedback pieces (a toast, a status line, the banner
+ * changing), never by the button turning green.
+ */
+function WorkingButton({
+  label,
+  busyLabel,
+  variant,
+  size,
+}: {
+  label: string;
+  busyLabel: string;
+  variant?: React.ComponentProps<typeof Button>["variant"];
+  size?: React.ComponentProps<typeof Button>["size"];
+}) {
+  const [busy, setBusy] = React.useState(false);
+  const press = () => {
+    setBusy(true);
+    window.setTimeout(() => setBusy(false), 2000);
+  };
+  return (
+    <Button variant={variant} size={size} onClick={press} disabled={busy} aria-busy={busy || undefined}>
+      <SteadyLabel rest={label} busy={busy} busyLabel={busyLabel} />
+    </Button>
+  );
+}
+
+/** A small repeatable act with nothing else on screen to show it worked: the button says
+    it briefly, then goes back. */
+function CopyButton() {
+  const [done, setDone] = React.useState(false);
+  const [presses, setPresses] = React.useState(0);
+  const press = () => {
+    setPresses((n) => n + 1);
+    setDone(true);
+    window.setTimeout(() => setDone(false), 2000);
+  };
+  return (
+    <Button variant="outline" onClick={press} aria-live="polite">
+      <span className="grid">
+        <span className={cn("col-start-1 row-start-1 inline-flex items-center justify-center gap-1.5", done && "invisible")}>
+          <CopyIcon aria-hidden />
+          Copy link
+        </span>
+        {/* The success mark the whole system uses: it pops and its tick draws, so the
+            confirmation reads as the same "it happened" everywhere. */}
+        <span className={cn("col-start-1 row-start-1 inline-flex items-center justify-center gap-1.5", !done && "invisible")}>
+          {done ? <StatusMark key={presses} tone="success" size={16} /> : <span className="size-4" aria-hidden />}
+          Copied
+        </span>
+      </span>
+    </Button>
+  );
+}
+
+export function ButtonWorkingDemo() {
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-3">
+        <p className="text-body-compact text-muted-foreground">
+          Working state. Press any of them: each works for two seconds, then comes back. The
+          width never changes, so nothing beside it moves.
+        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <WorkingButton label="Submit application" busyLabel="Submitting…" />
+          <WorkingButton label="Request access" busyLabel="Requesting…" variant="outline" />
+          <WorkingButton label="Try again" busyLabel="Trying again…" variant="outline" size="sm" />
+          <WorkingButton label="Save draft" busyLabel="Saving…" variant="secondary" />
+        </div>
+      </div>
+      <div className="flex flex-col gap-3">
+        <p className="text-body-compact text-muted-foreground">
+          Brief confirmation, only for small repeatable acts with nothing else on screen to show
+          they worked. It says so for two seconds, then goes back and can be pressed again.
+        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <CopyButton />
+        </div>
       </div>
     </div>
   );

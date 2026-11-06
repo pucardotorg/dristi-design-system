@@ -2,6 +2,43 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-11-06 · Blue means worth knowing; grey stays quiet; Banner is the band
+
+Moving the product's Alerts to the new status line showed a conceptual gap: blue meant
+only "sent, waiting", so notes the person had to take in ("Anil can access all 78 of your
+cases") fell to grey, which is built to be ignored and nearly vanishes on the app's beige
+page (owner, Nov 6).
+
+- **Tone meanings.** Info is now *worth knowing*: sent and waiting (the hourglass, still the
+  default) or anything else to take in (a scope, a consequence, how it works now). Neutral
+  is *quiet housekeeping*. The test: "if they skip this, could they be surprised later?"
+  Yes is info. Agent skill, status page and component docs say so.
+- **`StatusMark glyph="i"`.** Info can show a slim "i", the warning's "!" turned over. At
+  44px and up the dot drops in, then the stem draws down (`fb-i-dot`, `fb-i-stem`);
+  smaller, it scales in. Opt-in, so no existing info mark changes.
+- **`glyph` passes through** `StatusLine`, `OutcomeHeader`, `PageOutcome`, `notify` and
+  `Banner` (whose default is the "i").
+- **`notify.info`**, new: the blue toast, hourglass by default, `glyph: "i"` to take in.
+- **Toasts with an action** are a step taller (56px): 12px all round the button, whose
+  6px corner runs parallel to the toast's 18px.
+- **Grey on beige.** `StatusLine onWarm` (neutral only) adds the toast's hairline edge on
+  anything but white; `Banner onWarm` runs hairlines above and below.
+- **Banner is the band.** A whole-page condition under the page header: square, its tone's
+  tint, the status line's marks a step larger (28px, 40px with a title), no rail, no edge
+  lines on white, one underlined link on the right with the button press, `inset` to line
+  its content up with the page. Not animated. Most banners in the product were notes inside
+  dialogs; those become status lines in the app.
+- **Alert is retired** for new work; its docs say how each variant moves to a status line.
+- **Banner actions follow what they do.** `{ label, href }` takes the person somewhere: the
+  underlined link. `{ label, onClick, busy, busyLabel }` does something: a small outline
+  button with a working state. On success the banner becomes the new condition (Access
+  requested) or goes away, with no toast on top. On a phone the action sits under the words.
+- **Button guidance (docs only, the component is unchanged).** The working state as a
+  pattern: spinner, the -ing label, disabled, aria-busy, and a width that never changes
+  (both labels share one cell). After a one-time act the button goes away or the screen
+  changes; only a small repeatable act (Copy link) confirms on the button, with the 16px
+  success mark, for about two seconds. Live examples on the Button and Banner pages.
+
 ## 2026-11-06 · Toast: the status line, floating
 
 The toast had the same coloured rail as the status line. It now matches the new status

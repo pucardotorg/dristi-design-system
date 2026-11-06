@@ -19,8 +19,11 @@ import { cn } from "@/lib/utils";
  * - **warning**: a slim "!" (a filled bar and dot with a clear gap, so it reads without
  *   colour). The bar drops in, the dot pops under it, then a small sway with a soft pulse.
  *   Use it only where something happened with a catch, or needs a look.
- * - **info**: sent, not decided. The hourglass, turned over once.
- * - **neutral**: not news at all (a gate, a question, a dead end). A quiet disc with a dark
+ * - **info**: worth knowing. By default the hourglass, turned over once: sent, not decided
+ *   yet (waiting on someone else). Pass `glyph="i"` for information the person should
+ *   notice that is not waiting on anyone (a scope, a consequence, how something works):
+ *   a slim "i", the dot dropping in and the stem drawing down under it.
+ * - **neutral**: quiet housekeeping (a gate, a draft, a dead end). A quiet disc with a dark
  *   hairline ring, carrying the act's own `icon` (an info icon if none is given).
  * - **danger**: the question before a removal. The soft red of the destructive button,
  *   carrying the act's own `icon` (a bin if none is given). It is a question, so it never
@@ -114,6 +117,7 @@ export function StatusMark({
   className,
   label,
   onTint = false,
+  glyph = "hourglass",
 }: {
   tone?: MarkTone;
   size?: MarkSize;
@@ -130,13 +134,16 @@ export function StatusMark({
   label?: string;
   /** The mark sits on a status tint (StatusLine): a neutral mark becomes a white chip. */
   onTint?: boolean;
+  /** Info marks only: the hourglass (sent, waiting; the default) or the "i" (worth knowing). */
+  glyph?: "hourglass" | "i";
 }) {
   const full = !still && size >= 44;
   const quick = !still && !full;
   const small = size <= 24;
   const stroke = size <= 24 ? 3.4 : size <= 44 ? 3 : 2.6;
   const iconTone = tone === "neutral" || tone === "danger";
-  const glyphShare = tone === "success" || tone === "info" ? 0.5 : tone === "warning" ? 0.7 : 0.62;
+  const infoI = tone === "info" && glyph === "i";
+  const glyphShare = infoI ? 0.7 : tone === "success" || tone === "info" ? 0.5 : tone === "warning" ? 0.7 : 0.62;
   const ring = full ? RING[tone] : undefined;
   const painted = usePainted(full);
   /* A hero mark starts after `HERO_START`; `delay` is on top of it. */
@@ -194,7 +201,7 @@ export function StatusMark({
             style={{ width: `${glyphShare * 100}%`, height: `${glyphShare * 100}%` }}
           >
             <svg viewBox="0 0 24 24" className="size-full" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <Glyph tone={tone} full={full} quick={quick} small={small} />
+              <Glyph tone={tone} full={full} quick={quick} small={small} infoI={infoI} />
             </svg>
           </span>
         )}
@@ -203,7 +210,19 @@ export function StatusMark({
   );
 }
 
-function Glyph({ tone, full, quick, small }: { tone: MarkTone; full: boolean; quick: boolean; small: boolean }) {
+function Glyph({
+  tone,
+  full,
+  quick,
+  small,
+  infoI,
+}: {
+  tone: MarkTone;
+  full: boolean;
+  quick: boolean;
+  small: boolean;
+  infoI: boolean;
+}) {
   if (tone === "success") {
     return <path className={full ? "fb-draw" : quick ? "fb-draw-quick" : undefined} d="M5 12.5l4.5 4.5L19 7.5" />;
   }
@@ -225,6 +244,18 @@ function Glyph({ tone, full, quick, small }: { tone: MarkTone; full: boolean; qu
       <g fill="currentColor" stroke="none">
         <rect className={full ? "fb-bar" : undefined} x={12 - w / 2} y="3.5" width={w} height="11" rx={w / 2} />
         <circle className={full ? "fb-dot" : undefined} cx="12" cy="19.2" r={small ? 2.1 : 1.8} />
+      </g>
+    );
+  }
+  if (infoI) {
+    /* info, worth knowing: the warning's slim "!" turned over, so the two read as a pair.
+       Filled, with a clear gap; a touch heavier when small. The dot drops in first, then
+       the stem draws down under it. */
+    const w = small ? 3.6 : 3;
+    return (
+      <g fill="currentColor" stroke="none">
+        <circle className={full ? "fb-i-dot" : undefined} cx="12" cy="4.8" r={small ? 2.1 : 1.8} />
+        <rect className={full ? "fb-i-stem" : undefined} x={12 - w / 2} y="9.5" width={w} height="11" rx={w / 2} />
       </g>
     );
   }
