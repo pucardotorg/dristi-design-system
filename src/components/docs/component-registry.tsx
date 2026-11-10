@@ -2083,7 +2083,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "Where the buttons go: on a phone (under 640px) below the name, full width. Everywhere else on the right, unless the slot itself is narrower than 440px; then below too. Every button stays 40px tall for touch.",
       "file: { name, size, type, url }. An image with a url shows itself whole in the thumbnail (a cheque is wide; never crop it). Anything else shows as a page sheet marked with its type.",
       "Long names are cut in the middle and keep their end (\"Bank_return_me… Oct2026.pdf\"); the full name is on hover and in the full view. The size wraps to its own line when there is no room.",
-      "onPreview opens the app's document viewer: a tray from the bottom where peeks are trays (phones, upright touch iPads), the centred dialog elsewhere. With a mouse the thumbnail darkens and shows the enlarge arrows on hover; on touch it stays clean.",
+      "The slot opens the viewer (DocumentViewer, with the slot's Change and Remove inside) when its file has a url and a type. Set viewer={false} to handle the thumbnail yourself. With a mouse the thumbnail darkens and shows the enlarge arrows on hover; on touch it stays clean.",
       "hint is what the slot takes (\"JPG, PNG or PDF · up to 10 MB\"), as its second line while empty. Leave it out to say no file is chosen yet.",
       "onChange (defaults to onChooseFile) and onRemove draw Change and Remove. Remove is the red fill with its soft edge, the same in both layouts.",
       "progress (0 to 100): spinner in the thumbnail's place, \"Uploading · 45%\", a bar under it, no buttons until it lands.",
@@ -2104,9 +2104,8 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       <div className="flex w-full max-w-xl flex-col gap-4">
         <DocumentSlot
           label="Cheque"
-          file={{ name: "cheque.pdf", size: "1.2 MB", type: "application/pdf" }}
+          file={{ name: "cheque.pdf", size: "1.2 MB", type: "application/pdf", url: "/samples/bank-return-memo.pdf" }}
           quality="good"
-          onPreview={() => {}}
           onChange={() => {}}
           onRemove={() => {}}
         />
@@ -2116,9 +2115,9 @@ export const componentRegistry: Record<string, ComponentDoc> = {
             name: "Bank_return_memo_South_Indian_Bank_Kollam_branch_Oct2026.pdf",
             size: "2.4 MB",
             type: "application/pdf",
+            url: "/samples/bank-return-memo.pdf",
           }}
           quality="good"
-          onPreview={() => {}}
           onChange={() => {}}
           onRemove={() => {}}
         />
@@ -2196,11 +2195,10 @@ export const componentRegistry: Record<string, ComponentDoc> = {
           <div className="w-full max-w-xl">
             <DocumentSlot
               label="Cheque"
-              file={{ name: "cheque.pdf", size: "1.2 MB", type: "application/pdf" }}
+              file={{ name: "cheque.pdf", size: "1.2 MB", type: "application/pdf", url: "/samples/bank-return-memo.pdf" }}
               quality="good"
               locked="Locked while the registry reviews it."
-              onPreview={() => {}}
-            />
+                />
           </div>
         ),
       },
@@ -2210,10 +2208,9 @@ export const componentRegistry: Record<string, ComponentDoc> = {
           <div className="w-full max-w-sm">
             <DocumentSlot
               label="Cheque"
-              file={{ name: "cheque.pdf", size: "1.2 MB", type: "application/pdf" }}
+              file={{ name: "cheque.pdf", size: "1.2 MB", type: "application/pdf", url: "/samples/bank-return-memo.pdf" }}
               quality="good"
-              onPreview={() => {}}
-              onChange={() => {}}
+                  onChange={() => {}}
               onRemove={() => {}}
             />
           </div>

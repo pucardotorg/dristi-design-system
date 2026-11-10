@@ -41,10 +41,26 @@ the app is not updated yet (developers asked to wait).
     Photos 100–500%, PDFs 50–300%. The page never zooms with it.
   - PDFs drawn on the app's surface with a page tag; full name, Download, Change and
     Remove (from a slot); a neutral `PageOutcome` when a file cannot be shown.
+  - Zooms keep the aimed point still (under the cursor, between the fingers, at the tap);
+    the island zooms around the middle. A PDF still narrower than the viewer stays centred
+    until it outgrows it.
+  - Zoom feel (owner: "scrubby"). A slow pinch from 100% was pulled back to 100% at
+    every step by the snap-to-fitted, so it barely moved; the snap now catches only on the
+    way back. Trackpad pinch is quicker (`/120`, the app has `/300`), capped per event so a
+    ctrl + wheel notch is a step. Pinch and trackpad follow the fingers directly; the 150ms
+    glide is only for the island, a turn and a double tap. PDF pages redraw after the
+    pinch settles (220ms).
+  - A photo already in the browser's cache now shows (it could load before the viewer
+    listened, and sat at zero size).
+  - A hairline under the header, so a white page scrolling under it keeps an edge; the
+    Change/Remove footer is white, not the sunken band, so it does not run into the well.
   - Turning is for reading; `onTurn` hands the final turn to the caller on close, with no
     button in the UI (owner).
   - Fixes against the app's upload viewer: zoom buttons and keys (it had pinch only, WCAG
     2.5.1), PDFs no longer in a browser iframe, Download, a failure state.
+- **The slot opens the viewer.** A filled slot whose file has a url and a type opens
+  DocumentViewer from its thumbnail, with its Change and Remove inside, loaded only when
+  opened. `viewer={false}` turns it off; `onPreview` replaces it.
 - **Timeline.** The line now runs unbroken from the first dot to the last (it broke at
   each step's bottom gap). New `date` prop on the right of the title, tabular. The current
   dot breathes (`animate-halo-pulse`, 2.4s); with reduced motion it holds its resting halo.

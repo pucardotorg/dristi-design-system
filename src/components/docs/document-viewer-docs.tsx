@@ -40,10 +40,9 @@ const FILES: { key: string; label: string; file: DocumentViewerFile }[] = [
 ];
 
 /** The viewer opened from a real slot (Change and Remove inside), and from a button
-    for each kind of file. */
+    for each kind of file. The slot opens the viewer itself. */
 export function DocumentViewerDemo() {
   const [open, setOpen] = React.useState<string | null>(null);
-  const [fromSlot, setFromSlot] = React.useState(false);
   const [filled, setFilled] = React.useState(true);
   const current = FILES.find((f) => f.key === open);
 
@@ -59,10 +58,6 @@ export function DocumentViewerDemo() {
         onChooseFile={() => setFilled(true)}
         onChange={() => {}}
         onRemove={() => setFilled(false)}
-        onPreview={() => {
-          setFromSlot(true);
-          setOpen("photo");
-        }}
       />
       <div className="flex flex-wrap gap-2">
         {FILES.map((f) => (
@@ -70,10 +65,7 @@ export function DocumentViewerDemo() {
             key={f.key}
             variant="outline"
             size="sm"
-            onClick={() => {
-              setFromSlot(false);
-              setOpen(f.key);
-            }}
+            onClick={() => setOpen(f.key)}
           >
             {f.label}
           </Button>
@@ -85,15 +77,6 @@ export function DocumentViewerDemo() {
           open
           onOpenChange={(o) => !o && setOpen(null)}
           file={current.file}
-          onChange={fromSlot ? () => setOpen(null) : undefined}
-          onRemove={
-            fromSlot
-              ? () => {
-                  setFilled(false);
-                  setOpen(null);
-                }
-              : undefined
-          }
         />
       ) : null}
     </div>

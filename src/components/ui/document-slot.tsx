@@ -10,6 +10,11 @@ import { FieldError } from "@/components/ui/field"
 import { Progress } from "@/components/ui/progress"
 import { Spinner } from "@/components/ui/spinner"
 
+/* The viewer's code (and pdf.js) loads only when someone opens a thumbnail. */
+const DocumentViewer = React.lazy(() =>
+  import("@/components/ui/document-viewer").then((m) => ({ default: m.DocumentViewer }))
+)
+
 /*
  * Where the buttons go (owner, 2026-11-10). On a phone (under 640px, the app's flow-window
  * line) they sit below the name, full width. Everywhere else they sit on the right, unless
@@ -62,7 +67,10 @@ type DocumentSlotProps = Omit<React.ComponentProps<"div">, "onChange"> & {
   onChange?: () => void
   /** Remove. Without it the slot shows no Remove. */
   onRemove?: () => void
-  /** Opens the full view (the app's document viewer). */
+  /** The thumbnail opens the DocumentViewer, with this slot's Change and Remove inside
+      (needs `file.url` and `file.type`). `false` turns it off; `onPreview` replaces it. */
+  viewer?: boolean
+  /** Your own action for the thumbnail, instead of the built-in viewer. */
   onPreview?: () => void
   /** The empty slot's button (Add or Choose file), for moving focus to it on Submit. */
   actionRef?: React.Ref<HTMLButtonElement>
@@ -150,6 +158,7 @@ function DocumentSlot({
   onChange,
   onRemove,
   onPreview,
+  viewer = true,
   actionRef,
   thumbnail,
   disabled = false,
@@ -170,6 +179,12 @@ function DocumentSlot({
   const showOptional = optional || status === "empty-optional"
   const change = onChange ?? onChooseFile
   const image = current?.type?.startsWith("image/") && current.url
+
+  /* The built-in viewer: on unless switched off or replaced, and only for a file the
+     viewer can show (a link and a type). */
+  const [viewing, setViewing] = React.useState(false)
+  const builtIn = viewer && !onPreview && !!current?.url && !!current?.type
+  const preview = onPreview ?? (builtIn ? () => setViewing(true) : undefined)
 
   /* Below: full width, the default 40px. On the right: the small type and padding, still
      40px tall for touch (iPads take this layout). */
@@ -214,13 +229,13 @@ function DocumentSlot({
               <Spinner className="size-5" />
             </span>
           ) : filled ? (
-            onPreview ? (
+            preview ? (
               /* With a mouse, hovering darkens it and shows the enlarge arrows; a touch
                  screen never hovers, so the thumbnail stays clean and a tap opens it. */
               <button
                 type="button"
                 data-slot="document-slot-media"
-                onClick={onPreview}
+                onClick={preview}
                 aria-label={
                   copy?.preview?.(current!.name) ?? `Full view of ${current!.name}`
                 }
@@ -343,6 +358,38 @@ function DocumentSlot({
         <FieldError id={errorId} className="mt-2 text-body-compact">
           {error}
         </FieldError>
+      ) : null}
+
+      {builtIn && viewing ? (
+        <React.Suspense fallback={null}>
+          <DocumentViewer
+            open
+            onOpenChange={setViewing}
+            file={{
+              name: current!.name,
+              size: current!.size,
+              type: current!.type!,
+              url: current!.url!,
+            }}
+            onChange={
+              change && !locked
+                ? () => {
+                    setViewing(false)
+                    change()
+                  }
+                : undefined
+            }
+            onRemove={
+              onRemove && !locked
+                ? () => {
+                    setViewing(false)
+                    onRemove()
+                  }
+                : undefined
+            }
+            copy={{ change: copy?.change, remove: copy?.remove }}
+          />
+        </React.Suspense>
       ) : null}
     </div>
   )
