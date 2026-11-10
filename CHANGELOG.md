@@ -58,6 +58,18 @@ the app is not updated yet (developers asked to wait).
     button in the UI (owner).
   - Fixes against the app's upload viewer: zoom buttons and keys (it had pinch only, WCAG
     2.5.1), PDFs no longer in a browser iframe, Download, a failure state.
+- **Sign-in block:** Forgot password is an outline button, not ghost. On the beige footer
+  the ghost had no edge and read as floating far below the divider (owner).
+- **CopyableId, new (promoted from Dristi's `Identifier`).** IDs in mono with tabular
+  figures, copied by clicking the value: a sunken pill and a sliding copy glyph on hover
+  that moves what follows aside (over the padding in a table cell), a tick and a neutral
+  "Copied …" toast on click. Used 190 times in the app; renamed because "Identifier" said
+  nothing about what it does (owner). The app keeps its court renumbering in a thin
+  wrapper when it moves to this.
+  In a table row the hover pill is `accent-strong`: the row's own hover is already
+  `surface-sunken`, and the pill vanished into it (the app has the same issue today).
+  The pill is its own layer, so in a table it reaches over the out-of-flow copy glyph
+  as it does everywhere else (it stopped short of it in the app), with no column change.
 - **The slot opens the viewer.** A filled slot whose file has a url and a type opens
   DocumentViewer from its thumbnail, with its Change and Remove inside, loaded only when
   opened. `viewer={false}` turns it off; `onPreview` replaces it.

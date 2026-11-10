@@ -61,6 +61,7 @@ import {
 } from "@/components/docs/feedback-docs";
 import { SidePanelDemo } from "@/components/docs/side-panel-docs";
 import { DocumentViewerDemo } from "@/components/docs/document-viewer-docs";
+import { CopyableIdDemo } from "@/components/docs/copyable-id-docs";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Banner } from "@/components/ui/banner";
@@ -2251,6 +2252,27 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "Add a Save button for the turn; saving it is the developer's call, made in onTurn.",
     ],
     preview: <DocumentViewerDemo />,
+  },
+
+  "copyable-id": {
+    slug: "copyable-id",
+    title: "Copyable ID",
+    description:
+      "A case number, CNR, receipt or any other ID: monospaced, and copied by clicking it. A copy glyph slides in on hover.",
+    importPath: "@/components/ui/copyable-id",
+    whenToUse: [
+      "Show case numbers, CNRs, receipts and other IDs with CopyableId.",
+    ],
+    tokens: ["surface-sunken", "accent-strong", "muted-foreground", "success-ink", "ring"],
+    usageNotes: [
+      "Props: value (shown and copied as given), label (what it is, for screen readers and the hover hint: \"case number\", \"receipt\"), copyable.",
+      "Mono with tabular figures because IDs are read character by character. Counts, totals and dates stay in the normal face.",
+      "On hover or focus: a sunken pill, and the copy glyph slides in on the right; whatever follows moves aside by 14px. In a table cell the glyph sits over the cell's padding instead, so the column never changes width.",
+      "Click: the glyph becomes a tick for a moment and a neutral toast names the value (\"Copied ST 412/2025\"). The page needs FeedbackToaster.",
+      "copyable={false} where the ID sits inside something already clickable, or is decorative.",
+      "Promoted from Dristi's Identifier (components/chrome/identifier.tsx).",
+    ],
+    preview: <CopyableIdDemo />,
   },
 
   "session-timeout": {

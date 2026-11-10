@@ -59,6 +59,7 @@ export const docsNav: DocsNavSection[] = [
       { title: "Document slot", href: "/components/document-slot" },
       { title: "Document viewer", href: "/components/document-viewer" },
       { title: "Session timeout", href: "/components/session-timeout" },
+      { title: "Copyable ID", href: "/components/copyable-id" },
       { title: "Description list", href: "/components/description-list" },
       { title: "Side panel", href: "/components/side-panel" },
       { title: "Sign-in block", href: "/blocks/sign-in" },

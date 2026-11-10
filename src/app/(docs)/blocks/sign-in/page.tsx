@@ -81,7 +81,11 @@ export default function SignInBlockPage() {
             <CardFooter className="flex flex-col gap-3">
               <Button className="w-full">Sign in</Button>
               <Separator />
-              <Button variant="ghost" className="w-full">
+              {/* Outline, not ghost (owner, 2026-11-10): on the beige footer a ghost
+                  button has no edge, so it read as floating far below the divider. The
+                  outline's white fill and edge show it sits the same distance away as
+                  Sign in. */}
+              <Button variant="outline" className="w-full">
                 Forgot password
               </Button>
             </CardFooter>

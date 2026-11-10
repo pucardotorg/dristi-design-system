@@ -218,6 +218,17 @@
       ]
     },
     {
+      "name": "copyable-id",
+      "type": "registry:ui",
+      "title": "Copyable Id",
+      "files": [
+        {
+          "path": "src/components/ui/copyable-id.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "date-picker",
       "type": "registry:ui",
       "title": "Date Picker",
