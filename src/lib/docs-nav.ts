@@ -57,6 +57,7 @@ export const docsNav: DocsNavSection[] = [
       { title: "Stepper", href: "/components/stepper" },
       { title: "Timeline", href: "/components/timeline" },
       { title: "Document slot", href: "/components/document-slot" },
+      { title: "Document viewer", href: "/components/document-viewer" },
       { title: "Session timeout", href: "/components/session-timeout" },
       { title: "Description list", href: "/components/description-list" },
       { title: "Side panel", href: "/components/side-panel" },

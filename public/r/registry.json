@@ -262,6 +262,17 @@
       ]
     },
     {
+      "name": "document-viewer",
+      "type": "registry:ui",
+      "title": "Document Viewer",
+      "files": [
+        {
+          "path": "src/components/ui/document-viewer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "drawer",
       "type": "registry:ui",
       "title": "Drawer",

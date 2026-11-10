@@ -60,6 +60,7 @@ import {
   statusMarkPreview,
 } from "@/components/docs/feedback-docs";
 import { SidePanelDemo } from "@/components/docs/side-panel-docs";
+import { DocumentViewerDemo } from "@/components/docs/document-viewer-docs";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Banner } from "@/components/ui/banner";
@@ -521,6 +522,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "secondary-hover",
       "destructive",
       "destructive-muted",
+      "destructive-edge",
       "success",
       "warning",
       "warning-ink",
@@ -539,6 +541,7 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "variant: default | outline | secondary | ghost | destructive | destructive-solid | success | warning | info | destructive-ghost | link.",
       "size: xs 32 · sm 36 · default 40 · lg 44. Icon-only: icon-xs · icon-sm · icon · icon-lg.",
       "destructive is the soft/at-rest treatment; destructive-solid only for a confirmed irreversible action.",
+      "destructive carries a 1px destructive-edge (owner, 2026-11-10). The tint alone measures 1.15:1 on white and 1.04:1 on the beige well, so the button had no edge; the soft red gives just enough separation. The red label carries the contrast (4.54:1).",
       "success / warning / info are solid treatments — the action IS the status.",
       "warning carries a warning-ink border because the yellow fill alone is only 1.54:1 on the page.",
       "outline and ghost hover to accent; engaged (aria-expanded) uses accent-strong. Outline border is always input.",
@@ -2017,36 +2020,39 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "timeline",
     title: "Timeline",
     description:
-      "Vertical record of dated events. Past = muted dot; current = brand dot with a soft halo; future = hollow.",
+      "Vertical record of dated steps on one unbroken line. Past = solid grey dot; current = teal dot with a slow breath; future = hollow.",
     importPath: "@/components/ui/timeline",
     whenToUse: [
-      "Case chronologies, hearing histories, and any other append-only event log with dates.",
+      "Case chronologies, hearing histories, and any other append-only record of dated steps.",
       "Use Stepper instead for a fixed, forward-only sequence the user is actively completing.",
     ],
-    tokens: ["primary", "muted-foreground", "border", "input"],
+    tokens: ["primary", "halo", "muted-foreground", "border", "input"],
     usageNotes: [
-      "TimelineItem props: status (past | current | future), title, description (typically the date).",
-      "The halo ring on the current dot is the one place alpha is allowed — it's a focus/emphasis glow, not a status fill.",
+      "TimelineItem props: status (past | current | future), title, date, description.",
+      "date sits on the right, on the title's baseline, in tabular figures. On a phone a long title wraps and the date stays put. A step with no date yet says so (\"Not yet listed\").",
+      "description is a second line under the title, for anything that is not the date.",
+      "The line runs unbroken from the first dot to the last; nothing to wire.",
+      "The current dot breathes: its halo grows and settles every 2.4s. With reduced motion it holds still at its resting halo. It is marked aria-current=\"step\".",
     ],
-    doItems: ["Order items chronologically, oldest to newest, top to bottom."],
-    dontItems: ["Use color alone to distinguish past from future — the dot fill and hollow/solid states already carry that; don't recolor titles on top."],
+    doItems: [
+      "Order steps oldest to newest, top to bottom.",
+      "Pass the date as date, not description, so every date lines up on the right.",
+    ],
+    dontItems: [
+      "Recolour titles to show past and future; the dots already carry it.",
+      "Mark more than one step current.",
+    ],
     preview: (
-      <Timeline className="w-full max-w-sm">
-        <TimelineItem
-          status="past"
-          title="Respondent served"
-          description="2 May 2026"
-        />
+      <Timeline className="w-full max-w-md">
+        <TimelineItem status="past" title="Complaint filed" date="31 July 2026" />
+        <TimelineItem status="past" title="Summons issued" date="20 August 2026" />
         <TimelineItem
           status="current"
-          title="Evidence recording"
-          description="14 August 2026"
+          title="Appearance of the accused"
+          date="18 September 2026"
         />
-        <TimelineItem
-          status="future"
-          title="Final arguments"
-          description="Scheduled"
-        />
+        <TimelineItem status="future" title="Evidence" date="Not yet listed" />
+        <TimelineItem status="future" title="Arguments" date="Not yet listed" />
       </Timeline>
     ),
   },
@@ -2055,64 +2061,199 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     slug: "document-slot",
     title: "Document slot",
     description:
-      "One row in an e-filing document checklist. Filled, processing, empty, optional, and poor-scan states in a single slot.",
+      "One expected document: empty, uploading, added (good or poor scan), refused, missing on Submit, or locked. Change and Remove are built in.",
     importPath: "@/components/ui/document-slot",
     whenToUse: [
-      "A checklist of expected documents where each item has its own upload state.",
-      "Any required-vs-optional file upload that needs scan-quality feedback.",
+      "Any place a person attaches a known document: a filing checklist, an upload dialog, a profile ID.",
+      "One slot per expected document, stacked one under another.",
     ],
     tokens: [
-      "card",
       "surface-sunken",
       "muted",
+      "input",
+      "destructive",
+      "destructive-edge",
       "success-muted",
       "warning-muted",
-      "border",
-      "input",
+      "paper",
+      "paper-border",
     ],
     usageNotes: [
-      "status: filled | processing | empty | empty-optional | filled-poor — drives the surface, dashed-empty border, and \"Choose file\" affordance automatically.",
-      "media: thumbnail (size-16, for image previews) | icon (size-10, default file icon).",
-      "quality: \"good\" | \"poor\" renders a matching status badge under the filename — pair with the filled-poor status for a bad scan.",
-      "required renders an asterisk while empty; optional (or status empty-optional) renders an \"Optional\" badge instead.",
+      "The state comes from the props: no file = empty; file = added; progress = uploading; locked = locked; error = refused or missing. No status prop needed (the old one is still read).",
+      "Where the buttons go: on a phone (under 640px) below the name, full width. Everywhere else on the right, unless the slot itself is narrower than 440px; then below too. Every button stays 40px tall for touch.",
+      "file: { name, size, type, url }. An image with a url shows itself whole in the thumbnail (a cheque is wide; never crop it). Anything else shows as a page sheet marked with its type.",
+      "Long names are cut in the middle and keep their end (\"Bank_return_me… Oct2026.pdf\"); the full name is on hover and in the full view. The size wraps to its own line when there is no room.",
+      "onPreview opens the app's document viewer: a tray from the bottom where peeks are trays (phones, upright touch iPads), the centred dialog elsewhere. With a mouse the thumbnail darkens and shows the enlarge arrows on hover; on touch it stays clean.",
+      "hint is what the slot takes (\"JPG, PNG or PDF · up to 10 MB\"), as its second line while empty. Leave it out to say no file is chosen yet.",
+      "onChange (defaults to onChooseFile) and onRemove draw Change and Remove. Remove is the red fill with its soft edge, the same in both layouts.",
+      "progress (0 to 100): spinner in the thumbnail's place, \"Uploading · 45%\", a bar under it, no buttons until it lands.",
+      "error: the red edge and the reason under the slot. Name the file and say what to do: \"cheque.docx can't be used. Choose a JPG, PNG or PDF.\" On Submit with a required slot empty: \"Add the cheque to continue.\" and move focus to the slot's button through actionRef. Submit itself never greys out.",
+      "locked: a reason (\"Locked while the registry reviews it.\"). The buttons go, a lock line sits under the name, the thumbnail still opens.",
+      "copy overrides every word (Malayalam, Hindi). Name the action after the document: \"Add cheque\" reads better than \"Choose file\".",
     ],
     doItems: [
-      "Show one slot per expected document so the whole checklist stays scannable at once.",
-      "Move a slot to filled-poor with an explanation rather than silently accepting a bad scan.",
+      "Say what went wrong with this file and what to choose instead.",
+      "Keep Submit enabled; let it point at the missing slot.",
     ],
-    dontItems: ["Mark a document required and optional at the same time — pick one."],
+    dontItems: [
+      "Silently drop a refused file.",
+      "Put the type and size hint as a separate line under the slot; it lives inside.",
+      "Mark a document required and optional at the same time.",
+    ],
     preview: (
-      <div className="flex w-full max-w-md flex-col gap-3">
+      <div className="flex w-full max-w-xl flex-col gap-4">
         <DocumentSlot
-          status="filled"
-          media="icon"
-          label="Complaint copy"
-          filename="complaint-138.pdf"
-          meta="1.2 MB"
+          label="Cheque"
+          file={{ name: "cheque.pdf", size: "1.2 MB", type: "application/pdf" }}
           quality="good"
+          onPreview={() => {}}
+          onChange={() => {}}
+          onRemove={() => {}}
         />
         <DocumentSlot
-          status="empty"
-          media="icon"
-          label="Complaint copy"
+          label="Bank return memo"
+          file={{
+            name: "Bank_return_memo_South_Indian_Bank_Kollam_branch_Oct2026.pdf",
+            size: "2.4 MB",
+            type: "application/pdf",
+          }}
+          quality="good"
+          onPreview={() => {}}
+          onChange={() => {}}
+          onRemove={() => {}}
+        />
+        <DocumentSlot
+          label="Legal notice"
           required
-        />
-        <DocumentSlot
-          status="empty-optional"
-          media="icon"
-          label="Annexure"
-          optional
-        />
-        <DocumentSlot
-          status="filled-poor"
-          media="icon"
-          label="Complaint copy"
-          filename="scan.pdf"
-          meta="890 KB"
-          quality="poor"
+          hint="JPG, PNG or PDF · up to 10 MB"
+          copy={{ chooseFile: "Add notice" }}
+          onChooseFile={() => {}}
         />
       </div>
     ),
+    variantsLabel: "States",
+    variantSections: [
+      {
+        label: "Uploading",
+        content: (
+          <div className="w-full max-w-xl">
+            <DocumentSlot label="Cheque" file={{ name: "cheque.pdf" }} progress={45} />
+          </div>
+        ),
+      },
+      {
+        label: "Poor scan",
+        content: (
+          <div className="w-full max-w-xl">
+            <DocumentSlot
+              label="Cheque"
+              file={{ name: "cheque.jpg", size: "640 KB", type: "image/jpeg" }}
+              quality="poor"
+              onChange={() => {}}
+              onRemove={() => {}}
+            />
+          </div>
+        ),
+      },
+      {
+        label: "Refused: wrong type, too big",
+        content: (
+          <div className="flex w-full max-w-xl flex-col gap-4">
+            <DocumentSlot
+              label="Cheque"
+              required
+              hint="JPG, PNG or PDF · up to 10 MB"
+              copy={{ chooseFile: "Add cheque" }}
+              error="cheque.docx can't be used. Choose a JPG, PNG or PDF."
+            />
+            <DocumentSlot
+              label="Cheque"
+              required
+              hint="JPG, PNG or PDF · up to 10 MB"
+              copy={{ chooseFile: "Add cheque" }}
+              error="cheque-scan.jpg is 14 MB. Choose a file under 10 MB."
+            />
+          </div>
+        ),
+      },
+      {
+        label: "Missing on Submit",
+        content: (
+          <div className="w-full max-w-xl">
+            <DocumentSlot
+              label="Cheque"
+              required
+              hint="JPG, PNG or PDF · up to 10 MB"
+              copy={{ chooseFile: "Add cheque" }}
+              error="Add the cheque to continue."
+            />
+          </div>
+        ),
+      },
+      {
+        label: "Locked",
+        content: (
+          <div className="w-full max-w-xl">
+            <DocumentSlot
+              label="Cheque"
+              file={{ name: "cheque.pdf", size: "1.2 MB", type: "application/pdf" }}
+              quality="good"
+              locked="Locked while the registry reviews it."
+              onPreview={() => {}}
+            />
+          </div>
+        ),
+      },
+      {
+        label: "Narrow slot (under 440px): buttons below",
+        content: (
+          <div className="w-full max-w-sm">
+            <DocumentSlot
+              label="Cheque"
+              file={{ name: "cheque.pdf", size: "1.2 MB", type: "application/pdf" }}
+              quality="good"
+              onPreview={() => {}}
+              onChange={() => {}}
+              onRemove={() => {}}
+            />
+          </div>
+        ),
+      },
+    ],
+  },
+
+  "document-viewer": {
+    slug: "document-viewer",
+    title: "Document viewer",
+    description:
+      "Shows one document full size: a photo or a PDF, with zoom, page count, Download and, for photos, a turn. A tray on phones, a dialog elsewhere.",
+    importPath: "@/components/ui/document-viewer",
+    whenToUse: [
+      "Every place a document opens to be read: a slot's thumbnail, a filed order, a registry copy.",
+      "One viewer for uploads and for files on the record, so the controls never drift between screens.",
+    ],
+    tokens: ["surface-sunken", "card", "hairline", "paper", "paper-border", "popover"],
+    usageNotes: [
+      "Where it opens: phones and upright touch iPads get a tray from the bottom, 94% of the screen, dragged down by its header only (fingers inside the document pinch and pan). Sideways iPads and laptops get the centred dialog. The same line the app's peeks use.",
+      "file: { name, size, type, url }. application/pdf renders its pages with pdf.js (the app's version and worker path, /vendor/pdf.worker.min.mjs, copied by scripts/copy-pdf-worker.mjs); image/* shows the picture whole.",
+      "Header: the whole file name, wrapped (the slot cuts it), the kind and page count, Download, Close.",
+      "The island sits on the document, bottom right: zoom out, the level (press to fit), zoom in, and for photos one turn button (a quarter clockwise). 32px with a mouse, 40px on touch. PDFs have no turn: their pages come the right way up.",
+      "Zoom: pinch, double-tap or double-click (fitted and 2×), trackpad pinch, ctrl or cmd + scroll, the island, or the + − 0 keys. Photos 100% to 500%; PDFs 50% to 300% in 25% steps. Pinches are caught so the page itself never zooms.",
+      "PDFs: pages one under another on the app's own surface, drawn as they come near, a \"Page 2 of 3\" tag bottom left.",
+      "onChange and onRemove add Change and Remove under the document, for a viewer opened from a slot: a bad scan is replaced without closing first.",
+      "Turning is for reading only, and every open starts fitted, upright, on page 1. onTurn keeps it: called once, on close, with the quarter turns (1 to 3), for the caller's backend to save. No button for it. Use onTurn only on the person's own upload that is not filed yet, never on a file on the record.",
+      "A file that will not load shows the system's dead end (PageOutcome, neutral, flat): \"This document can't be shown here\" with Download.",
+      "copy overrides every word.",
+    ],
+    doItems: [
+      "Open it from the slot's thumbnail with onPreview, and pass the slot's Change and Remove through.",
+      "Leave onTurn off for anything already filed.",
+    ],
+    dontItems: [
+      "Embed the browser's own PDF viewer in an iframe; it looks different on every device and an iPhone often shows only page 1.",
+      "Add a Save button for the turn; saving it is the developer's call, made in onTurn.",
+    ],
+    preview: <DocumentViewerDemo />,
   },
 
   "session-timeout": {

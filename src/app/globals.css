@@ -79,6 +79,7 @@
   --color-destructive-hover: var(--destructive-hover);
   --color-destructive-muted-hover: var(--destructive-muted-hover);
   --color-destructive-ink: var(--destructive-ink);
+  --color-destructive-edge: var(--destructive-edge);
   --color-brand-accent: var(--brand-accent);
   --color-brand-muted: var(--brand-muted);
   --color-brand-muted-foreground: var(--brand-muted-foreground);
@@ -362,6 +363,9 @@
   --brand-muted-hover: color-mix(in srgb, var(--brand-muted), black 8%);
   --destructive-hover: color-mix(in srgb, var(--destructive), black 8%);
   --destructive-muted-hover: color-mix(in srgb, var(--destructive-muted), black 8%);
+  /* The red fill button's edge (owner, 2026-11-10): just enough to lift the tint off
+     white or the beige well, softer than the solid. Not a fill, not text. */
+  --destructive-edge: var(--destructive-7);
   --success-hover: color-mix(in srgb, var(--success), black 8%);
   --success-muted-hover: color-mix(in srgb, var(--success-muted), black 8%);
   --warning-hover: color-mix(in srgb, var(--warning), black 8%);
@@ -574,6 +578,9 @@
   --brand-muted-hover: color-mix(in srgb, var(--brand-muted), white 10%);
   --destructive-hover: color-mix(in srgb, var(--destructive), white 10%);
   --destructive-muted-hover: color-mix(in srgb, var(--destructive-muted), white 10%);
+  /* The red fill button's edge (owner, 2026-11-10): just enough to lift the tint off
+     white or the beige well, softer than the solid. Not a fill, not text. */
+  --destructive-edge: var(--destructive-7);
   --success-hover: color-mix(in srgb, var(--success), white 10%);
   --success-muted-hover: color-mix(in srgb, var(--success-muted), white 10%);
   --warning-hover: color-mix(in srgb, var(--warning), black 8%);
@@ -603,6 +610,21 @@
   --sidebar-accent-foreground: var(--brand-tint-foreground);
   --sidebar-border: var(--neutral-6);
   --sidebar-ring: var(--brand-solid);
+}
+
+/* Timeline: the current step's slow breath (2026-11-10). The halo grows and settles;
+   with reduced motion it holds still at its resting size. */
+@theme {
+  --animate-halo-pulse: halo-pulse 2.4s ease-in-out infinite;
+  @keyframes halo-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 var(--halo);
+    }
+    50% {
+      box-shadow: 0 0 0 6px var(--halo);
+    }
+  }
 }
 
 @layer base {

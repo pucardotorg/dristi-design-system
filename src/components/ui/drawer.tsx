@@ -61,7 +61,9 @@ function DrawerContent({
         )}
         {...props}
       >
-        <div className="mx-auto mt-4 hidden h-1 w-[100px] shrink-0 rounded-full bg-muted group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
+        {/* The grab handle: `border`, not `muted`, which barely showed on the white tray
+            (owner, 2026-11-10). */}
+        <div className="mx-auto mt-4 hidden h-1 w-[100px] shrink-0 rounded-full bg-border group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
         {children}
       </DrawerPrimitive.Content>
     </DrawerPortal>

@@ -2,6 +2,62 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-11-10 · Document slot does the whole job; Timeline is one line; the red fill gets an edge
+
+Worked through in mocks with the owner (Nov 6 to 10) at phone, upright and sideways iPad
+mini and laptop sizes, in dialogs, on pages and with the side panel open, light and dark,
+English and Malayalam, normal and 200% text. Patterns follow the app on main (ddcb5de);
+the app is not updated yet (developers asked to wait).
+
+- **Document slot, rebuilt.** The state comes from the props (`file`, `progress`,
+  `locked`, `error`); `status`, `media`, `filename` and `meta` are still read so existing
+  callers keep working.
+  - **Change and Remove are built in** (`onChange`, defaulting to `onChooseFile`;
+    `onRemove`). The app had five home-made versions: a trash icon, red text links, a lone
+    link, or nothing.
+  - **Where the buttons go.** Phone (under 640px, the app's flow-window line): below the
+    name, full width. Elsewhere on the right, unless the slot itself is under 440px (a
+    container query; catches a sideways iPad with the sidebar and side panel open). All
+    buttons stay 40px tall (they were 36px).
+  - **Thumbnail.** An image shows whole (`object-contain`; a cheque is wide); anything else
+    is a page sheet on the paper tokens, marked PDF. `onPreview` makes it a button; hover
+    (mouse only) darkens it and shows the enlarge arrows.
+  - **Long names** cut in the middle and keep the end; the size wraps when there is no room.
+  - **`hint`** puts what the slot takes inside it as the second line (it was a separate
+    line under the field in about eight app dialogs).
+  - **New states:** uploading (`progress`: spinner, percentage, bar, no buttons), refused
+    and missing on Submit (`error`: red edge, `FieldError` under the slot, `actionRef` to
+    move focus), locked (`locked`: no buttons, lock line, thumbnail still opens).
+  - Badges wrap instead of running off a phone at 200% text.
+  - The thumbnail tile has a `hairline` edge: a pale scan on the muted tile on the beige
+    well had no visible boundary.
+- **DocumentViewer, new.** One viewer for uploads and files on the record, built on the
+  app's case-file viewer (same pdf.js 6.2.108, same worker path `/vendor/pdf.worker.min.mjs`,
+  copied by the new `scripts/copy-pdf-worker.mjs` before dev and build).
+  - Phones and upright touch iPads: a 94% tray dragged by its header only; elsewhere the
+    centred dialog.
+  - The zoom island on the document, bottom right (out, level to fit, in, and one quarter
+    turn for photos only). Pinch, double-tap, trackpad pinch, ctrl/cmd + scroll and keys.
+    Photos 100–500%, PDFs 50–300%. The page never zooms with it.
+  - PDFs drawn on the app's surface with a page tag; full name, Download, Change and
+    Remove (from a slot); a neutral `PageOutcome` when a file cannot be shown.
+  - Turning is for reading; `onTurn` hands the final turn to the caller on close, with no
+    button in the UI (owner).
+  - Fixes against the app's upload viewer: zoom buttons and keys (it had pinch only, WCAG
+    2.5.1), PDFs no longer in a browser iframe, Download, a failure state.
+- **Timeline.** The line now runs unbroken from the first dot to the last (it broke at
+  each step's bottom gap). New `date` prop on the right of the title, tabular. The current
+  dot breathes (`animate-halo-pulse`, 2.4s); with reduced motion it holds its resting halo.
+  `aria-current="step"` on the current item.
+- **Button `destructive` gets a 1px `destructive-edge`** (new token, `destructive-7`).
+  The tint alone measured 1.15:1 on white and 1.04:1 on the beige well: no edge at all.
+  The owner chose the softest red that still separates (about 1.7:1 light, 2.1:1 dark)
+  over the solid (5.4:1), which read thick and dark. The label carries the contrast
+  (4.54:1). No size changes. **Divergence from rule 6a** (which asks for the solid as the
+  stroke) and from rule 6's three treatments: recorded as a granted exception in AGENTS.md.
+- **Drawer grab handle** is `border` instead of `muted`, which barely showed on the white
+  tray (owner). Every bottom drawer gets it.
+
 ## 2026-11-06 · Blue means worth knowing; grey stays quiet; Banner is the band
 
 Moving the product's Alerts to the new status line showed a conceptual gap: blue meant
