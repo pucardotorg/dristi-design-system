@@ -58,6 +58,19 @@ the app is not updated yet (developers asked to wait).
     button in the UI (owner).
   - Fixes against the app's upload viewer: zoom buttons and keys (it had pinch only, WCAG
     2.5.1), PDFs no longer in a browser iframe, Download, a failure state.
+- **BreadcrumbTrail, new (promoted from Dristi's top bar).** The top bar's trail: shows
+  whole where it fits, folds from the start by measured room into a small disc, and the
+  disc opens the whole trail on a row under the bar (`BreadcrumbTrailRow`). Ends with
+  where you are; record numbers in mono. The owner's own pattern, kept as is after
+  comparing it with top-of-page, sticky-row, GOV.UK, Carbon and parent-only versions.
+  Its own docs page; the Breadcrumb page points to it and no longer advises truncating
+  labels. Its own file, so breadcrumb.tsx stays as shadcn ships it.
+- **Overflow tabs, new (promoted from Dristi, unchanged).** A line tab row that never
+  scrolls sideways: what fits stays, the rest fold into More at the row's end; measured,
+  not by breakpoint. Used in the app by View Case, Notice/Process Status, the hearing
+  timeline, the filings queue and Pending tasks.
+- **LanguageSwitch, new (promoted from Dristi's top bar).** English and a second language
+  on a compact segmented control, with a chevron menu that picks the second language.
 - **Sign-in block:** Forgot password is an outline button, not ghost. On the beige footer
   the ghost had no edge and read as floating far below the divider (owner).
 - **CopyableId, new (promoted from Dristi's `Identifier`).** IDs in mono with tabular

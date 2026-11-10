@@ -81,6 +81,17 @@
       ]
     },
     {
+      "name": "breadcrumb-trail",
+      "type": "registry:ui",
+      "title": "Breadcrumb Trail",
+      "files": [
+        {
+          "path": "src/components/ui/breadcrumb-trail.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "button",
       "type": "registry:ui",
       "title": "Button",
@@ -410,6 +421,17 @@
       ]
     },
     {
+      "name": "language-switch",
+      "type": "registry:ui",
+      "title": "Language Switch",
+      "files": [
+        {
+          "path": "src/components/ui/language-switch.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "menubar",
       "type": "registry:ui",
       "title": "Menubar",
@@ -460,6 +482,17 @@
           "path": "src/app/feedback.css",
           "type": "registry:file",
           "target": "app/feedback.css"
+        }
+      ]
+    },
+    {
+      "name": "overflow-tabs",
+      "type": "registry:ui",
+      "title": "Overflow Tabs",
+      "files": [
+        {
+          "path": "src/components/ui/overflow-tabs.tsx",
+          "type": "registry:ui"
         }
       ]
     },

@@ -62,6 +62,8 @@ import {
 import { SidePanelDemo } from "@/components/docs/side-panel-docs";
 import { DocumentViewerDemo } from "@/components/docs/document-viewer-docs";
 import { CopyableIdDemo } from "@/components/docs/copyable-id-docs";
+import { OverflowTabsDocsDemo } from "@/components/docs/overflow-tabs-docs";
+import { BreadcrumbTrailDocsDemo, LanguageSwitchDocsDemo } from "@/components/docs/top-bar-docs";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Banner } from "@/components/ui/banner";
@@ -1416,13 +1418,16 @@ export const componentRegistry: Record<string, ComponentDoc> = {
     title: "Breadcrumb",
     description: "Shows the page's place in a hierarchy and gives a path back to its parents.",
     importPath: "@/components/ui/breadcrumb",
-    whenToUse: ["Deep information architecture (three or more levels) where users benefit from a visible path back up."],
+    whenToUse: [
+      "A simple trail inside a page or a card.",
+      "For the product's top bar, use Breadcrumb trail (its own page): it is built from these parts and folds by room.",
+    ],
     tokens: ["muted-foreground", "foreground"],
     usageNotes: [
       "BreadcrumbPage marks the current page — plain text, not a link — while every ancestor uses BreadcrumbLink.",
       "BreadcrumbSeparator defaults to a chevron; override its children for a different glyph if a pattern needs one.",
     ],
-    doItems: ["Truncate long ancestor labels rather than letting the trail wrap to a second line."],
+    doItems: ["In the product's top bar, use BreadcrumbTrail: it folds from the start by room instead of cutting labels."],
     dontItems: ["Make the current page a clickable link — it's already where the user is."],
     preview: (
       <Breadcrumb>
@@ -2273,6 +2278,64 @@ export const componentRegistry: Record<string, ComponentDoc> = {
       "Promoted from Dristi's Identifier (components/chrome/identifier.tsx).",
     ],
     preview: <CopyableIdDemo />,
+  },
+
+  "breadcrumb-trail": {
+    slug: "breadcrumb-trail",
+    title: "Breadcrumb trail",
+    description:
+      "The breadcrumb in the product's top bar. Shows whole where it fits; where it does not, folds from the start into a small disc that opens the whole trail on a row under the bar.",
+    importPath: "@/components/ui/breadcrumb-trail",
+    whenToUse: ["The top bar's trail, on every screen size. For a simple trail inside a page, use Breadcrumb."],
+    tokens: ["muted-foreground", "foreground", "accent-strong", "border", "hairline"],
+    usageNotes: [
+      "items: { label, href, mono }[], in order; the last is where you are and is never a link. A list page ends with its own name; a record ends with its number (mono), not its title.",
+      "Room decides, not a breakpoint: the trail is measured, and entries fold away from the start one at a time. Where you are is the last to go.",
+      "The disc opens BreadcrumbTrailRow, placed under the bar's row: it pushes the page down and scrolls sideways when long. Pass open = open && !fits to both, and close it on navigation.",
+      "linkAs takes the app's link component (Next's Link).",
+      "Built from Breadcrumb's parts (list, link, separator, page), in its own file so breadcrumb.tsx stays as shadcn ships it.",
+      "Promoted from Dristi's top bar (components/shell/top-bar.tsx).",
+    ],
+    preview: <BreadcrumbTrailDocsDemo />,
+  },
+
+  "language-switch": {
+    slug: "language-switch",
+    title: "Language switch",
+    description:
+      "English and one second language side by side in the top bar, one tap apart. The chevron picks which language is the second one.",
+    importPath: "@/components/ui/language-switch",
+    whenToUse: ["The top bar, on every screen. It stays in the bar on phones too (usability tested)."],
+    tokens: ["surface-sunken", "hairline", "accent"],
+    usageNotes: [
+      "value / onValueChange: the language in use. second: the one shown beside English. seconds + onSecondChange: the chevron's menu; without them there is no chevron.",
+      "Names in their own script (हिन्दी, ગુજરાતી); each label carries its lang.",
+      "Built on SegmentedControl compact. The chevron is 32px drawn, 40px to the finger.",
+      "Promoted from Dristi's top bar (LanguageToggle); second-language menu by the lead designer, 2026-10-08.",
+    ],
+    preview: <LanguageSwitchDocsDemo />,
+  },
+
+  "overflow-tabs": {
+    slug: "overflow-tabs",
+    title: "Overflow tabs",
+    description:
+      "A line tab row that never scrolls sideways: the tabs that fit stay, the rest fold into a More menu at the row's end.",
+    importPath: "@/components/ui/overflow-tabs",
+    whenToUse: [
+      "A row of many tabs that must work on a phone (View Case's nine sections, a queue's views).",
+      "For a few tabs that always fit, use Tabs.",
+    ],
+    tokens: ["brand-accent", "border", "hairline", "muted-foreground"],
+    usageNotes: [
+      "OverflowTabsList replaces TabsList inside Tabs: items { value, label, measure }[], value, onSelect. Always the line variant.",
+      "Fit is measured, not guessed from breakpoints: every tab is drawn once and its width kept; the split follows the row's own width. Order never changes; nothing is promoted out of the menu.",
+      "More sits at the row's far end behind a hairline (GitHub's repository nav). While the current tab is folded, More wears the underline; inside the menu the current tab has a bar on its leading edge.",
+      "measure: anything that changes a tab's width (a count, a locale), so it is measured again.",
+      "More is a real TabsTrigger, so the tablist always has a selected tab (WAI-ARIA).",
+      "Promoted from Dristi (components/chrome/overflow-tabs.tsx), unchanged.",
+    ],
+    preview: <OverflowTabsDocsDemo />,
   },
 
   "session-timeout": {
