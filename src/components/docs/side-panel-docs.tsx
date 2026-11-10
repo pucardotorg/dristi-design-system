@@ -4,6 +4,8 @@ import * as React from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { CopyableId } from "@/components/ui/copyable-id"
+import { FeedbackToaster } from "@/components/ui/feedback-toaster"
 import {
   DescriptionDetails,
   DescriptionList,
@@ -49,6 +51,8 @@ export function SidePanelDemo() {
         </SegmentedControl>
         <p className="text-caption text-muted-foreground">{SAYS[push]}</p>
       </div>
+      {/* Case numbers are CopyableIds; their "Copied …" toast needs a toaster. */}
+      <FeedbackToaster />
       <SidePanelRegion open={Boolean(open)} push={push} className="flex w-full flex-col gap-4">
         <div className={cn("flex items-center justify-between gap-4", push === "marked" && SIDE_PANEL_PUSH)}>
           <p className="text-body font-semibold">Cases</p>
@@ -59,7 +63,9 @@ export function SidePanelDemo() {
             <div key={c.id} className="flex items-center justify-between gap-4 px-4 py-3">
               <div className="flex min-w-0 flex-col">
                 <span className="text-body-compact font-medium">{c.parties}</span>
-                <span className="text-caption text-muted-foreground">{c.id}</span>
+                <span className="text-caption text-muted-foreground">
+                  <CopyableId value={c.id} label="case number" />
+                </span>
               </div>
               <Button variant="outline" size="sm" onClick={() => setOpen(c)}>
                 Peek
@@ -76,7 +82,7 @@ export function SidePanelDemo() {
             title={open?.parties ?? ""}
             subtitle={
               <p className="text-body-compact text-muted-foreground">
-                {open?.id} · {open?.court}
+                {open ? <CopyableId value={open.id} label="case number" /> : null} · {open?.court}
               </p>
             }
             header={
@@ -98,7 +104,9 @@ export function SidePanelDemo() {
                   <DescriptionList>
                     <DescriptionRow className="border-hairline">
                       <DescriptionTerm>Case number</DescriptionTerm>
-                      <DescriptionDetails>{open.id}</DescriptionDetails>
+                      <DescriptionDetails>
+                        <CopyableId value={open.id} label="case number" />
+                      </DescriptionDetails>
                     </DescriptionRow>
                     <DescriptionRow className="border-hairline">
                       <DescriptionTerm>Stage</DescriptionTerm>

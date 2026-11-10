@@ -116,11 +116,12 @@ function CopyableId({
           glyph is inside the button, so the pill covers it as is. In a table the glyph
           sits out of flow over the cell's padding; the pill reaches 12px further right to
           take it in (2px past the glyph, as everywhere), still without widening the
-          column. In a table the hovered row is already surface-sunken, so the pill takes
-          one step more, accent-strong: the same contrast against the row as on white. */}
+          column. On anything already surface-sunken (a hovered table row, a beige box such
+          as OutcomeSummary) the pill takes one step more, accent-strong: the same contrast
+          against it as the plain pill has on white. On white it stays as it is. */}
       <span
         aria-hidden
-        className="absolute inset-y-0 right-0 left-0 -z-10 rounded-sm transition-colors group-hover/id:bg-surface-sunken in-[td]:-right-3 in-[tr]:group-hover/id:bg-accent-strong"
+        className="absolute inset-y-0 right-0 left-0 -z-10 rounded-sm transition-colors group-hover/id:bg-surface-sunken in-[td]:-right-3 in-[tr]:group-hover/id:bg-accent-strong in-[.bg-surface-sunken]:group-hover/id:bg-accent-strong"
       />
       <span className="relative inline-flex items-center">
         <span>{value}</span>

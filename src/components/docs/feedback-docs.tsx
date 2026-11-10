@@ -42,6 +42,7 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { CopyableId } from "@/components/ui/copyable-id";
 import { FeedbackToaster } from "@/components/ui/feedback-toaster";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { notify } from "@/components/ui/notify";
@@ -175,6 +176,8 @@ export const statusMarkPreview = <MarkMatrix />;
 
 export const outcomePreview = (
       <div className="flex flex-wrap gap-2">
+        {/* IDs in the summaries are CopyableIds; their "Copied …" toast needs a toaster. */}
+        <FeedbackToaster />
         <OutcomeDialog label="Success">
           <OutcomeHeader
             titleFrom="dialog"
@@ -184,7 +187,9 @@ export const outcomePreview = (
           <DialogBody>
             <DescriptionList>
               <Row term="Submitted on">24-08-2026</Row>
-              <Row term="Submission ID">KL-000847-2026-AP1</Row>
+              <Row term="Submission ID">
+                <CopyableId value="KL-000847-2026-AP1" label="submission ID" />
+              </Row>
               <Row term="Court fee">₹50 paid</Row>
             </DescriptionList>
           </DialogBody>
@@ -199,8 +204,12 @@ export const outcomePreview = (
           <DialogBody>
             <OutcomeSummary>
               <DescriptionList>
-                <Row term="Case file number">KL-000847-2026</Row>
-                <Row term="Payment reference">PAY-55102</Row>
+                <Row term="Case file number">
+                  <CopyableId value="KL-000847-2026" label="case file number" />
+                </Row>
+                <Row term="Payment reference">
+                  <CopyableId value="PAY-55102" label="payment reference" />
+                </Row>
               </DescriptionList>
             </OutcomeSummary>
           </DialogBody>

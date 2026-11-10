@@ -83,6 +83,9 @@ the app is not updated yet (developers asked to wait).
   `surface-sunken`, and the pill vanished into it (the app has the same issue today).
   The pill is its own layer, so in a table it reaches over the out-of-flow copy glyph
   as it does everywhere else (it stopped short of it in the app), with no column change.
+  On any beige (`surface-sunken`) surface, such as OutcomeSummary, the pill also
+  takes `accent-strong`; on white it is unchanged. The outcome and side panel docs
+  examples now show their IDs as CopyableIds (they were plain text).
 - **The slot opens the viewer.** A filled slot whose file has a url and a type opens
   DocumentViewer from its thumbnail, with its Change and Remove inside, loaded only when
   opened. `viewer={false}` turns it off; `onPreview` replaces it.
