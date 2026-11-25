@@ -1,14 +1,18 @@
+"use client"
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { useCopy } from "@/components/ui/copy-provider"
 import { Button } from "@/components/ui/button"
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
+  const words = useCopy()
   return (
     <nav
       role="navigation"
-      aria-label="pagination"
+      aria-label={words.pagination}
       data-slot="pagination"
       className={cn("mx-auto flex w-full justify-center", className)}
       {...props}
@@ -63,35 +67,37 @@ function PaginationLink({
 
 function PaginationPrevious({
   className,
-  text = "Previous",
+  text,
   ...props
 }: React.ComponentProps<typeof PaginationLink> & { text?: string }) {
+  const words = useCopy()
   return (
     <PaginationLink
-      aria-label="Go to previous page"
+      aria-label={words.previousPage}
       size="default"
       className={cn("pl-1.5!", className)}
       {...props}
     >
       <ChevronLeftIcon data-icon="inline-start" />
-      <span className="hidden sm:block">{text}</span>
+      <span className="hidden sm:block">{text ?? words.previous}</span>
     </PaginationLink>
   )
 }
 
 function PaginationNext({
   className,
-  text = "Next",
+  text,
   ...props
 }: React.ComponentProps<typeof PaginationLink> & { text?: string }) {
+  const words = useCopy()
   return (
     <PaginationLink
-      aria-label="Go to next page"
+      aria-label={words.nextPage}
       size="default"
       className={cn("pr-1.5!", className)}
       {...props}
     >
-      <span className="hidden sm:block">{text}</span>
+      <span className="hidden sm:block">{text ?? words.next}</span>
       <ChevronRightIcon data-icon="inline-end" />
     </PaginationLink>
   )
@@ -101,6 +107,7 @@ function PaginationEllipsis({
   className,
   ...props
 }: React.ComponentProps<"span">) {
+  const words = useCopy()
   return (
     <span
       aria-hidden
@@ -113,7 +120,7 @@ function PaginationEllipsis({
     >
       <MoreHorizontalIcon
       />
-      <span className="sr-only">More pages</span>
+      <span className="sr-only">{words.morePages}</span>
     </span>
   )
 }

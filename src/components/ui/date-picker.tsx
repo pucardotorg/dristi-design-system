@@ -6,6 +6,7 @@ import { CalendarDaysIcon } from "lucide-react"
 import type { DateRange } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
+import { useCopy } from "@/components/ui/copy-provider"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -36,13 +37,14 @@ function DatePicker({
   value,
   defaultValue,
   onValueChange,
-  placeholder = "Pick a date",
+  placeholder,
   disabled,
   className,
 }: DatePickerProps) {
   const [internalValue, setInternalValue] = React.useState<Date | undefined>(
     defaultValue
   )
+  const words = useCopy()
   const selected = value === undefined ? internalValue : value
 
   function handleSelect(nextValue: Date | undefined) {
@@ -64,7 +66,7 @@ function DatePicker({
         >
           <CalendarDaysIcon data-icon="inline-start" aria-hidden />
           <span className="truncate">
-            {selected ? format(selected, "PPP") : placeholder}
+            {selected ? format(selected, "PPP") : (placeholder ?? words.datePickerPlaceholder)}
           </span>
         </Button>
       </PopoverTrigger>
@@ -79,13 +81,14 @@ function DateRangePicker({
   value,
   defaultValue,
   onValueChange,
-  placeholder = "Pick a date range",
+  placeholder,
   disabled,
   className,
 }: DateRangePickerProps) {
   const [internalValue, setInternalValue] = React.useState<
     DateRange | undefined
   >(defaultValue)
+  const words = useCopy()
   const selected = value === undefined ? internalValue : value
 
   function handleSelect(nextValue: DateRange | undefined) {
@@ -97,7 +100,7 @@ function DateRangePicker({
     ? selected.to
       ? `${format(selected.from, "MMM d, yyyy")} – ${format(selected.to, "MMM d, yyyy")}`
       : format(selected.from, "PPP")
-    : placeholder
+    : (placeholder ?? words.dateRangePickerPlaceholder)
 
   return (
     <Popover>

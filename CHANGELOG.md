@@ -2,6 +2,23 @@
 
 All notable changes to the Pucar Design System docs and components.
 
+## 2026-11-25 · Copy provider: the components' own words can be translated
+
+Dristi translated the words built into 14 components ("Close", "Loading", "Pick a date",
+"Machine filled, not yet verified" and others) by editing its copies of them. The copies
+then stopped matching the DS, and the next sync would have put the English back. The
+words now come from one place a product can fill in. Nothing changes in English.
+
+- **New `CopyProvider` and `useCopy`.** Wrap the product's root once with its own words;
+  any word left out stays in English. `doneOfTotal` is a function, so a language can
+  order the numbers its own way.
+- **Reading it:** Breadcrumb, Command, DatePicker, DateRangePicker, Dialog, DocumentSlot,
+  Input, Notify, Outcome, Pagination, Sheet, SidePanel, Sidebar, Spinner and Textarea.
+  A prop on one component still wins (DocumentSlot's `copy`, DatePicker's `placeholder`,
+  Pagination's `text`, CommandDialog's `title` and `description`).
+- **Breadcrumb, Pagination and Spinner are client components now**, because they read
+  the provider. They still render from server components.
+
 ## 2026-10-30 · Side panel: padded pages push right, tabs in the header show their mark
 
 Two fixes found moving Dristi's case peek onto `SidePanel`. Nothing changes where the

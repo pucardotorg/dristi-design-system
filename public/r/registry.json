@@ -218,6 +218,17 @@
       ]
     },
     {
+      "name": "copy-provider",
+      "type": "registry:ui",
+      "title": "Copy Provider",
+      "files": [
+        {
+          "path": "src/components/ui/copy-provider.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "date-picker",
       "type": "registry:ui",
       "title": "Date Picker",

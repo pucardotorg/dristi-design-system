@@ -7,6 +7,7 @@ import { XIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer"
 import { cn } from "@/lib/utils"
+import { useCopy } from "@/components/ui/copy-provider"
 
 /**
  * A docked panel beside the page, for looking at one record without leaving the list
@@ -193,6 +194,7 @@ function SidePanel({
     }
   }, [open, drawer])
 
+  const words = useCopy()
   const titleRow = (Title: React.ElementType, closeSize: "icon" | "icon-sm") => (
     <div className="flex items-start justify-between gap-3">
       <div className="flex min-w-0 flex-col gap-1.5">
@@ -201,7 +203,7 @@ function SidePanel({
         </Title>
         {subtitle}
       </div>
-      <Button variant="ghost" size={closeSize} className="-mt-1 -mr-1 shrink-0 text-muted-foreground" onClick={() => onOpenChange(false)} aria-label="Close">
+      <Button variant="ghost" size={closeSize} className="-mt-1 -mr-1 shrink-0 text-muted-foreground" onClick={() => onOpenChange(false)} aria-label={words.close}>
         <XIcon aria-hidden />
       </Button>
     </div>

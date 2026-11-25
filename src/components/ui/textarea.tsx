@@ -3,9 +3,8 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { useCopy } from "@/components/ui/copy-provider"
 import { useFieldControlProps } from "@/components/ui/field"
-
-const PREFILLED_HINT = "Machine filled, not yet verified"
 
 function Textarea({
   className,
@@ -18,6 +17,7 @@ function Textarea({
   /** Machine-read, human-unverified value — amber fill + dashed border; never colour alone. */
   prefilled?: boolean
 }) {
+  const words = useCopy()
   const fieldProps = useFieldControlProps({
     id,
     "aria-describedby": ariaDescribedBy,
@@ -46,7 +46,7 @@ function Textarea({
       />
       {prefilled ? (
         <span id={prefilledId} className="sr-only">
-          {PREFILLED_HINT}
+          {words.machineFilled}
         </span>
       ) : null}
     </span>

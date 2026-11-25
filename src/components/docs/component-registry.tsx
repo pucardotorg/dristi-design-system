@@ -86,6 +86,7 @@ import {
   ContextMenuShortcut,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { CopyProvider } from "@/components/ui/copy-provider";
 import { DatePicker, DateRangePicker } from "@/components/ui/date-picker";
 import {
   DescriptionDetails,
@@ -2023,6 +2024,33 @@ export const componentRegistry: Record<string, ComponentDoc> = {
         />
       </Timeline>
     ),
+  },
+
+  "copy-provider": {
+    slug: "copy-provider",
+    title: "Copy provider",
+    description:
+      "Gives the components their built-in words: screen-reader labels, placeholders and small hints. English unless a product passes its own.",
+    importPath: "@/components/ui/copy-provider",
+    whenToUse: [
+      "A product that translates its interface: wrap the root once and pass the translated words, so Close, Loading and the other built-in labels speak the reader's language.",
+      "Never to restyle or rename a single component instance: use that component's own prop (DocumentSlot's copy, DatePicker's placeholder, Pagination's text).",
+    ],
+    tokens: [],
+    usageNotes: [
+      "Wrap once, near the root: <CopyProvider copy={{ close: t(\"common_close\"), loading: t(\"spinner_loading\") }}>. Keys left out stay in English.",
+      "doneOfTotal is a function, (done, total) => string, so a language can order the numbers its own way.",
+      "A prop on one component still wins over the provider, so a slot that names its document (\"Add cheque\") keeps its own words.",
+      "Products never edit a component to translate it. That is what this is for: the components stay exact copies of the DS and keep syncing.",
+    ],
+    doItems: ["Pass every key the product translates, from the same message catalogue as the rest of the screen."],
+    dontItems: ["Copy a component into the product to change one of its built-in words."],
+    preview: (
+      <CopyProvider copy={{ datePickerPlaceholder: "तारीख चुनें" }}>
+        <DatePicker />
+      </CopyProvider>
+    ),
+    previewLabel: "A date picker, given its placeholder in Hindi",
   },
 
   "document-slot": {
