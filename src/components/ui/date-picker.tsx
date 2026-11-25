@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/popover"
 
 type DatePickerProps = {
-  value?: Date
+  /** `null` is a controlled empty value; `undefined` leaves the picker to hold its own. */
+  value?: Date | null
   defaultValue?: Date
   onValueChange?: (value: Date | undefined) => void
   placeholder?: string
@@ -45,7 +46,7 @@ function DatePicker({
     defaultValue
   )
   const words = useCopy()
-  const selected = value === undefined ? internalValue : value
+  const selected = value === undefined ? internalValue : (value ?? undefined)
 
   function handleSelect(nextValue: Date | undefined) {
     if (value === undefined) setInternalValue(nextValue)

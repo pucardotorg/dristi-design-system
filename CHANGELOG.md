@@ -18,6 +18,9 @@ words now come from one place a product can fill in. Nothing changes in English.
   Pagination's `text`, CommandDialog's `title` and `description`).
 - **Breadcrumb, Pagination and Spinner are client components now**, because they read
   the provider. They still render from server components.
+- **DatePicker takes `value={null}`** as a controlled empty value, so a form can clear
+  it. `undefined` still leaves the picker to hold its own value. Dristi needed this and
+  had added it to its copy.
 
 ## 2026-10-30 · Side panel: padded pages push right, tabs in the header show their mark
 
