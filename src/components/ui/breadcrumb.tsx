@@ -1,13 +1,17 @@
+"use client"
+
 import * as React from "react"
 import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"
+import { useCopy } from "@/components/ui/copy-provider"
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
+  const words = useCopy()
   return (
     <nav
-      aria-label="breadcrumb"
+      aria-label={words.breadcrumb}
       data-slot="breadcrumb"
       className={cn(className)}
       {...props}
@@ -93,6 +97,7 @@ function BreadcrumbEllipsis({
   className,
   ...props
 }: React.ComponentProps<"span">) {
+  const words = useCopy()
   return (
     <span
       data-slot="breadcrumb-ellipsis"
@@ -106,7 +111,7 @@ function BreadcrumbEllipsis({
     >
       <MoreHorizontalIcon
       />
-      <span className="sr-only">More</span>
+      <span className="sr-only">{words.breadcrumbMore}</span>
     </span>
   )
 }

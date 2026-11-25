@@ -5,6 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { FileTextIcon, LoaderCircleIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { useCopy } from "@/components/ui/copy-provider"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
@@ -71,6 +72,7 @@ function DocumentSlot({
       chooseFile?: string
     }
   }) {
+  const words = useCopy()
   const isEmpty = status === "empty" || status === "empty-optional"
   const showOptional = optional || status === "empty-optional"
   const qualityTone =
@@ -110,7 +112,7 @@ function DocumentSlot({
             </span>
           ) : null}
           {showOptional ? (
-            <Badge variant="secondary">{copy?.optional ?? "Optional"}</Badge>
+            <Badge variant="secondary">{copy?.optional ?? words.optional}</Badge>
           ) : null}
         </div>
         {(filename || meta) && !isEmpty ? (
@@ -120,17 +122,17 @@ function DocumentSlot({
         ) : null}
         {isEmpty ? (
           <p className="mt-0.5 text-sm text-muted-foreground">
-            {copy?.noFile ?? "No file chosen yet"}
+            {copy?.noFile ?? words.noFileChosen}
           </p>
         ) : null}
         {qualityTone === "good" ? (
           <Badge variant="success" className="mt-2">
-            {copy?.goodScan ?? "Good scan"}
+            {copy?.goodScan ?? words.goodScan}
           </Badge>
         ) : null}
         {qualityTone === "poor" ? (
           <Badge variant="warning" className="mt-2">
-            {copy?.poorScan ?? "Poor scan"}
+            {copy?.poorScan ?? words.poorScan}
           </Badge>
         ) : null}
       </div>
@@ -143,7 +145,7 @@ function DocumentSlot({
           disabled={disabled}
           onClick={onChooseFile}
         >
-          {copy?.chooseFile ?? "Choose file"}
+          {copy?.chooseFile ?? words.chooseFile}
         </Button>
       ) : null}
     </div>

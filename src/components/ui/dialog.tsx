@@ -4,6 +4,7 @@ import * as React from "react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
+import { useCopy } from "@/components/ui/copy-provider"
 import { Button } from "@/components/ui/button"
 import { XIcon } from "lucide-react"
 
@@ -58,6 +59,7 @@ function DialogContent({
   /** Header and footer stay put; only `DialogBody` scrolls. For long dialogs and outcomes. */
   pinned?: boolean
 }) {
+  const words = useCopy()
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -81,7 +83,7 @@ function DialogContent({
             >
               <XIcon
               />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{words.close}</span>
             </Button>
           </DialogPrimitive.Close>
         )}
@@ -111,6 +113,7 @@ function DialogFooter({
 }: React.ComponentProps<"div"> & {
   showCloseButton?: boolean
 }) {
+  const words = useCopy()
   return (
     <div
       data-slot="dialog-footer"
@@ -123,7 +126,7 @@ function DialogFooter({
       {children}
       {showCloseButton && (
         <DialogPrimitive.Close asChild>
-          <Button variant="outline">Close</Button>
+          <Button variant="outline">{words.close}</Button>
         </DialogPrimitive.Close>
       )}
     </div>

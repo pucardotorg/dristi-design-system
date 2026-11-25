@@ -60,6 +60,7 @@ export const docsNav: DocsNavSection[] = [
       { title: "Session timeout", href: "/components/session-timeout" },
       { title: "Description list", href: "/components/description-list" },
       { title: "Side panel", href: "/components/side-panel" },
+      { title: "Copy provider", href: "/components/copy-provider" },
       { title: "Sign-in block", href: "/blocks/sign-in" },
     ],
   },

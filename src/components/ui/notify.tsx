@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useCopy } from "@/components/ui/copy-provider";
 
 import { StatusMark } from "@/components/ui/status-mark";
 
@@ -182,6 +183,7 @@ function ToastCard({
   persistent: boolean;
   onClose: () => void;
 }) {
+  const words = useCopy();
   /* No live-region role here: sonner's list is already the polite live region, and a
      second one inside it makes screen readers announce the toast twice. The list item
      already rises in, so the card does not animate its own entrance. */
@@ -212,7 +214,7 @@ function ToastCard({
         </Button>
       ) : null}
       {persistent ? (
-        <Button size="icon-sm" variant="ghost" className={cn("shrink-0 self-start text-muted-foreground", HIT)} aria-label="Close" onClick={onClose}>
+        <Button size="icon-sm" variant="ghost" className={cn("shrink-0 self-start text-muted-foreground", HIT)} aria-label={words.close} onClick={onClose}>
           <XIcon aria-hidden />
         </Button>
       ) : (

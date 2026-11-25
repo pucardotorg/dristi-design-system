@@ -5,6 +5,7 @@ import * as React from "react";
 import { AlertDialogDescription, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { useCopy } from "@/components/ui/copy-provider";
 
 import { HERO_START, StatusMark, type MarkTone } from "@/components/ui/status-mark";
 
@@ -224,6 +225,7 @@ export function OutcomeTally({
   failedTone?: "warning" | "error";
   still?: boolean;
 }) {
+  const words = useCopy();
   const total = done + failed;
   const fill = failedTone === "warning" ? "var(--warning)" : "var(--destructive)";
   const stripes = `repeating-linear-gradient(45deg, ${fill} 0 3px, color-mix(in oklab, ${fill} 40%, var(--card)) 3px 5px)`;
@@ -243,7 +245,7 @@ export function OutcomeTally({
       still={still}
       aside={
         <span className="text-body-compact tabular-nums text-muted-foreground">
-          {done} of {total}
+          {words.doneOfTotal(done, total)}
         </span>
       }
     >
